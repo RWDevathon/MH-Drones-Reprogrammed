@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+    <MDR_InvalidFor>{0} is invalid on {1} because: {2}</MDR_InvalidFor>
+    <MDR_MaxDirectivesExceeded>There are {0} non-inherent directives selected but {1} may only have {2}</MDR_MaxDirectivesExceeded>
+    <MDR_CantRemoveInherentDirectives>{0} can't be removed as it is an inherent directive of {1}</MDR_CantRemoveInherentDirectives>
+
+    <!-- Miscellaneous -->
+    <MHC_MessageSelfRepairUnsatisfied>To self-repair, {1_labelShort} must also be assigned to Mechanic work.</MHC_MessageSelfRepairUnsatisfied>
+    <MHC_DroneCaptured>{0} is a drone, and can not be interacted with by wardens. Use operations to recruit or execute.</MHC_DroneCaptured>
+
+    <!-- Surgeries -->
+	<MHC_MessageMechanicOperationFailureMinor>{0} committed a minor error while operating and aborted the procedure on {1}.</MHC_MessageMechanicOperationFailureMinor>
+	<MHC_MessageMechanicOperationFailureRidiculous>{0} has committed a major error while attempting an operation on {1}.</MHC_MessageMechanicOperationFailureRidiculous>
+	<MHC_MessageMechanicOperationFailureFatal>{0} has committed a fatal error while operating on {1} that caused unintentional cascading damage. The procedure caused irreversible damage to the unit, resulting in ceased functionality.</MHC_MessageMechanicOperationFailureFatal>
+
+    <!-- Coolant Extraction -->
+    <MHC_CannotStartCoolantExtraction>{PAWN_nameDef} doesn't have enough coolant reserves to extract a coolant pack.</MHC_CannotStartCoolantExtraction>
+    <MHC_PawnHadInsufficientCoolantToExtractCoolantPack>{PAWN_nameDef} did not have enough coolant reserves to extract a coolant pack.</MHC_PawnHadInsufficientCoolantToExtractCoolantPack>
+
+</LanguageData>

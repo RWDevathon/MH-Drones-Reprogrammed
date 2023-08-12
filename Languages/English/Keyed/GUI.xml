@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+    <MDR_HasInherentSkills>{0} has {2} inherent skill points in the {1} type and can not be programmed with lower skill. It does not affect complexity.</MDR_HasInherentSkills>
+    <MDR_StatsReport_Directives>Directives</MDR_StatsReport_Directives>
+
+</LanguageData>

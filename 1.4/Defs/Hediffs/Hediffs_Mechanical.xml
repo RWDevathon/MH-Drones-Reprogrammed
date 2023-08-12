@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+    <HediffDef>
+        <defName>MDR_NoProgramming</defName>
+        <label>Blank Drone</label>
+        <description>Unit is devoid of programming, and is inert.</description>
+        <hediffClass>Hediff</hediffClass>
+        <initialSeverity>1</initialSeverity>
+        <defaultLabelColor>(0.3, 0.7, 0.3)</defaultLabelColor>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <isBad>false</isBad>
+        <disablesNeeds>
+            <li>MHC_Coolant</li>
+            <li>MHC_Lubrication</li>
+        </disablesNeeds>
+        <stages>
+            <li>
+                <hungerRateFactor>0.1</hungerRateFactor>
+                <statFactors>
+                    <MHC_MaintenanceRetention>10</MHC_MaintenanceRetention>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Consciousness</capacity>
+                        <setMax>0.1</setMax>
+                    </li>
+                </capMods>
+            </li>
+        </stages>
+    </HediffDef>
+
+    <HediffDef>
+        <defName>MDR_ComplexityRelation</defName>
+        <label>complexity strain</label>
+        <description>This unit is experiencing side-effects of their current level of programming relative to their maximum complexity handling capacity.</description>
+        <hediffClass>MechHumanlikes.Hediff_Complexity</hediffClass>
+        <initialSeverity>0</initialSeverity>
+        <minSeverity>-1</minSeverity>
+        <maxSeverity>10</maxSeverity>
+        <defaultLabelColor>(0.6, 0.6, 0.6)</defaultLabelColor>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <isBad>false</isBad>
+        <!-- The functionality of this Hediff is controlled by the Hediff_Complexity class alone -->
+    </HediffDef>
+
+    <HediffDef>
+        <defName>MDR_MaxComplexityTest</defName>
+        <label>max complexity test</label>
+        <description>This is a test hediff that adds 10 max complexity to the pawn.</description>
+        <hediffClass>Hediff</hediffClass>
+        <defaultLabelColor>(0.6, 0.6, 0.6)</defaultLabelColor>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <isBad>false</isBad>
+        <stages>
+            <li>
+                <statOffsets>
+                    <MDR_ComplexityLimit>10</MDR_ComplexityLimit>
+                </statOffsets>
+            </li>
+        </stages>
+    </HediffDef>
+
+</Defs>

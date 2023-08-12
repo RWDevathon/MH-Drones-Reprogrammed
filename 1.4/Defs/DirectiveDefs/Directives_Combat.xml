@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+    <MechHumanlikes.DirectiveDef>
+        <defName>MDR_DirectiveMeleeOptimized</defName>
+        <label>Brawler Directives</label>
+        <description>Additional specialized melee combat directives can be implemented into a drone to enhance close quarters combat efficiency and survival rate. The directives severely impair long range movement prediction and identification systems, however.</description>
+        <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
+        <directiveCategory>Military</directiveCategory>
+        <exclusionTags>
+            <li>CombatDirectives</li>
+        </exclusionTags>
+        <statOffsets>
+            <MeleeHitChance>4</MeleeHitChance>
+            <MeleeDodgeChance>8</MeleeDodgeChance>
+        </statOffsets>
+        <statFactors>
+            <RangedWeapon_Cooldown>1.2</RangedWeapon_Cooldown>
+            <AccuracyLong>0.6</AccuracyLong>
+            <AccuracyMedium>0.8</AccuracyMedium>
+            <AccuracyShort>0.9</AccuracyShort>
+            <PawnTrapSpringChance>0.2</PawnTrapSpringChance>
+        </statFactors>
+        <complexityCost>1</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>3</value></li>
+            <li><key>Peaceful</key><value>-1</value></li>
+            <li><key>Trader</key><value>0.5</value></li>
+        </groupKindWeights>
+        <skillChoiceWeights>
+            <li><key>Melee</key><value>10</value></li>
+        </skillChoiceWeights>
+        <requirementWorkers>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_ExclusionTag"/>
+        </requirementWorkers>
+    </MechHumanlikes.DirectiveDef>
+
+    <MechHumanlikes.DirectiveDef>
+        <defName>MDR_DirectiveRangeOptimized</defName>
+        <label>Sharpshooter Directives</label>
+        <description>Additional specialized ranged combat directives can be implemented into a drone to enhance ranged combat efficiency. The directives severely impair close range reactiveness and survivability, however.</description>
+        <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
+        <directiveCategory>Military</directiveCategory>
+        <exclusionTags>
+            <li>CombatDirectives</li>
+        </exclusionTags>
+        <statOffsets>
+            <ShootingAccuracyPawn>6</ShootingAccuracyPawn>
+        </statOffsets>
+        <statFactors>
+            <RangedWeapon_Cooldown>0.75</RangedWeapon_Cooldown>
+            <AccuracyLong>1.25</AccuracyLong>
+            <AccuracyMedium>1.15</AccuracyMedium>
+            <AccuracyShort>1.1</AccuracyShort>
+            <MeleeHitChance>0.6</MeleeHitChance>
+            <MeleeDodgeChance>0.6</MeleeDodgeChance>
+            <PawnTrapSpringChance>2</PawnTrapSpringChance>
+        </statFactors>
+        <complexityCost>1</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>3</value></li>
+            <li><key>Peaceful</key><value>-1</value></li>
+            <li><key>Trader</key><value>0.5</value></li>
+        </groupKindWeights>
+        <skillChoiceWeights>
+            <li><key>Shooting</key><value>10</value></li>
+        </skillChoiceWeights>
+        <requirementWorkers>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_ExclusionTag"/>
+        </requirementWorkers>
+    </MechHumanlikes.DirectiveDef>
+
+    <MechHumanlikes.DirectiveDef>
+        <defName>MDR_EliteCombatProtocols</defName>
+        <label>Veterancy Directives</label>
+        <description>Highly sophisticated and complicated directives can be implemented into a drone to enhance overall combat efficiency. Optimized for combat at all ranges and scenarios, units with these directives have significant combat advantages at the cost of higher upkeep.</description>
+        <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
+        <directiveCategory>Military</directiveCategory>
+        <exclusionTags>
+            <li>CombatDirectives</li>
+        </exclusionTags>
+        <statOffsets>
+            <ShootingAccuracyPawn>10</ShootingAccuracyPawn>
+            <MeleeHitChance>8</MeleeHitChance>
+            <MeleeDodgeChance>16</MeleeDodgeChance>
+        </statOffsets>
+        <statFactors>
+            <RangedWeapon_Cooldown>0.6</RangedWeapon_Cooldown>
+            <AccuracyLong>1.25</AccuracyLong>
+            <AccuracyMedium>1.25</AccuracyMedium>
+            <AccuracyShort>1.5</AccuracyShort>
+            <AccuracyTouch>2</AccuracyTouch>
+            <PawnTrapSpringChance>0</PawnTrapSpringChance>
+        </statFactors>
+        <complexityCost>3</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>4</value></li>
+            <li><key>Peaceful</key><value>-1</value></li>
+            <li><key>Trader</key><value>-1</value></li>
+        </groupKindWeights>
+        <skillChoiceWeights>
+            <li><key>Shooting</key><value>20</value></li>
+            <li><key>Melee</key><value>20</value></li>
+        </skillChoiceWeights>
+        <requirementWorkers>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_MinimumComplexity">
+                <complexityRequirement>30</complexityRequirement>
+            </li>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_ExclusionTag"/>
+        </requirementWorkers>
+    </MechHumanlikes.DirectiveDef>
+
+    <MechHumanlikes.DirectiveDef>
+        <defName>MDR_PacifismProtocols</defName>
+        <label>Pacifism Directives</label>
+        <description>Simplification directives can be implemented into a drone to strip out the need for friend/foe targetting and remove all combat capabilities. The spare computational capabilities can be refocused toward purely utilitarian and productive purposes, greatly enhancing general efficiency.</description>
+        <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
+        <directiveCategory>Military</directiveCategory>
+        <exclusionTags>
+            <li>CombatDirectives</li>
+        </exclusionTags>
+        <hungerRateFactor>0.75</hungerRateFactor>
+        <statOffsets>
+            <ShootingAccuracyPawn>-10</ShootingAccuracyPawn>
+            <MeleeHitChance>-10</MeleeHitChance>
+            <MeleeDodgeChance>-10</MeleeDodgeChance>
+            <MHC_ChargingSpeed>0.5</MHC_ChargingSpeed>
+            <MHC_MaintenanceRetention>1</MHC_MaintenanceRetention>
+            <WorkSpeedGlobal>0.1</WorkSpeedGlobal>
+        </statOffsets>
+        <statFactors>
+            <RangedWeapon_Cooldown>5</RangedWeapon_Cooldown>
+            <AccuracyLong>0.1</AccuracyLong>
+            <AccuracyMedium>0.1</AccuracyMedium>
+            <AccuracyShort>0.1</AccuracyShort>
+            <AccuracyTouch>0.1</AccuracyTouch>
+            <PawnTrapSpringChance>10</PawnTrapSpringChance>
+        </statFactors>
+        <complexityCost>1</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>-1</value></li>
+            <li><key>Trader</key><value>1.5</value></li>
+        </groupKindWeights>
+        <skillChoiceWeights>
+            <li><key>Shooting</key><value>-3</value></li>
+            <li><key>Melee</key><value>-3</value></li>
+        </skillChoiceWeights>
+        <requirementWorkers>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_ExclusionTag"/>
+        </requirementWorkers>
+    </MechHumanlikes.DirectiveDef>
+
+</Defs>

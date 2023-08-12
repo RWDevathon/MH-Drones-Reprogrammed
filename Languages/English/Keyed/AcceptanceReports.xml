@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+
+	<MDR_ExclusionTagConflict>{0} and {1} are mutually exclusive and share the {2} tag.</MDR_ExclusionTagConflict>
+    <MDR_ExclusiveToRace>{0} is restricted and not applicable to the race of {1}.</MDR_ExclusiveToRace>
+    <MDR_ComplexityRequirementNotMet>{0} requires at least {1} maximum complexity but {2} has only {3}.</MDR_ComplexityRequirementNotMet>
+    <MDR_RequiredWorkTypeNotMet>{0} lacks the required {1} work type.</MDR_RequiredWorkTypeNotMet>
+    <MDR_RequiredWorkTypeSetNotMet>{0} must have at least one work type enabled in {0}</MDR_RequiredWorkTypeSetNotMet>
+
+</LanguageData>
