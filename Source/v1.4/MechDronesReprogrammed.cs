@@ -34,7 +34,7 @@ namespace MechHumanlikes
 
             foreach (ThingDef thingDef in DefDatabase<ThingDef>.AllDefsListForReading)
             {
-                // Programmable drones have a race and a programmable drone pawn extension.
+                // Programmable drones have a race and a programmable drone pawn extension, and should have the programming ITab.
                 if (thingDef.race != null && thingDef.GetModExtension<MDR_ProgrammableDroneExtension>() is MDR_ProgrammableDroneExtension extension)
                 {
                     MDR_Utils.cachedProgrammableDrones.Add(thingDef);
@@ -44,6 +44,9 @@ namespace MechHumanlikes
                         compClass = typeof(CompReprogrammableDrone)
                     };
                     thingDef.comps.Add(compProps);
+
+                    thingDef.inspectorTabs.Insert(thingDef.inspectorTabs.Count / 2, typeof(ITab_Programming));
+                    thingDef.inspectorTabsResolved.Insert(thingDef.inspectorTabsResolved.Count / 2, InspectTabManager.GetSharedInstance(typeof(ITab_Programming)));
                 }
             }
 

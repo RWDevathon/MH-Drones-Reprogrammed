@@ -3,7 +3,6 @@ using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using static HarmonyLib.Code;
 
 namespace MechHumanlikes
 {
@@ -29,8 +28,6 @@ namespace MechHumanlikes
 
         private int proposedWorkTypeComplexity;
 
-        private int currentSkillPoints;
-
         private float proposedSkillComplexity;
 
         private float scrollHeight;
@@ -47,7 +44,7 @@ namespace MechHumanlikes
 
         private static readonly CachedTexture backgroundTexture = new CachedTexture("UI/Icons/Settings/DrawPocket");
 
-        private int ProposedComplexity => programComp.Complexity + proposedWorkTypeComplexity + Mathf.CeilToInt(proposedSkillComplexity);
+        private int ProposedComplexity => programComp.Complexity + proposedWorkTypeComplexity + Mathf.Max(0, Mathf.CeilToInt(proposedSkillComplexity));
 
         protected override float Margin => 12f;
 
@@ -77,11 +74,6 @@ namespace MechHumanlikes
             proposedSkillComplexity = -programComp.BaselineComplexity / 3;
             skillDefs = DefDatabase<SkillDef>.AllDefsListForReading;
             skillTracker = pawn.skills;
-            currentSkillPoints = 0;
-            foreach (SkillRecord skill in skillTracker.skills)
-            {
-                currentSkillPoints += Mathf.Max(skill.Level - programExtension.inherentSkills.GetWithFallback(skill.def, 0), 0);
-            }
         }
 
         public override void DoWindowContents(Rect inRect)
@@ -202,7 +194,6 @@ namespace MechHumanlikes
                 if (subsection.ButtonText("MDR_AddSkillLevel".Translate()) && MDR_Utils.SkillComplexityThresholdFor(pawn, skillDef) is int addThreshold && skill.Level < Mathf.Min(addThreshold + 4, SkillRecord.MaxLevel))
                 {
                     skill.Level++;
-                    currentSkillPoints++;
                     if (skill.Level > addThreshold)
                     {
                         proposedSkillComplexity += 1;
@@ -232,7 +223,6 @@ namespace MechHumanlikes
                             proposedSkillComplexity -= 0.5f;
                         }
                         skill.Level--;
-                        currentSkillPoints--;
                         programComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(proposedSkillComplexity)));
                     }
                 }
@@ -246,10 +236,10 @@ namespace MechHumanlikes
             float xIndex = rect.x;
             float yIndex = rect.y;
             Widgets.BeginScrollView(new Rect(xIndex, yIndex, rect.width, rect.height), ref scrollPosition, rect);
-            Rect headerSection = new Rect(rect.x, yIndex, rect.width, Text.LineHeight);
+            Rect headerSection = new Rect(xIndex, yIndex, rect.width, Text.LineHeight);
             Widgets.Label(headerSection, "MDR_SelectedDirectives".Translate());
             yIndex += Text.LineHeight + Margin;
-            if (Widgets.ButtonText(new Rect(rect.x, yIndex, rect.width, 30f), "MDR_SetDroneDirectives".Translate()))
+            if (Widgets.ButtonText(new Rect(xIndex, yIndex, rect.width, 30f), "MDR_SetDroneDirectives".Translate()))
             {
                 Find.WindowStack.Add(new Dialog_SetDroneDirectives(pawn, ref proposedDirectives));
             }
@@ -333,7 +323,7 @@ namespace MechHumanlikes
             float summaryRowHeight = summaryWrapper.height / 2;
             int proposedComplexity = ProposedComplexity;
             GUI.BeginGroup(summaryWrapper);
-            Rect complexityRowIcon = new Rect(0f, (summaryRowHeight - 22f) / 2f, 22f, 22f);
+            Rect complexityRowIcon = new Rect(0f, (summaryRowHeight - GenUI.SmallIconSize) / 2f, GenUI.SmallIconSize, GenUI.SmallIconSize);
             Rect complexityRowHeader = new Rect(complexityRowIcon.xMax + Margin, 0, summaryHeaderWidth, summaryRowHeight);
             Rect complexityRow = new Rect(0f, complexityRowHeader.y, summaryWrapper.width, complexityRowHeader.height);
             Widgets.DrawHighlightIfMouseover(complexityRow);
@@ -343,7 +333,7 @@ namespace MechHumanlikes
             Text.Anchor = TextAnchor.MiddleLeft;
             Widgets.Label(complexityRowHeader, "MDR_BaselineComplexity".Translate());
             Text.Anchor = TextAnchor.UpperLeft;
-            Rect effectRowIcon = new Rect(0f, summaryRowHeight + (summaryRowHeight - 22f) / 2f, 22f, 22f);
+            Rect effectRowIcon = new Rect(0f, summaryRowHeight + (summaryRowHeight - GenUI.SmallIconSize) / 2f, GenUI.SmallIconSize, GenUI.SmallIconSize);
             Rect effectRowHeader = new Rect(effectRowIcon.xMax + Margin, summaryRowHeight, summaryHeaderWidth, summaryRowHeight);
             Rect summaryRow = new Rect(0f, effectRowHeader.y, summaryWrapper.width, effectRowHeader.height);
             Widgets.DrawHighlightIfMouseover(summaryRow);
@@ -363,7 +353,7 @@ namespace MechHumanlikes
             Widgets.Label(new Rect(summaryFullHeaderWidth, 0f, 90f, summaryRowHeight), complexityText);
             Widgets.Label(new Rect(summaryFullHeaderWidth, summaryRowHeight, 90f, summaryRowHeight), complexityRelationText);
             Text.Anchor = TextAnchor.MiddleLeft;
-            float width = summaryWrapper.width - summaryHeaderWidth - 90f - 22f - Margin;
+            float width = summaryWrapper.width - summaryHeaderWidth - 90f - GenUI.SmallIconSize - Margin;
             Rect summaryRowText = new Rect(summaryFullHeaderWidth + 90f + Margin, summaryRowHeight, width, summaryRowHeight);
             if (summaryRowText.width != summaryCachedWidth)
             {

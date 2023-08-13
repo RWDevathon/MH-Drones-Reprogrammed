@@ -16,9 +16,7 @@
         </statOffsets>
         <statFactors>
             <RangedWeapon_Cooldown>1.2</RangedWeapon_Cooldown>
-            <AccuracyLong>0.6</AccuracyLong>
-            <AccuracyMedium>0.8</AccuracyMedium>
-            <AccuracyShort>0.9</AccuracyShort>
+            <ShootingAccuracyPawn>0.6</ShootingAccuracyPawn>
             <PawnTrapSpringChance>0.2</PawnTrapSpringChance>
         </statFactors>
         <complexityCost>1</complexityCost>
@@ -45,13 +43,10 @@
             <li>CombatDirectives</li>
         </exclusionTags>
         <statOffsets>
-            <ShootingAccuracyPawn>6</ShootingAccuracyPawn>
+            <ShootingAccuracyPawn>8</ShootingAccuracyPawn>
         </statOffsets>
         <statFactors>
             <RangedWeapon_Cooldown>0.75</RangedWeapon_Cooldown>
-            <AccuracyLong>1.25</AccuracyLong>
-            <AccuracyMedium>1.15</AccuracyMedium>
-            <AccuracyShort>1.1</AccuracyShort>
             <MeleeHitChance>0.6</MeleeHitChance>
             <MeleeDodgeChance>0.6</MeleeDodgeChance>
             <PawnTrapSpringChance>2</PawnTrapSpringChance>
@@ -86,10 +81,6 @@
         </statOffsets>
         <statFactors>
             <RangedWeapon_Cooldown>0.6</RangedWeapon_Cooldown>
-            <AccuracyLong>1.25</AccuracyLong>
-            <AccuracyMedium>1.25</AccuracyMedium>
-            <AccuracyShort>1.5</AccuracyShort>
-            <AccuracyTouch>2</AccuracyTouch>
             <PawnTrapSpringChance>0</PawnTrapSpringChance>
         </statFactors>
         <complexityCost>3</complexityCost>
@@ -121,19 +112,15 @@
         </exclusionTags>
         <hungerRateFactor>0.75</hungerRateFactor>
         <statOffsets>
-            <ShootingAccuracyPawn>-10</ShootingAccuracyPawn>
-            <MeleeHitChance>-10</MeleeHitChance>
+            <ShootingAccuracyPawn>-20</ShootingAccuracyPawn>
+            <MeleeHitChance>-20</MeleeHitChance>
             <MeleeDodgeChance>-10</MeleeDodgeChance>
             <MHC_ChargingSpeed>0.5</MHC_ChargingSpeed>
             <MHC_MaintenanceRetention>1</MHC_MaintenanceRetention>
             <WorkSpeedGlobal>0.1</WorkSpeedGlobal>
         </statOffsets>
         <statFactors>
-            <RangedWeapon_Cooldown>5</RangedWeapon_Cooldown>
-            <AccuracyLong>0.1</AccuracyLong>
-            <AccuracyMedium>0.1</AccuracyMedium>
-            <AccuracyShort>0.1</AccuracyShort>
-            <AccuracyTouch>0.1</AccuracyTouch>
+            <RangedWeapon_Cooldown>3</RangedWeapon_Cooldown>
             <PawnTrapSpringChance>10</PawnTrapSpringChance>
         </statFactors>
         <complexityCost>1</complexityCost>

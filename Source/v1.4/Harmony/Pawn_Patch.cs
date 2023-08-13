@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Verse;
 using System.Collections.Generic;
+using System;
 
 namespace MechHumanlikes
 {
@@ -37,6 +38,29 @@ namespace MechHumanlikes
                         }
                     }
                     __result = ___cachedDisabledWorkTypes;
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        // Programmable drones have their disabled work tags identified through their programming comp, and by no other mechanic or feature.
+        [HarmonyPatch(typeof(Pawn), "get_CombinedDisabledWorkTags")]
+        public class get_CombinedDisabledWorkTags_Patch
+        {
+            [HarmonyPrefix]
+            public static bool Prefix(Pawn __instance, ref List<WorkTypeDef> ___cachedDisabledWorkTypes, ref WorkTags __result)
+            {
+                if (MDR_Utils.IsProgrammableDrone(__instance))
+                {
+                    WorkTags enabledTags = WorkTags.None;
+                    List<WorkTypeDef> enabledWorkTypes = __instance.GetComp<CompReprogrammableDrone>().enabledWorkTypes;
+                    for (int i = enabledWorkTypes.Count - 1; i >= 0; i--)
+                    {
+                        enabledTags |= enabledWorkTypes[i].workTags;
+                    }
+
+                    __result = ~enabledTags;
                     return false;
                 }
                 return true;

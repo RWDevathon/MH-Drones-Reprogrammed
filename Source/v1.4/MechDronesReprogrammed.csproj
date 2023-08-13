@@ -200,6 +200,7 @@
     <Compile Include="Harmony\InteractionUtility_Patch.cs" />
     <Compile Include="Harmony\Pawn_Patch.cs" />
     <Compile Include="Hediffs\Hediff_Complexity.cs" />
+    <Compile Include="ITabs\ITab_Programming.cs" />
     <Compile Include="MechDronesReprogrammed.cs" />
     <Compile Include="DefOfs\MDR_JobDefOf.cs" />
     <Compile Include="DefOfs\MDR_StatDefOf.cs" />

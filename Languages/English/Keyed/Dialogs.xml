@@ -10,6 +10,7 @@
     <MDR_RemoveSkillLevel>-</MDR_RemoveSkillLevel>
     <MDR_SelectedWorkTypes>Enabled work types</MDR_SelectedWorkTypes>
     <MDR_Complexity>Complexity</MDR_Complexity>
+    <MDR_ComplexityDesc>How complex this drone's programming is.</MDR_ComplexityDesc>
     <MDR_ComplexityDirectiveDesc>How much complexity this directive adds to the overall total.</MDR_ComplexityDirectiveDesc>
     <MDR_ComplexityEffects>Complexity effects</MDR_ComplexityEffects>
     <MDR_ComplexityEffectsDesc>The current effect the complexity will have on the pawn.</MDR_ComplexityEffectsDesc>

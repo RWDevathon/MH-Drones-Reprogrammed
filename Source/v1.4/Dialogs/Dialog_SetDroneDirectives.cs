@@ -14,11 +14,7 @@ namespace MechHumanlikes
 
         private CompReprogrammableDrone programComp;
 
-        private int complexity;
-
         private int directiveComplexity;
-
-        private int maxComplexity;
 
         private int maxDirectives;
 
@@ -48,6 +44,10 @@ namespace MechHumanlikes
 
         private static readonly Vector2 ButSize = new Vector2(150f, 38f);
 
+        private const float directiveBlockWidth = 130f;
+
+        private const float directiveBlockHeight = 80f;
+
         public override Vector2 InitialSize => new Vector2(Mathf.Min(UI.screenWidth, 1036), UI.screenHeight - 4);
 
         protected override float Margin => 6f;
@@ -70,9 +70,7 @@ namespace MechHumanlikes
             this.pawn = pawn;
             programComp = pawn.GetComp<CompReprogrammableDrone>();
             int activeDirectiveComplexity = programComp.GetComplexityFromSource("Active Directives");
-            complexity = programComp.Complexity - activeDirectiveComplexity;
             directiveComplexity = activeDirectiveComplexity;
-            maxComplexity = programComp.MaxComplexity;
             MDR_ProgrammableDroneExtension programmableDroneExtension = pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>();
             maxDirectives = programmableDroneExtension?.maxDirectives ?? 3;
             inherentDirectiveCount = programmableDroneExtension?.inherentDirectives?.Count ?? 0;
@@ -104,16 +102,16 @@ namespace MechHumanlikes
         {
             hoveringOverDirective = false;
             GUI.BeginGroup(rect);
-            float heightOffset = 0f;
-            DrawSection(new Rect(rect.x, rect.y, rect.width, selectedHeight), selectedDirectives, "MDR_SelectedDirectives".Translate(), ref heightOffset, ref selectedHeight, adding: false, rect, ref selectedCollapsed);
+            float yIndex = 0f;
+            DrawSection(new Rect(rect.x, rect.y, rect.width, selectedHeight), selectedDirectives, "MDR_SelectedDirectives".Translate(), ref yIndex, ref selectedHeight, adding: false, rect, ref selectedCollapsed);
             if (!selectedCollapsed.Value)
             {
-                heightOffset += 10f;
+                yIndex += 10f;
             }
-            float selectedDirectiveHeight = heightOffset;
-            Widgets.Label(0f, ref heightOffset, rect.width, "MDR_Directives".Translate());
-            heightOffset += 10f;
-            float height = heightOffset - selectedDirectiveHeight - Margin;
+            float selectedDirectiveHeight = yIndex;
+            Widgets.Label(0f, ref yIndex, rect.width, "MDR_Directives".Translate());
+            yIndex += 10f;
+            float height = yIndex - selectedDirectiveHeight - Margin;
             if (Widgets.ButtonText(new Rect(rect.width - 150f - (2 * Margin), selectedDirectiveHeight, 150f, height), "CollapseAllCategories".Translate()))
             {
                 SoundDefOf.TabClose.PlayOneShotOnCamera();
@@ -130,17 +128,17 @@ namespace MechHumanlikes
                     collapsedCategories[allDef] = false;
                 }
             }
-            float nonSelectorHeight = heightOffset;
-            Rect directiveSelectorSection = new Rect(0f, heightOffset, rect.width - 16f, scrollHeight);
-            Widgets.BeginScrollView(new Rect(0f, heightOffset, rect.width, rect.height - heightOffset), ref scrollPosition, directiveSelectorSection);
+            float nonSelectorHeight = yIndex;
+            Rect directiveSelectorSection = new Rect(0f, yIndex, rect.width - 16f, scrollHeight);
+            Widgets.BeginScrollView(new Rect(0f, yIndex, rect.width, rect.height - yIndex), ref scrollPosition, directiveSelectorSection);
             Rect containingRect = directiveSelectorSection;
-            containingRect.y = heightOffset + scrollPosition.y;
+            containingRect.y = yIndex + scrollPosition.y;
             containingRect.height = rect.height;
             bool? collapsed = null;
-            DrawSection(rect, MDR_Utils.cachedSortedDirectives, null, ref heightOffset, ref unselectedHeight, adding: true, containingRect, ref collapsed);
+            DrawSection(rect, MDR_Utils.cachedSortedDirectives, null, ref yIndex, ref unselectedHeight, adding: true, containingRect, ref collapsed);
             if (Event.current.type == EventType.Layout)
             {
-                scrollHeight = heightOffset - nonSelectorHeight;
+                scrollHeight = yIndex - nonSelectorHeight;
             }
             Widgets.EndScrollView();
             GUI.EndGroup();
@@ -150,12 +148,12 @@ namespace MechHumanlikes
             }
         }
 
-        private void DrawSection(Rect rect, List<DirectiveDef> directives, string label, ref float yOffset, ref float sectionHeight, bool adding, Rect containingRect, ref bool? collapsed)
+        private void DrawSection(Rect rect, List<DirectiveDef> directives, string label, ref float yIndex, ref float sectionHeight, bool adding, Rect containingRect, ref bool? collapsed)
         {
             float xIndex = Margin;
             if (!label.NullOrEmpty())
             {
-                Rect headerSection = new Rect(0f, yOffset, rect.width, Text.LineHeight);
+                Rect headerSection = new Rect(0f, yIndex, rect.width, Text.LineHeight);
                 headerSection.xMax -= (adding ? 16f : (Text.CalcSize("ClickToAddOrRemove".Translate()).x + Margin));
                 if (collapsed.HasValue)
                 {
@@ -184,11 +182,11 @@ namespace MechHumanlikes
                 {
                     Text.Anchor = TextAnchor.UpperRight;
                     GUI.color = ColoredText.SubtleGrayColor;
-                    Widgets.Label(new Rect(headerSection.xMax - (3 * Margin), yOffset, rect.width - headerSection.width, Text.LineHeight), "ClickToAddOrRemove".Translate());
+                    Widgets.Label(new Rect(headerSection.xMax - (3 * Margin), yIndex, rect.width - headerSection.width, Text.LineHeight), "ClickToAddOrRemove".Translate());
                     GUI.color = Color.white;
                     Text.Anchor = TextAnchor.UpperLeft;
                 }
-                yOffset += Text.LineHeight + 3f;
+                yIndex += Text.LineHeight + 3f;
             }
             if (collapsed == true)
             {
@@ -198,18 +196,17 @@ namespace MechHumanlikes
                 }
                 return;
             }
-            float headerSectionHeight = yOffset;
+            float headerSectionHeight = yIndex;
             bool reachedCategoryEnd = false;
-            float directiveBlockWidth = 130f;
             float contentSectionWidth = rect.width - 16f;
             float directiveBlockWithMarginWidth = directiveBlockWidth + Margin;
             float contentNullspaceWidth = (contentSectionWidth - directiveBlockWithMarginWidth * Mathf.Floor(contentSectionWidth / directiveBlockWithMarginWidth)) / 2f;
-            Rect contentBGSection = new Rect(0f, yOffset, rect.width, sectionHeight);
+            Rect contentBGSection = new Rect(0f, yIndex, rect.width, sectionHeight);
             if (!adding)
             {
                 Widgets.DrawRectFast(contentBGSection, Widgets.MenuSectionBGFillColor);
             }
-            yOffset += Margin;
+            yIndex += Margin;
             if (!directives.Any())
             {
                 Text.Anchor = TextAnchor.MiddleCenter;
@@ -232,7 +229,7 @@ namespace MechHumanlikes
                     if (xIndex + directiveBlockWidth > contentSectionWidth)
                     {
                         xIndex = Margin;
-                        yOffset += 80f;
+                        yIndex += directiveBlockHeight;
                         reachedWidthLimit = true;
                     }
                     bool categoryCollapsed = collapsedCategories[directiveDef.directiveCategory];
@@ -241,10 +238,10 @@ namespace MechHumanlikes
                         if (!reachedWidthLimit && reachedCategoryEnd)
                         {
                             xIndex = Margin;
-                            yOffset += 80f;
+                            yIndex += directiveBlockHeight;
                         }
                         directiveCategory = directiveDef.directiveCategory;
-                        Rect categoryHeaderSection = new Rect(xIndex, yOffset, rect.width - 8f, Text.LineHeight);
+                        Rect categoryHeaderSection = new Rect(xIndex, yIndex, rect.width - 8f, Text.LineHeight);
                         Rect categoryCollapseIconSection = new Rect(categoryHeaderSection.x, categoryHeaderSection.y + (categoryHeaderSection.height - 18f) / 2f, 18f, 18f);
                         GUI.DrawTexture(categoryCollapseIconSection, categoryCollapsed ? TexButton.Reveal : TexButton.Collapse);
                         if (Widgets.ButtonInvisible(categoryHeaderSection))
@@ -269,13 +266,13 @@ namespace MechHumanlikes
                         }
                         categoryHeaderSection.xMin += categoryCollapseIconSection.width;
                         Widgets.Label(categoryHeaderSection, directiveCategory);
-                        yOffset += categoryHeaderSection.height;
+                        yIndex += categoryHeaderSection.height;
                         if (!categoryCollapsed)
                         {
                             GUI.color = Color.grey;
-                            Widgets.DrawLineHorizontal(xIndex, yOffset, rect.width - Margin);
+                            Widgets.DrawLineHorizontal(xIndex, yIndex, rect.width - Margin);
                             GUI.color = Color.white;
-                            yOffset += Margin;
+                            yIndex += Margin;
                         }
                     }
                     if (adding && categoryCollapsed)
@@ -283,13 +280,13 @@ namespace MechHumanlikes
                         reachedCategoryEnd = false;
                         if (Event.current.type == EventType.Layout)
                         {
-                            sectionHeight = yOffset - headerSectionHeight;
+                            sectionHeight = yIndex - headerSectionHeight;
                         }
                         continue;
                     }
                     xIndex = Mathf.Max(xIndex, contentNullspaceWidth);
                     reachedCategoryEnd = true;
-                    if (DrawDirective(directiveDef, !adding, ref xIndex, yOffset, directiveBlockWidth, containingRect) && directiveDef.ValidFor(pawn) && CompatibleWithSelections(directiveDef))
+                    if (DrawDirective(directiveDef, !adding, ref xIndex, yIndex, directiveBlockWidth, containingRect) && directiveDef.ValidFor(pawn) && CompatibleWithSelections(directiveDef))
                     {
                         if (selectedDirectives.Contains(directiveDef))
                         {
@@ -307,18 +304,18 @@ namespace MechHumanlikes
             }
             if (!adding || reachedCategoryEnd)
             {
-                yOffset += 80f;
+                yIndex += directiveBlockHeight;
             }
             if (Event.current.type == EventType.Layout)
             {
-                sectionHeight = yOffset - headerSectionHeight;
+                sectionHeight = yIndex - headerSectionHeight;
             }
         }
 
         private bool DrawDirective(DirectiveDef directiveDef, bool listAllSection, ref float xIndex, float yIndex, float blockWidth, Rect containingRect)
         {
             bool result = false;
-            Rect blockSection = new Rect(xIndex, yIndex, blockWidth, 76f);
+            Rect blockSection = new Rect(xIndex, yIndex, blockWidth, 74f);
             if (!containingRect.Overlaps(blockSection))
             {
                 xIndex = blockSection.xMax + Margin;
