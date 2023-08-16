@@ -355,7 +355,7 @@ namespace MechHumanlikes
             {
                 TooltipHandler.TipRegion(directiveSection, delegate
                 {
-                    string text = directiveDef.LabelCap.Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + directiveDef.description;
+                    string text = directiveDef.LabelCap.Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + directiveDef.description + "\n" + directiveDef.CustomDescription;
                     if (DirectiveTip(directiveDef) != null)
                     {
                         string tooltip = DirectiveTip(directiveDef);

@@ -194,6 +194,7 @@
     <Compile Include="Harmony\InteractionUtility_Patch_Patch.cs" />
     <Compile Include="Harmony\MHC_Utils_Patch.cs" />
     <Compile Include="Harmony\PawnGroupMakerUtility_Patch.cs" />
+    <Compile Include="Harmony\CharacterCardUtility_Patch.cs" />
     <Compile Include="Harmony\RaceProperties_Patch.cs" />
     <Compile Include="Harmony\Need_Food_Patch.cs" />
     <Compile Include="Harmony\StatWorker_Patch.cs" />

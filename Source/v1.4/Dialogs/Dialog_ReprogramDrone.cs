@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -121,14 +123,15 @@ namespace MechHumanlikes
             listingStandard.Label("MDR_SelectedWorkTypes".Translate());
             foreach (WorkTypeDef workTypeDef in legalWorkTypes)
             {
-                if (listingStandard.RadioButton(workTypeDef.labelShort.CapitalizeFirst(), proposedEnabledWorkTypes.Contains(workTypeDef), OptionTabIn, workTypeDef.description))
+                bool active = proposedEnabledWorkTypes.Contains(workTypeDef);
+                if (listingStandard.RadioButton(workTypeDef.labelShort.CapitalizeFirst(), active, OptionTabIn, WorkTypeComplexityTooltip(workTypeDef, !active)))
                 {
                     if (programExtension.inherentWorkTypes.NotNullAndContains(workTypeDef))
                     {
                         continue;
                     }
 
-                    if (proposedEnabledWorkTypes.Contains(workTypeDef))
+                    if (active)
                     {
                         programComp.enabledWorkTypes.Remove(workTypeDef);
                         proposedWorkTypeComplexity -= workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ComplexityCostFor(pawn, false) ?? 1;
@@ -188,7 +191,7 @@ namespace MechHumanlikes
                 {
                     continue;
                 }
-                listingStandard.Label(skillDef.LabelCap + ": " + skill.Level.ToString(), tooltip: skillDef.description);
+                listingStandard.Label(skillDef.LabelCap + ": " + skill.Level.ToString(), tooltip: skillDef.description + "\n\n" + SkillComplexityTooltip(skill, true) + "\n" + SkillComplexityTooltip(skill, false));
                 Listing_Standard subsection = listingStandard.BeginHiddenSection(out float subsectionHeight);
                 subsection.ColumnWidth = (rect.width - Margin) / 2;
                 if (subsection.ButtonText("MDR_AddSkillLevel".Translate()) && MDR_Utils.SkillComplexityThresholdFor(pawn, skillDef) is int addThreshold && skill.Level < Mathf.Min(addThreshold + 4, SkillRecord.MaxLevel))
@@ -204,6 +207,7 @@ namespace MechHumanlikes
                     }
                     programComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(proposedSkillComplexity)));
                 }
+
                 subsection.NewHiddenColumn(ref subsectionHeight);
                 if (subsection.ButtonText("MDR_RemoveSkillLevel".Translate()))
                 {
@@ -307,7 +311,7 @@ namespace MechHumanlikes
                     {
                         TooltipHandler.TipRegion(directiveSection, delegate
                         {
-                            return directiveDef.LabelCap.Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + directiveDef.description;
+                            return directiveDef.LabelCap.Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + directiveDef.description + "\n" + directiveDef.CustomDescription;
                         }, 209283172);
                     }
                     xIndex = blockSection.xMax + Margin;
@@ -377,6 +381,110 @@ namespace MechHumanlikes
                 return "MDR_ComplexityEffectNeutral".Translate();
             }
             return "MDR_ComplexityEffectNegative".Translate();
+        }
+
+        private string WorkTypeComplexityTooltip(WorkTypeDef workTypeDef, bool adding)
+        {
+            // Inherent work types can not be removed, inform the player of this.
+            if (programExtension.inherentWorkTypes.NotNullAndContains(workTypeDef))
+            {
+                return "MDR_CantRemoveInherentWorkTypes".Translate(workTypeDef.labelShort.CapitalizeFirst(), pawn.LabelShortCap);
+            }
+
+            MDR_WorkTypeExtension workTypeExtension = workTypeDef.GetModExtension<MDR_WorkTypeExtension>();
+            StringBuilder stringBuilder = new StringBuilder();
+            if (adding)
+            {
+                stringBuilder.AppendLine("MDR_WorkTypeComplexityHeaderTooltip".Translate("MDR_Adding".Translate().CapitalizeFirst(), "MDR_Cost".Translate(), workTypeExtension.ComplexityCostFor(pawn, adding).ToString()));
+            }
+            else
+            {
+                stringBuilder.AppendLine("MDR_WorkTypeComplexityHeaderTooltip".Translate("MDR_Removing".Translate().CapitalizeFirst(), "MDR_Refund".Translate(), workTypeExtension.ComplexityCostFor(pawn, adding).ToString()));
+            }
+            stringBuilder.AppendLine();
+            stringBuilder.AppendLine("MDR_WorkTypeComplexityBaseTooltip".Translate(workTypeDef.labelShort.CapitalizeFirst(), workTypeExtension.baseComplexity.ToStringWithSign()));
+
+            int skillTypeComplexity = 0;
+            if (adding)
+            {
+                // The additional cost is only applied to skills that are currently disabled.
+                // It does not apply if another work type enabled it already.
+                foreach (SkillDef skillDef in workTypeDef.relevantSkills)
+                {
+                    if (pawn.skills.GetSkill(skillDef).TotallyDisabled)
+                    {
+                        skillTypeComplexity += 1;
+                    }
+                }
+            }
+            else
+            {
+                // In order to properly calculate the complexity cost reduction, the worker must take into account other enabled work types.
+                // It will only refund the additional complexity for skills that have 0 other work types enabling them.
+                List<WorkTypeDef> otherEnabledWorkTypes = new List<WorkTypeDef>();
+                foreach (WorkTypeDef enabledWorkTypeDef in pawn.GetComp<CompReprogrammableDrone>().enabledWorkTypes)
+                {
+                    if (enabledWorkTypeDef != workTypeDef)
+                    {
+                        otherEnabledWorkTypes.Add(enabledWorkTypeDef);
+                    }
+                }
+
+                // Refund all skills that would be disabled if the parent work type were removed. Account for skills that are never disabled and other work types.
+                foreach (SkillDef skillDef in workTypeDef.relevantSkills)
+                {
+                    if (!skillDef.neverDisabledBasedOnWorkTypes && !otherEnabledWorkTypes.Any(workType => workType.relevantSkills.NotNullAndContains(skillDef)))
+                    {
+                        skillTypeComplexity += 1;
+                    }
+                }
+            }
+            
+            if (skillTypeComplexity != 0)
+            {
+                stringBuilder.AppendLine("MDR_WorkTypeComplexitySkillsTooltip".Translate(workTypeDef.labelShort.CapitalizeFirst(), skillTypeComplexity));
+                if (!adding)
+                {
+                    stringBuilder.AppendLine("MDR_WorkTypeComplexitySkillsUnusedTooltip".Translate());
+                }
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        private string SkillComplexityTooltip(SkillRecord skill, bool adding)
+        {
+            int skillThreshold = MDR_Utils.SkillComplexityThresholdFor(pawn, skill.def);
+            float cost = (skill.Level > skillThreshold) ? 1 : 0.5f;
+
+            if (adding && skill.Level > Mathf.Min(skillThreshold + 4, SkillRecord.MaxLevel))
+            {
+                return "MDR_CantExceedSkillMax".Translate(pawn.LabelShortCap, Mathf.Min(skillThreshold + 4, SkillRecord.MaxLevel));
+            }
+            else if (!adding && skill.Level <= inherentSkills?.GetWithFallback(skill.def, -1))
+            {
+                return "MDR_HasInherentSkills".Translate(pawn.LabelShortCap, skill.def.label, inherentSkills[skill.def]);
+            }
+            else if (!adding && skill.Level <= SkillRecord.MinLevel)
+            {
+                return "MDR_CantExceedSkillMin".Translate(pawn.LabelShortCap);
+            }
+
+            StringBuilder stringBuilder = new StringBuilder();
+            if (adding)
+            {
+                stringBuilder.AppendLine("MDR_SkillComplexityTooltip".Translate("MDR_Adding".Translate().CapitalizeFirst(), "MDR_Cost".Translate(), cost.ToString(), pawn.LabelShortCap, skillThreshold.ToString()));
+            }
+            else
+            {
+                stringBuilder.AppendLine("MDR_SkillComplexityTooltip".Translate("MDR_Removing".Translate().CapitalizeFirst(), "MDR_Refund".Translate(), cost.ToString(), pawn.LabelShortCap, skillThreshold.ToString()));
+            }
+
+            if (cost > 0.5f)
+            {
+                stringBuilder.AppendLine("MDR_SkillComplexityThresholdTooltip".Translate(pawn.LabelShortCap, skillThreshold));
+            }
+            return stringBuilder.ToString();
         }
 
         private void CacheLegalWorkTypes()

@@ -6,6 +6,8 @@ namespace MechHumanlikes
     {
         public DirectiveDef def;
 
+        public string requirementDescription;
+
         // Method for establishing whether a particular pawn may have this directive.
         public virtual AcceptanceReport ValidFor(Pawn pawn)
         {

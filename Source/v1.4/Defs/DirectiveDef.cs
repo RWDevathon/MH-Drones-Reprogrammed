@@ -1,6 +1,8 @@
-﻿using RimWorld;
+﻿using HarmonyLib;
+using RimWorld;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using Verse;
 
@@ -15,6 +17,9 @@ namespace MechHumanlikes
 
         [Unsaved(false)]
         private Texture2D cachedIcon;
+
+        [Unsaved(false)]
+        private string cachedCustomDescription;
 
         public List<AbilityDef> abilities;
 
@@ -33,6 +38,8 @@ namespace MechHumanlikes
         public int complexityCost = 1;
 
         public TickerType tickerType;
+
+        public string customEffectsDescription;
 
         public List<DirectiveRequirementWorker> requirementWorkers = new List<DirectiveRequirementWorker>();
 
@@ -59,6 +66,58 @@ namespace MechHumanlikes
                     }
                 }
                 return cachedIcon;
+            }
+        }
+
+        public string CustomDescription
+        {
+            get
+            {
+                if (cachedCustomDescription == null)
+                {
+                    StringBuilder customDescription = new StringBuilder();
+                    if (customEffectsDescription != null)
+                    {
+                        customDescription.AppendLine(customEffectsDescription);
+                    }
+                    if (!abilities.NullOrEmpty())
+                    {
+                        string abilityLabels = abilities.Join();
+                        customDescription.AppendLine("MDR_DirectiveDefAbilities".Translate(abilityLabels));
+                    }
+                    if (associatedHediff != null)
+                    {
+                        customDescription.AppendLine("MDR_DirectiveDefHediff".Translate(associatedHediff.label));
+                    }
+
+                    customDescription.AppendLine();
+                    if (statOffsets != null || statFactors != null || hungerRateFactor != 1f)
+                    {
+                        customDescription.AppendLine("MDR_DirectiveDefStatsHeader".Translate());
+                        if (statOffsets != null)
+                        {
+                            customDescription.AppendLine("MDR_DirectiveDefStatOffsetHeader".Translate());
+                            foreach (StatModifier statOffset in statOffsets)
+                            {
+                                customDescription.AppendLine("MDR_DirectiveDefStatIndent".Translate(statOffset.stat.LabelForFullStatListCap, statOffset.ValueToStringAsOffset));
+                            }
+                        }
+                        if (statFactors != null)
+                        {
+                            customDescription.AppendLine("MDR_DirectiveDefStatFactorHeader".Translate());
+                            foreach (StatModifier statFactor in statFactors)
+                            {
+                                customDescription.AppendLine("MDR_DirectiveDefStatIndent".Translate(statFactor.stat.LabelForFullStatListCap, statFactor.ToStringAsFactor));
+                            }
+                        }
+                        if (hungerRateFactor != 1f)
+                        {
+                            customDescription.AppendLine("MDR_DirectiveDefEnergyConsumptionFactor".Translate(hungerRateFactor.ToStringPercent()));
+                        }
+                    }
+                    cachedCustomDescription = customDescription.ToString();
+                }
+                return cachedCustomDescription;
             }
         }
 

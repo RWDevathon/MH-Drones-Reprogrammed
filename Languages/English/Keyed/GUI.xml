@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-    <MDR_HasInherentSkills>{0} has {2} inherent skill points in the {1} type and can not be programmed with lower skill. It does not affect complexity.</MDR_HasInherentSkills>
+    <MDR_IncapableOfTooltipProgramming>Caused by programming</MDR_IncapableOfTooltipProgramming>
+    <MDR_DirectiveDefAbilities>This directive gives the following abilities: {0}</MDR_DirectiveDefAbilities>
+    <MDR_DirectiveDefHediff>This directive is associated with the {0} hediff</MDR_DirectiveDefHediff>
+    <MDR_DirectiveDefStatsHeader>When active, these effects apply:</MDR_DirectiveDefStatsHeader>
+    <MDR_DirectiveDefStatOffsetHeader>Stat offsets:</MDR_DirectiveDefStatOffsetHeader>
+    <MDR_DirectiveDefStatFactorHeader>Stat factors:</MDR_DirectiveDefStatFactorHeader>
+    <MDR_DirectiveDefStatIndent>- {0}: {1}</MDR_DirectiveDefStatIndent>
+    <MDR_DirectiveDefEnergyConsumptionFactor>Energy Consumption: {0}</MDR_DirectiveDefEnergyConsumptionFactor>
     <MDR_StatsReport_Directives>Directives</MDR_StatsReport_Directives>
 
 </LanguageData>

@@ -22,4 +22,20 @@
     <MDR_BaselineComplexityDesc>How much complexity this unit is able to handle without exceeding standard operating limits or without complexity offsetting.</MDR_BaselineComplexityDesc>
     <MDR_ReprogramDrone>Reprogram {0}.</MDR_ReprogramDrone>
 
+    <!-- Tooltips for the reprogramming dialogs -->
+    <MDR_CantRemoveInherentWorkTypes>{0} can't be removed as it is an inherent work type of {1}. Inherent work types have no complexity cost.</MDR_CantRemoveInherentWorkTypes>
+    <MDR_CantExceedSkillMax>{0} is unable to possess a skill higher than {1}, limited by baseline complexity and inherent skills.</MDR_CantExceedSkillMax>
+    <MDR_CantExceedSkillMin>{0} is unable to possess less than the minimum skill level. Skills can only be disabled by disabling all corresponding work types (some of which may be inherent and cost no complexity).</MDR_CantExceedSkillMin>
+    <MDR_HasInherentSkills>{0} has {2} inherent skill points for {1} and can not be programmed with lower skill. Inherent skills have no complexity cost.</MDR_HasInherentSkills>
+    <MDR_WorkTypeComplexityHeaderTooltip>{0} this work type will {1} {2} complexity because:</MDR_WorkTypeComplexityHeaderTooltip>
+    <MDR_SkillComplexityTooltip>{0} this skill will {1} {2} complexity.</MDR_SkillComplexityTooltip>
+    <MDR_SkillComplexityThresholdTooltip>{0} can have up to {1} points allocated before complexity costs double.</MDR_SkillComplexityThresholdTooltip>
+    <MDR_Adding>adding</MDR_Adding> <!-- Adding/Removing used in {0} slot -->
+    <MDR_Removing>removing</MDR_Removing>
+    <MDR_Cost>cost</MDR_Cost> <!-- Cost/Refund used in {1} slot -->
+    <MDR_Refund>refund</MDR_Refund>
+    <MDR_WorkTypeComplexityBaseTooltip>{0} has a base complexity of {1}</MDR_WorkTypeComplexityBaseTooltip>
+    <MDR_WorkTypeComplexitySkillsTooltip>{0} enables skills for a complexity of {1}</MDR_WorkTypeComplexitySkillsTooltip>
+    <MDR_WorkTypeComplexitySkillsUnusedTooltip>- Removing a work type refunds all points in skills that would be disabled.</MDR_WorkTypeComplexitySkillsUnusedTooltip>
+
 </LanguageData>

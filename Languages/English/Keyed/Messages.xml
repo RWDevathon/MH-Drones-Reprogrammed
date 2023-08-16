@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-    <MDR_InvalidFor>{0} is invalid on {1} because: {2}</MDR_InvalidFor>
+    <MDR_InvalidFor>{0} is invalid on {1} because {2}</MDR_InvalidFor>
     <MDR_MaxDirectivesExceeded>There are {0} non-inherent directives selected but {1} may only have {2}</MDR_MaxDirectivesExceeded>
     <MDR_CantRemoveInherentDirectives>{0} can't be removed as it is an inherent directive of {1}</MDR_CantRemoveInherentDirectives>
 
