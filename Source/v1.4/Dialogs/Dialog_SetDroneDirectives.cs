@@ -44,13 +44,15 @@ namespace MechHumanlikes
 
         private static readonly Vector2 ButSize = new Vector2(150f, 38f);
 
-        private const float directiveBlockWidth = 130f;
+        private const float directiveBlockWidth = 120f;
 
         private const float directiveBlockHeight = 80f;
 
+        private const float directiveIconSize = 68f;
+
         public override Vector2 InitialSize => new Vector2(Mathf.Min(UI.screenWidth, 1036), UI.screenHeight - 4);
 
-        protected override float Margin => 6f;
+        protected override float Margin => 12f;
 
         protected List<DirectiveDef> SelectedDirectives => selectedDirectives;
 
@@ -89,12 +91,13 @@ namespace MechHumanlikes
             Text.Font = GameFont.Medium;
             Widgets.Label(header, Header);
             Text.Font = GameFont.Small;
-            fullWindow.yMin += 39f;
-            Rect directiveWindow = new Rect(fullWindow.x + Margin, fullWindow.y, fullWindow.width - Margin * 2f, fullWindow.height - Margin);
+            fullWindow.yMin += Text.CalcSize(Header).y + Margin;
+            Rect directiveWindow = new Rect(fullWindow.x + (Margin / 2), fullWindow.y, fullWindow.width - Margin, fullWindow.height - Margin);
             DrawDirectives(directiveWindow);
-            Rect footerButtons = rect;
-            footerButtons.yMin = footerButtons.yMax - ButSize.y;
-            DoBottomButtons(footerButtons);
+            if (Widgets.ButtonText(new Rect(rect.xMax - ButSize.x, rect.yMax - ButSize.y, ButSize.x, ButSize.y), AcceptButtonLabel) && CanAccept())
+            {
+                Accept();
+            }
         }
 
         // UI Section containing all possible directives
@@ -102,17 +105,18 @@ namespace MechHumanlikes
         {
             hoveringOverDirective = false;
             GUI.BeginGroup(rect);
+            float xIndex = 0f;
             float yIndex = 0f;
-            DrawSection(new Rect(rect.x, rect.y, rect.width, selectedHeight), selectedDirectives, "MDR_SelectedDirectives".Translate(), ref yIndex, ref selectedHeight, adding: false, rect, ref selectedCollapsed);
+            DrawSection(new Rect(xIndex, rect.y, rect.width, selectedHeight), selectedDirectives, "MDR_SelectedDirectives".Translate(), ref yIndex, ref selectedHeight, adding: false, rect, ref selectedCollapsed);
             if (!selectedCollapsed.Value)
             {
                 yIndex += 10f;
             }
             float selectedDirectiveHeight = yIndex;
-            Widgets.Label(0f, ref yIndex, rect.width, "MDR_Directives".Translate());
+            Widgets.Label(xIndex, ref yIndex, rect.width, "MDR_Directives".Translate());
             yIndex += 10f;
             float height = yIndex - selectedDirectiveHeight - Margin;
-            if (Widgets.ButtonText(new Rect(rect.width - 150f - (2 * Margin), selectedDirectiveHeight, 150f, height), "CollapseAllCategories".Translate()))
+            if (Widgets.ButtonText(new Rect(rect.width - 150f, selectedDirectiveHeight, 150f, height), "CollapseAllCategories".Translate()))
             {
                 SoundDefOf.TabClose.PlayOneShotOnCamera();
                 foreach (string allDef in MDR_Utils.directiveCategories)
@@ -120,7 +124,7 @@ namespace MechHumanlikes
                     collapsedCategories[allDef] = true;
                 }
             }
-            if (Widgets.ButtonText(new Rect(rect.width - 300f - Margin - (2 * Margin), selectedDirectiveHeight, 150f, height), "ExpandAllCategories".Translate()))
+            if (Widgets.ButtonText(new Rect(rect.width - 300f - Margin, selectedDirectiveHeight, 150f, height), "ExpandAllCategories".Translate()))
             {
                 SoundDefOf.TabOpen.PlayOneShotOnCamera();
                 foreach (string allDef in MDR_Utils.directiveCategories)
@@ -128,17 +132,14 @@ namespace MechHumanlikes
                     collapsedCategories[allDef] = false;
                 }
             }
-            float nonSelectorHeight = yIndex;
-            Rect directiveSelectorSection = new Rect(0f, yIndex, rect.width - 16f, scrollHeight);
-            Widgets.BeginScrollView(new Rect(0f, yIndex, rect.width, rect.height - yIndex), ref scrollPosition, directiveSelectorSection);
-            Rect containingRect = directiveSelectorSection;
-            containingRect.y = yIndex + scrollPosition.y;
-            containingRect.height = rect.height;
+            float selectorIndex = yIndex;
+            Rect directiveSelectorSection = new Rect(xIndex, yIndex, rect.width - 16f, scrollHeight);
+            Widgets.BeginScrollView(new Rect(xIndex, yIndex, rect.width, rect.height - yIndex), ref scrollPosition, directiveSelectorSection);
             bool? collapsed = null;
-            DrawSection(rect, MDR_Utils.cachedSortedDirectives, null, ref yIndex, ref unselectedHeight, adding: true, containingRect, ref collapsed);
+            DrawSection(new Rect(xIndex, rect.y, rect.width, unselectedHeight), MDR_Utils.cachedSortedDirectives, null, ref yIndex, ref unselectedHeight, adding: true, rect, ref collapsed);
             if (Event.current.type == EventType.Layout)
             {
-                scrollHeight = yIndex - nonSelectorHeight;
+                scrollHeight = yIndex - selectorIndex;
             }
             Widgets.EndScrollView();
             GUI.EndGroup();
@@ -150,7 +151,7 @@ namespace MechHumanlikes
 
         private void DrawSection(Rect rect, List<DirectiveDef> directives, string label, ref float yIndex, ref float sectionHeight, bool adding, Rect containingRect, ref bool? collapsed)
         {
-            float xIndex = Margin;
+            float xIndex = rect.x;
             if (!label.NullOrEmpty())
             {
                 Rect headerSection = new Rect(0f, yIndex, rect.width, Text.LineHeight);
@@ -182,7 +183,7 @@ namespace MechHumanlikes
                 {
                     Text.Anchor = TextAnchor.UpperRight;
                     GUI.color = ColoredText.SubtleGrayColor;
-                    Widgets.Label(new Rect(headerSection.xMax - (3 * Margin), yIndex, rect.width - headerSection.width, Text.LineHeight), "ClickToAddOrRemove".Translate());
+                    Widgets.Label(new Rect(headerSection.xMax - (2 * Margin), yIndex, rect.width - headerSection.width, Text.LineHeight), "ClickToAddOrRemove".Translate());
                     GUI.color = Color.white;
                     Text.Anchor = TextAnchor.UpperLeft;
                 }
@@ -198,9 +199,6 @@ namespace MechHumanlikes
             }
             float headerSectionHeight = yIndex;
             bool reachedCategoryEnd = false;
-            float contentSectionWidth = rect.width - 16f;
-            float directiveBlockWithMarginWidth = directiveBlockWidth + Margin;
-            float contentNullspaceWidth = (contentSectionWidth - directiveBlockWithMarginWidth * Mathf.Floor(contentSectionWidth / directiveBlockWithMarginWidth)) / 2f;
             Rect contentBGSection = new Rect(0f, yIndex, rect.width, sectionHeight);
             if (!adding)
             {
@@ -226,9 +224,9 @@ namespace MechHumanlikes
                         continue;
                     }
                     bool reachedWidthLimit = false;
-                    if (xIndex + directiveBlockWidth > contentSectionWidth)
+                    if (xIndex + directiveBlockWidth > rect.width)
                     {
-                        xIndex = Margin;
+                        xIndex = rect.x + (Margin / 2);
                         yIndex += directiveBlockHeight;
                         reachedWidthLimit = true;
                     }
@@ -237,7 +235,7 @@ namespace MechHumanlikes
                     {
                         if (!reachedWidthLimit && reachedCategoryEnd)
                         {
-                            xIndex = Margin;
+                            xIndex = rect.x + (Margin / 2);
                             yIndex += directiveBlockHeight;
                         }
                         directiveCategory = directiveDef.directiveCategory;
@@ -284,9 +282,9 @@ namespace MechHumanlikes
                         }
                         continue;
                     }
-                    xIndex = Mathf.Max(xIndex, contentNullspaceWidth);
+                    xIndex += Margin;
                     reachedCategoryEnd = true;
-                    if (DrawDirective(directiveDef, !adding, ref xIndex, yIndex, directiveBlockWidth, containingRect) && directiveDef.ValidFor(pawn) && CompatibleWithSelections(directiveDef))
+                    if (DrawDirective(directiveDef, !adding, ref xIndex, yIndex, containingRect) && directiveDef.ValidFor(pawn) && CompatibleWithSelections(directiveDef))
                     {
                         if (selectedDirectives.Contains(directiveDef))
                         {
@@ -312,10 +310,10 @@ namespace MechHumanlikes
             }
         }
 
-        private bool DrawDirective(DirectiveDef directiveDef, bool listAllSection, ref float xIndex, float yIndex, float blockWidth, Rect containingRect)
+        private bool DrawDirective(DirectiveDef directiveDef, bool listAllSection, ref float xIndex, float yIndex, Rect containingRect)
         {
             bool result = false;
-            Rect blockSection = new Rect(xIndex, yIndex, blockWidth, 74f);
+            Rect blockSection = new Rect(xIndex, yIndex, directiveBlockWidth, directiveBlockHeight);
             if (!containingRect.Overlaps(blockSection))
             {
                 xIndex = blockSection.xMax + Margin;
@@ -323,26 +321,31 @@ namespace MechHumanlikes
             }
             bool selected = !listAllSection && selectedDirectives.Contains(directiveDef);
             Widgets.DrawOptionBackground(blockSection, selected);
-            xIndex += Margin;
+
+            // Stat section
+            xIndex += Margin / 3;
             float textLineHeight = Text.LineHeightOf(GameFont.Small);
             Text.Anchor = TextAnchor.MiddleRight;
-            Widgets.LabelFit(new Rect(xIndex, yIndex + Margin, 38f - textLineHeight, textLineHeight), directiveDef.complexityCost.ToStringWithSign());
+            string directiveComplexity = directiveDef.complexityCost.ToStringWithSign();
+            float statTextWidth = Text.CalcSize(directiveComplexity).x;
+            Rect statSection = new Rect(xIndex, yIndex + (Margin / 3), statTextWidth, textLineHeight);
+            Widgets.LabelFit(statSection, directiveComplexity);
             Text.Anchor = TextAnchor.UpperLeft;
-            Rect statSection = new Rect(xIndex, yIndex + Margin, 38f, textLineHeight);
             if (Mouse.IsOver(statSection))
             {
                 Widgets.DrawHighlight(statSection);
                 TooltipHandler.TipRegion(statSection, "MDR_Complexity".Translate().Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + "MDR_ComplexityDirectiveDesc".Translate());
             }
-            xIndex += 34f;
-            Rect directiveSection = new Rect(xIndex, yIndex + Margin, 87f, 68f);
-            GUI.BeginGroup(directiveSection);
-            float num = blockSection.width - Text.LineHeight;
-            Rect blockIconSection = new Rect(directiveSection.width / 2f - num / 2f, 0f, num, num);
-            GUI.DrawTexture(blockIconSection, backgroundTexture.Texture);
-            Widgets.DefIcon(blockIconSection, directiveDef, null, 0.9f, null, drawPlaceholder: false);
+            xIndex += statTextWidth + (Margin / 3);
+
+            // Icon section
+            Rect iconWrapperSection = new Rect(xIndex, yIndex + (Margin / 2), directiveBlockWidth - statTextWidth - Margin, directiveBlockHeight - Margin);
+            GUI.BeginGroup(iconWrapperSection);
+            Rect iconSection = new Rect(iconWrapperSection.width - directiveIconSize, 0f, directiveIconSize, directiveIconSize);
+            GUI.DrawTexture(iconSection, backgroundTexture.Texture);
+            Widgets.DefIcon(iconSection, directiveDef, null, 0.9f, null, drawPlaceholder: false);
             Text.Font = GameFont.Tiny;
-            float directiveLabelHeight = Text.CalcHeight(directiveDef.LabelCap, directiveSection.width);
+            float directiveLabelHeight = Text.CalcHeight(directiveDef.LabelCap, iconWrapperSection.width);
             Rect directiveLabelBackground = new Rect(0f, blockSection.yMax - directiveLabelHeight, blockSection.width, directiveLabelHeight);
             GUI.DrawTexture(new Rect(directiveLabelBackground.x, directiveLabelBackground.yMax - directiveLabelHeight, directiveLabelBackground.width, directiveLabelHeight), TexUI.GrayTextBG);
             Text.Anchor = TextAnchor.LowerCenter;
@@ -351,9 +354,9 @@ namespace MechHumanlikes
             Text.Anchor = TextAnchor.UpperLeft;
             Text.Font = GameFont.Small;
             GUI.EndGroup();
-            if (Mouse.IsOver(directiveSection))
+            if (Mouse.IsOver(iconWrapperSection))
             {
-                TooltipHandler.TipRegion(directiveSection, delegate
+                TooltipHandler.TipRegion(iconWrapperSection, delegate
                 {
                     string text = directiveDef.LabelCap.Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + directiveDef.description + "\n" + directiveDef.CustomDescription;
                     if (DirectiveTip(directiveDef) != null)
@@ -421,10 +424,6 @@ namespace MechHumanlikes
 
         private void DoBottomButtons(Rect rect)
         {
-            if (Widgets.ButtonText(new Rect(rect.xMax - ButSize.x, rect.y, ButSize.x, ButSize.y), AcceptButtonLabel) && CanAccept())
-            {
-                Accept();
-            }
         }
 
         private bool CanAccept()

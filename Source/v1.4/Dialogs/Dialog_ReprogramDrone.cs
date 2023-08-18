@@ -278,6 +278,8 @@ namespace MechHumanlikes
                     DirectiveDef directiveDef = proposedDirectives[i];
                     Rect blockSection = new Rect(xIndex, yIndex, directiveBlockWidth, directiveBlockHeight);
                     Widgets.DrawOptionBackground(blockSection, false);
+
+                    // Stats section
                     xIndex += Margin / 3;
                     float textLineHeight = Text.LineHeightOf(GameFont.Small);
                     Text.Anchor = TextAnchor.MiddleRight;
@@ -292,9 +294,11 @@ namespace MechHumanlikes
                         TooltipHandler.TipRegion(statSection, "MDR_Complexity".Translate().Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + "MDR_ComplexityDirectiveDesc".Translate());
                     }
                     xIndex += statTextWidth + (Margin / 3);
+
+                    // Icon section
                     Rect directiveSection = new Rect(xIndex, yIndex + (Margin / 3), directiveBlockWidth - statTextWidth - Margin, directiveBlockHeight - (2 * Margin / 3));
                     GUI.BeginGroup(directiveSection);
-                    Rect blockIconSection = new Rect(directiveSection.width - directiveIconSize - (Margin / 3), 0f, directiveIconSize, directiveIconSize);
+                    Rect blockIconSection = new Rect(directiveSection.width - directiveIconSize, 0f, directiveIconSize, directiveIconSize);
                     GUI.DrawTexture(blockIconSection, backgroundTexture.Texture);
                     Widgets.DefIcon(blockIconSection, directiveDef, null, 0.9f, null, drawPlaceholder: false);
                     Text.Font = GameFont.Tiny;
