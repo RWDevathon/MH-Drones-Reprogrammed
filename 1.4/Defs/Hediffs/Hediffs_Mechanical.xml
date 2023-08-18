@@ -33,7 +33,7 @@
     <HediffDef>
         <defName>MDR_ComplexityRelation</defName>
         <label>complexity strain</label>
-        <description>This unit is experiencing side-effects of their current level of programming relative to their maximum complexity handling capacity.</description>
+        <description>This unit is experiencing side-effects of their current level of programming relative to their maximum complexity handling capacity. If the drone is under their baseline capacity, they will receive minor boosts.</description>
         <hediffClass>MechHumanlikes.Hediff_Complexity</hediffClass>
         <initialSeverity>0</initialSeverity>
         <minSeverity>-1</minSeverity>
@@ -45,17 +45,94 @@
     </HediffDef>
 
     <HediffDef>
-        <defName>MDR_MaxComplexityTest</defName>
-        <label>max complexity test</label>
-        <description>This is a test hediff that adds 10 max complexity to the pawn.</description>
+        <defName>MDR_EnhancedComplexity</defName>
+        <label>additional memory</label>
+        <description>This unit has had additional memory and hardware components installed to permit greater complexity. Exceeding the standard design parameters results in power and maintenance efficiency loss.</description>
         <hediffClass>Hediff</hediffClass>
-        <defaultLabelColor>(0.6, 0.6, 0.6)</defaultLabelColor>
+        <defaultLabelColor>(0.8, 0.8, 0.8)</defaultLabelColor>
+        <maxSeverity>10</maxSeverity>
         <scenarioCanAdd>false</scenarioCanAdd>
         <isBad>false</isBad>
+        <levelIsQuantity>true</levelIsQuantity>
         <stages>
             <li>
+                <minSeverity>1</minSeverity>
+                <hungerRateFactor>1.02</hungerRateFactor>
+                <statOffsets>
+                    <MDR_ComplexityLimit>2</MDR_ComplexityLimit>
+                    <MHC_MaintenanceRetention>-0.02</MHC_MaintenanceRetention>
+                </statOffsets>
+            </li>
+            <li>
+                <minSeverity>2</minSeverity>
+                <hungerRateFactor>1.04</hungerRateFactor>
+                <statOffsets>
+                    <MDR_ComplexityLimit>4</MDR_ComplexityLimit>
+                    <MHC_MaintenanceRetention>-0.04</MHC_MaintenanceRetention>
+                </statOffsets>
+            </li>
+            <li>
+                <minSeverity>3</minSeverity>
+                <hungerRateFactor>1.06</hungerRateFactor>
+                <statOffsets>
+                    <MDR_ComplexityLimit>6</MDR_ComplexityLimit>
+                    <MHC_MaintenanceRetention>-0.06</MHC_MaintenanceRetention>
+                </statOffsets>
+            </li>
+            <li>
+                <minSeverity>4</minSeverity>
+                <hungerRateFactor>1.08</hungerRateFactor>
+                <statOffsets>
+                    <MDR_ComplexityLimit>8</MDR_ComplexityLimit>
+                    <MHC_MaintenanceRetention>-0.08</MHC_MaintenanceRetention>
+                </statOffsets>
+            </li>
+            <li>
+                <minSeverity>5</minSeverity>
+                <hungerRateFactor>1.1</hungerRateFactor>
                 <statOffsets>
                     <MDR_ComplexityLimit>10</MDR_ComplexityLimit>
+                    <MHC_MaintenanceRetention>-0.1</MHC_MaintenanceRetention>
+                </statOffsets>
+            </li>
+            <li>
+                <minSeverity>6</minSeverity>
+                <hungerRateFactor>1.15</hungerRateFactor>
+                <statOffsets>
+                    <MDR_ComplexityLimit>12</MDR_ComplexityLimit>
+                    <MHC_MaintenanceRetention>-0.15</MHC_MaintenanceRetention>
+                </statOffsets>
+            </li>
+            <li>
+                <minSeverity>7</minSeverity>
+                <hungerRateFactor>1.2</hungerRateFactor>
+                <statOffsets>
+                    <MDR_ComplexityLimit>14</MDR_ComplexityLimit>
+                    <MHC_MaintenanceRetention>-0.2</MHC_MaintenanceRetention>
+                </statOffsets>
+            </li>
+            <li>
+                <minSeverity>8</minSeverity>
+                <hungerRateFactor>1.25</hungerRateFactor>
+                <statOffsets>
+                    <MDR_ComplexityLimit>16</MDR_ComplexityLimit>
+                    <MHC_MaintenanceRetention>-0.25</MHC_MaintenanceRetention>
+                </statOffsets>
+            </li>
+            <li>
+                <minSeverity>9</minSeverity>
+                <hungerRateFactor>1.3</hungerRateFactor>
+                <statOffsets>
+                    <MDR_ComplexityLimit>18</MDR_ComplexityLimit>
+                    <MHC_MaintenanceRetention>-0.3</MHC_MaintenanceRetention>
+                </statOffsets>
+            </li>
+            <li>
+                <minSeverity>10</minSeverity>
+                <hungerRateFactor>1.4</hungerRateFactor>
+                <statOffsets>
+                    <MDR_ComplexityLimit>20</MDR_ComplexityLimit>
+                    <MHC_MaintenanceRetention>-0.4</MHC_MaintenanceRetention>
                 </statOffsets>
             </li>
         </stages>

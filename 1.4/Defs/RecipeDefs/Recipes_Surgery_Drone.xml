@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+	<!-- Surgery to reprogram drones to serve the colony -->
+    <RecipeDef ParentName="MHC_surgeryMechanicalBase">
+		<defName>MDR_ReprogramDrone</defName>
+		<label>reprogram drone</label>
+		<description>A time consuming but completely harmless operation, reprogramming this drone will allow for allocating its work capacities, skills, and directives to better the colony.</description>
+		<workerClass>MechHumanlikes.Recipe_ReprogramDrone</workerClass>
+		<jobString>Reprogramming drone.</jobString>
+		<workAmount>12000</workAmount>
+		<skillRequirements>
+            <Intellectual>8</Intellectual>
+        </skillRequirements>
+        <surgeryOutcomeEffect IsNull="True" /> <!-- Always succeeds -->
+		<ingredients>
+			<li>
+				<filter>
+					<categories>
+						<li>Medicine</li>
+					</categories>
+				</filter>
+				<count>1</count>
+			</li>
+		</ingredients>
+		<fixedIngredientFilter>
+			<categories>
+				<li>Medicine</li>
+			</categories>
+		</fixedIngredientFilter>
+		<addsHediff>MHC_Restarting</addsHediff>
+	</RecipeDef>
+
+	<!-- Surgery to remove programming from a programmed drone -->
+    <RecipeDef ParentName="MHC_surgeryMechanicalBase">
+		<defName>MDR_RemoveProgramming</defName>
+		<label>Uninstall programming</label>
+		<description>A straightforward operation for cleanly wiping out all directives and programming from a drone, leaving it completely blank and in stand-by.</description>
+		<workerClass>MechHumanlikes.Recipe_RemoveProgramming</workerClass>
+		<jobString>Reprogramming drone.</jobString>
+		<workAmount>500</workAmount>
+		<skillRequirements>
+            <Intellectual>2</Intellectual>
+        </skillRequirements>
+        <surgeryOutcomeEffect IsNull="True" /> <!-- Always succeeds -->
+		<addsHediff>MDR_NoProgramming</addsHediff>
+	</RecipeDef>
+
+	<!-- Surgery to provide drones with higher complexity -->
+    <RecipeDef ParentName="MHC_surgeryMechanicalBase">
+		<defName>MDR_InstallAdditionalHardware</defName>
+		<label>install additional hardware</label>
+		<description>More hardware does not always mean more computational power, but additional memory and hardware can enhance the maximum complexity of a drone at the cost of power and maintenance efficiency.</description>
+		<workerClass>MechHumanlikes.Recipe_DroneIncreaseLevel</workerClass>
+		<jobString>Installing hardware.</jobString>
+		<workAmount>4000</workAmount>
+		<skillRequirements>
+            <Crafting>2</Crafting>
+            <Intellectual>2</Intellectual>
+        </skillRequirements>
+        <surgeryOutcomeEffect IsNull="True" /> <!-- Always succeeds -->
+		<ingredients>
+			<li>
+				<filter>
+					<thingDefs>
+						<li>ComponentIndustrial</li>
+					</thingDefs>
+				</filter>
+				<count>1</count>
+			</li>
+		</ingredients>
+		<addsHediff>MDR_EnhancedComplexity</addsHediff>
+	</RecipeDef>
+
+	<!-- Surgery to remove some of the drone's extra higher complexity -->
+    <RecipeDef ParentName="MHC_surgeryMechanicalBase">
+		<defName>MDR_RemoveAdditionalHardware</defName>
+		<label>remove additional hardware</label>
+		<description>Sometimes exceeding a unit's physical standard specifications is no longer required. Drones, luckily, do not complain when it comes time to remove that which makes them more advanced. They do, however, need to restart to adjust to the lost capacity.</description>
+		<workerClass>MechHumanlikes.Recipe_DroneDecreaseLevel</workerClass>
+		<jobString>Installing hardware.</jobString>
+		<workAmount>4000</workAmount>
+		<skillRequirements>
+            <Crafting>2</Crafting>
+            <Intellectual>2</Intellectual>
+        </skillRequirements>
+        <products>
+            <ComponentIndustrial>1</ComponentIndustrial>
+        </products>
+        <surgeryOutcomeEffect IsNull="True" /> <!-- Always succeeds -->
+		<addsHediff>MHC_Restarting</addsHediff>
+        <removesHediff>MDR_EnhancedComplexity</removesHediff>
+	</RecipeDef>
+
+</Defs>

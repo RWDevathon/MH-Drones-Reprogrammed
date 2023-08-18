@@ -215,7 +215,9 @@
     <Compile Include="Directives\Directive.cs" />
     <Compile Include="Extensions\PawnExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Recipes\Recipe_DroneIncreaseLevel.cs" />
     <Compile Include="Recipes\Recipe_RemoveProgramming.cs" />
+    <Compile Include="Recipes\Recipe_DroneDecreaseLevel.cs" />
     <Compile Include="Recipes\Recipe_ReprogramDrone.cs" />
     <Compile Include="StatWorkers\StatWorker_Drone.cs" />
     <Compile Include="Utils\Enums.cs" />
