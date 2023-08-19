@@ -21,26 +21,38 @@ namespace MechHumanlikes
         [Unsaved(false)]
         private string cachedCustomDescription;
 
+        // List of abilities that the drone will be able to use as long as this directive is active.
         public List<AbilityDef> abilities;
 
         public List<StatModifier> statOffsets;
 
         public List<StatModifier> statFactors;
 
-        public float hungerRateFactor = 1f; // For energy, which isn't a stat for some reason.
+        // For energy, which isn't a stat for some reason.
+        public float hungerRateFactor = 1f;
 
+        // If provided, adding/removing this directive will add/remove an instance of this hediff.
         public HediffDef associatedHediff;
 
+        // Category for grouping together directives on the reprogramming interface. Is not used anywhere else.
+        // Defaults to "Uncategorized" if left null.
         public string directiveCategory;
 
+        // List of tags that this directive should be associated with for validation purposes.
+        // Note that this does not do anything itself - it can be used by requirement workers for enforcing rules.
         public List<string> exclusionTags;
 
+        // How much complexity this directive costs (or provides) to a drone.
         public int complexityCost = 1;
 
+        // Directives are not ticked by default. Setting this to a value (Normal, Rare, or Long) will have instances of this directive def
+        // added to a WorldComponent for ticking purposes. 
         public TickerType tickerType;
 
+        // Description that describes unique effects of the directive that belong in the effects group rather than the directive description.
         public string customEffectsDescription;
 
+        // List of requirement workers that enforce rules for how this directive may be used.
         public List<DirectiveRequirementWorker> requirementWorkers = new List<DirectiveRequirementWorker>();
 
         // Optional weights to configure whether pawns should or should not be encouraged to "buy" this directive as part of a particular group kind.

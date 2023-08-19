@@ -12,7 +12,7 @@ namespace MechHumanlikes
         // How many non-mandatory, non-inherent directives the drone may generate with if it does not exceed discretionary complexity.
         public IntRange discretionaryDirectives = new IntRange(0, 0);
 
-        // How many non-mandatory, non-inherent work types the drone may geneerate with if it does not exceed discretionary complexity.
+        // How many non-mandatory, non-inherent work types the drone may generate with if it does not exceed discretionary complexity.
         public IntRange discretionaryWorkTypes = new IntRange(1, 3);
 
         // How much complexity the drone can use for random generation on top of their required complexity - does not take limits into account.
