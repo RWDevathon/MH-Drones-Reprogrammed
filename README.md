@@ -20,6 +20,8 @@
 
 ## For Modders
 * All features of this mod are opt-in, and dependent upon MHC's configurations for Drones.
+
+### Race extension
 * To set a drone race to be programmable, give the race's ThingDef the MDR_ProgrammableDroneExtension. All nodes are optional, but are explained here: [Pawn extension](https://github.com/RWDevathon/MH-Drones-Reprogrammed/blob/main/Source/v1.4/Extensions/PawnExtensions.cs).
 
 Example:
@@ -42,8 +44,11 @@ Example:
 </AlienRace.ThingDef_AlienRace>
 ```
 
+### Work Types
 * Work Types may have different complexity costs to enable and a minimum complexity requirement. If you want to apply custom costs to your custom work type, give it MDR_WorkTypeExtension. Options are explained here: [Work Type extension](https://github.com/RWDevathon/MH-Drones-Reprogrammed/blob/main/Source/v1.4/Extensions/WorkTypeExtensions.cs).
 * If you want to create a patch for another mod's work types, see here for examples: [Work Type extension patches](https://github.com/RWDevathon/MH-Drones-Reprogrammed/blob/main/1.4/Patches/MDR_WorkTypeExtensionPatch.xml).
+
+### Pawn Kinds
 
 * Other factions' drones are controlled largely by existing pawn kind features, such as set skill ranges and required work types. If you would like to add required directives to particular pawn kinds, or control other options, add MDR_ProgrammableDroneKindExtension. Options are explained here: [Pawn kind extension](https://github.com/RWDevathon/MH-Drones-Reprogrammed/blob/main/Source/v1.4/Extensions/PawnKindExtensions.cs).
 
@@ -65,6 +70,8 @@ Example:
     </modExtensions>
 </PawnKindDef>
 ```
+
+### Directives
 
 * Creating your own directives can be done by creating a new DirectiveDef. They work relatively similarly to a GeneDef, but are generally designed to be as lightweight as possible. They have no graphic hooks built in, but do have hooks for associating with abilities and hediffs, so you can use them to indirectly add graphic effects to pawns. For all options that DirectiveDefs have with explanation, see here: [Directive Def](https://github.com/RWDevathon/MH-Drones-Reprogrammed/blob/main/Source/v1.4/Defs/DirectiveDef.cs)
 * For examples of (simple) directives, see here: [Combat directive defs](https://github.com/RWDevathon/MH-Drones-Reprogrammed/blob/main/1.4/Defs/DirectiveDefs/Directives_Combat.xml).
