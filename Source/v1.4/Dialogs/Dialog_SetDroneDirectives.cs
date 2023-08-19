@@ -107,7 +107,7 @@ namespace MechHumanlikes
             GUI.BeginGroup(rect);
             float xIndex = 0f;
             float yIndex = 0f;
-            DrawSection(new Rect(xIndex, rect.y, rect.width, selectedHeight), selectedDirectives, "MDR_SelectedDirectives".Translate(), ref yIndex, ref selectedHeight, adding: false, rect, ref selectedCollapsed);
+            DrawSection(new Rect(xIndex, yIndex, rect.width, selectedHeight), selectedDirectives, "MDR_SelectedDirectives".Translate(), ref yIndex, ref selectedHeight, adding: false, rect, ref selectedCollapsed);
             if (!selectedCollapsed.Value)
             {
                 yIndex += 10f;
@@ -136,7 +136,7 @@ namespace MechHumanlikes
             Rect directiveSelectorSection = new Rect(xIndex, yIndex, rect.width - 16f, scrollHeight);
             Widgets.BeginScrollView(new Rect(xIndex, yIndex, rect.width, rect.height - yIndex), ref scrollPosition, directiveSelectorSection);
             bool? collapsed = null;
-            DrawSection(new Rect(xIndex, rect.y, rect.width, unselectedHeight), MDR_Utils.cachedSortedDirectives, null, ref yIndex, ref unselectedHeight, adding: true, rect, ref collapsed);
+            DrawSection(new Rect(xIndex, yIndex, rect.width, unselectedHeight), MDR_Utils.cachedSortedDirectives, null, ref yIndex, ref unselectedHeight, adding: true, rect, ref collapsed);
             if (Event.current.type == EventType.Layout)
             {
                 scrollHeight = yIndex - selectorIndex;
@@ -155,10 +155,10 @@ namespace MechHumanlikes
             if (!label.NullOrEmpty())
             {
                 Rect headerSection = new Rect(0f, yIndex, rect.width, Text.LineHeight);
-                headerSection.xMax -= (adding ? 16f : (Text.CalcSize("ClickToAddOrRemove".Translate()).x + Margin));
+                headerSection.xMax -= adding ? 16f : (Text.CalcSize("ClickToAddOrRemove".Translate()).x + Margin);
                 if (collapsed.HasValue)
                 {
-                    Rect collapsibleMenuSection = new Rect(headerSection.x, headerSection.y + (headerSection.height - 18f) / 2f, 18f, 18f);
+                    Rect collapsibleMenuSection = new Rect(headerSection.x, headerSection.y + (headerSection.height - 16f) / 2f, 16f, 16f);
                     GUI.DrawTexture(collapsibleMenuSection, collapsed.Value ? TexButton.Reveal : TexButton.Collapse);
                     if (Widgets.ButtonInvisible(headerSection))
                     {
@@ -187,7 +187,7 @@ namespace MechHumanlikes
                     GUI.color = Color.white;
                     Text.Anchor = TextAnchor.UpperLeft;
                 }
-                yIndex += Text.LineHeight + 3f;
+                yIndex += Text.LineHeight;
             }
             if (collapsed == true)
             {
@@ -199,12 +199,12 @@ namespace MechHumanlikes
             }
             float headerSectionHeight = yIndex;
             bool reachedCategoryEnd = false;
-            Rect contentBGSection = new Rect(0f, yIndex, rect.width, sectionHeight);
+            Rect contentBGSection = new Rect(xIndex, yIndex, rect.width, rect.height);
             if (!adding)
             {
                 Widgets.DrawRectFast(contentBGSection, Widgets.MenuSectionBGFillColor);
+                yIndex += Margin;
             }
-            yIndex += Margin;
             if (!directives.Any())
             {
                 Text.Anchor = TextAnchor.MiddleCenter;
@@ -240,7 +240,7 @@ namespace MechHumanlikes
                         }
                         directiveCategory = directiveDef.directiveCategory;
                         Rect categoryHeaderSection = new Rect(xIndex, yIndex, rect.width - 8f, Text.LineHeight);
-                        Rect categoryCollapseIconSection = new Rect(categoryHeaderSection.x, categoryHeaderSection.y + (categoryHeaderSection.height - 18f) / 2f, 18f, 18f);
+                        Rect categoryCollapseIconSection = new Rect(categoryHeaderSection.x, categoryHeaderSection.y + (categoryHeaderSection.height - 16f) / 2f, 16f, 16f);
                         GUI.DrawTexture(categoryCollapseIconSection, categoryCollapsed ? TexButton.Reveal : TexButton.Collapse);
                         if (Widgets.ButtonInvisible(categoryHeaderSection))
                         {
@@ -302,7 +302,7 @@ namespace MechHumanlikes
             }
             if (!adding || reachedCategoryEnd)
             {
-                yIndex += directiveBlockHeight;
+                yIndex += directiveBlockHeight + Margin;
             }
             if (Event.current.type == EventType.Layout)
             {

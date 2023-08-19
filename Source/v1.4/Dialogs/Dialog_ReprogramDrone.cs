@@ -100,7 +100,7 @@ namespace MechHumanlikes
             curX += 450 + Margin;
             if (Event.current.type == EventType.Layout)
             {
-                scrollHeight = Mathf.Clamp(Mathf.Max(curY, 700), 0, 700);
+                scrollHeight = 700f;
             }
             Rect cardSection = new Rect(curX, curY, 600f, scrollHeight);
             cardSection.xMin += 2f * Margin;
