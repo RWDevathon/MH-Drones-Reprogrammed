@@ -16,6 +16,6 @@ namespace MechHumanlikes
         public IntRange discretionaryWorkTypes = new IntRange(1, 3);
 
         // How much complexity the drone can use for random generation on top of their required complexity - does not take limits into account.
-        public IntRange discretionaryComplexity = new IntRange(0, 0);
+        public IntRange discretionaryComplexity = new IntRange(0, 10);
     }
 }

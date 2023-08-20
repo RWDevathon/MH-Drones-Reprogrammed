@@ -99,89 +99,80 @@ namespace MechHumanlikes
             Deprogram(pawn);
 
             // Purchase required work types
-            RandomizeDroneWorkTypes(pawn, context, true);
+            SetRequiredDroneWorkTypes(pawn, context);
 
             // Purchase skills to be in range min
-            RandomizeDroneSkills(pawn, context, true);
+            SetRequiredDroneSkills(pawn, context);
 
             // Purchase directives to be in range min
-            RandomizeDroneDirectives(pawn, context, true);
+            SetRequiredDroneDirectives(pawn, context);
 
-            // With spare complexity, randomly choose to use or not use on directives or skills
-
+            // With spare complexity, randomly choose to use or not use on directives, work types, and skills.
+            RandomizeDroneCharacteristics(pawn, context);
         }
 
         // Randomize programmable drone's work types. If requiredOnly is true, it will only apply required work types from the pawn kind def.
         // If it is false, it will select random work types that it does not already have.
-        public static void RandomizeDroneWorkTypes(Pawn pawn, PawnGroupMakerParms context = null, bool requiredOnly = true)
+        public static void SetRequiredDroneWorkTypes(Pawn pawn, PawnGroupMakerParms context = null)
         {
             MDR_ProgrammableDroneExtension pawnExtension = pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>();
             CompReprogrammableDrone pawnComp = pawn.GetComp<CompReprogrammableDrone>();
             PawnKindDef pawnKindDef = pawn.kindDef;
 
-            if (requiredOnly)
+            if (pawnKindDef.requiredWorkTags != WorkTags.None)
             {
-                if (pawnKindDef.requiredWorkTags != WorkTags.None)
+                List<WorkTypeDef> legalWorkTypes = new List<WorkTypeDef>();
+                foreach (WorkTypeDef workTypeDef in DefDatabase<WorkTypeDef>.AllDefs)
                 {
-                    List<WorkTypeDef> legalWorkTypes = new List<WorkTypeDef>();
-                    foreach (WorkTypeDef workTypeDef in DefDatabase<WorkTypeDef>.AllDefs)
+                    if ((workTypeDef.workTags != WorkTags.None || !workTypeDef.relevantSkills.NullOrEmpty())
+                        && !pawnExtension.forbiddenWorkTypes.NotNullAndContains(workTypeDef)
+                        && (workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ValidFor(pawn).Accepted ?? true)
+                        && !pawnComp.enabledWorkTypes.Contains(workTypeDef))
                     {
-                        if ((workTypeDef.workTags != WorkTags.None || !workTypeDef.relevantSkills.NullOrEmpty())
-                            && !pawnExtension.forbiddenWorkTypes.NotNullAndContains(workTypeDef)
-                            && (workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ValidFor(pawn).Accepted ?? true)
-                            && !pawnComp.enabledWorkTypes.Contains(workTypeDef))
-                        {
-                            legalWorkTypes.Add(workTypeDef);
-                        }
+                        legalWorkTypes.Add(workTypeDef);
                     }
+                }
 
-                    int requiredWorkTypeComplexity = 0;
+                int requiredWorkTypeComplexity = 0;
+                foreach (WorkTypeDef workTypeDef in legalWorkTypes)
+                {
+                    if ((workTypeDef.workTags & pawnKindDef.requiredWorkTags) != WorkTags.None)
+                    {
+                        pawnComp.enabledWorkTypes.Add(workTypeDef);
+
+                        requiredWorkTypeComplexity += workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ComplexityCostFor(pawn, true) ?? 1;
+                    }
+                }
+
+                // Ensure the pawn has both combat work types enabled if it must be a fighter.
+                if (context != null && context.generateFightersOnly)
+                {
                     foreach (WorkTypeDef workTypeDef in legalWorkTypes)
                     {
-                        if ((workTypeDef.workTags & pawnKindDef.requiredWorkTags) != WorkTags.None)
+                        if ((workTypeDef.workTags & WorkTags.Violent) != WorkTags.None && !pawnComp.enabledWorkTypes.Contains(workTypeDef))
                         {
                             pawnComp.enabledWorkTypes.Add(workTypeDef);
 
                             requiredWorkTypeComplexity += workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ComplexityCostFor(pawn, true) ?? 1;
                         }
                     }
-
-                    // Ensure the pawn has both combat work types enabled if it must be a fighter.
-                    if (context != null && context.generateFightersOnly)
-                    {
-                        foreach (WorkTypeDef workTypeDef in legalWorkTypes)
-                        {
-                            if ((workTypeDef.workTags & WorkTags.Violent) != WorkTags.None && !pawnComp.enabledWorkTypes.Contains(workTypeDef))
-                            {
-                                pawnComp.enabledWorkTypes.Add(workTypeDef);
-
-                                requiredWorkTypeComplexity += workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ComplexityCostFor(pawn, true) ?? 1;
-                            }
-                        }
-                    }
-
-
-                    if (requiredWorkTypeComplexity != 0)
-                    {
-                        pawnComp.UpdateComplexity("Work Types", requiredWorkTypeComplexity + pawnComp.GetComplexityFromSource("Work Types"));
-                    }
                 }
-            }
-            else
-            {
-                // Create randomization, has to account for the context group maker adding weights for work types 
+
+                if (requiredWorkTypeComplexity != 0)
+                {
+                    pawnComp.UpdateComplexity("Work Types", requiredWorkTypeComplexity + pawnComp.GetComplexityFromSource("Work Types"));
+                }
             }
         }
 
-        // Randomize programmable drone's skills. If requiredOnly is true, it will only select skills that get it to the pawn kind def's min skill range.
-        // If it is false, it will select random skills, weighted by various factors.
-        public static void RandomizeDroneSkills(Pawn pawn, PawnGroupMakerParms context = null, bool requiredOnly = true)
+        // Randomize programmable drone's skills based on the group kind context and the pawn kind.
+        public static void SetRequiredDroneSkills(Pawn pawn, PawnGroupMakerParms context = null)
         {
             CompReprogrammableDrone pawnComp = pawn.GetComp<CompReprogrammableDrone>();
             PawnKindDef pawnKindDef = pawn.kindDef;
             List<SkillRange> skillRanges = pawnKindDef.skills;
 
-            if (requiredOnly && !skillRanges.NullOrEmpty())
+            if (!skillRanges.NullOrEmpty())
             {
                 int requiredSkillComplexity = 0;
                 foreach (SkillRange skillRange in skillRanges)
@@ -211,15 +202,10 @@ namespace MechHumanlikes
                 }
                 pawnComp.UpdateComplexity("Skills", requiredSkillComplexity + pawnComp.GetComplexityFromSource("Skills"));
             }
-            else
-            {
-                // Create randomization, has to account for the context group maker and pawn kind adding weights for skills
-            }
         }
 
-        // Randomize programmable drone's directives. If requiredOnly is true, it will only select directives that are required by its pawn kind.
-        // If it is false, it will select random directives, weighted by various factors.
-        public static void RandomizeDroneDirectives(Pawn pawn, PawnGroupMakerParms context = null, bool requiredOnly = true)
+        // Randomize programmable drone's directives based on the group kind context and the pawn kind.
+        public static void SetRequiredDroneDirectives(Pawn pawn, PawnGroupMakerParms context = null)
         {
             CompReprogrammableDrone pawnComp = pawn.GetComp<CompReprogrammableDrone>();
             PawnKindDef pawnKindDef = pawn.kindDef;
@@ -231,7 +217,7 @@ namespace MechHumanlikes
             activeDirectiveDefs.AddRange(pawnComp.ActiveDirectives);
             pawnComp.SetDirectives(activeDirectiveDefs);
 
-            if (requiredOnly && pawnKindExtension?.requiredDirectives.NullOrEmpty() == false)
+            if (pawnKindExtension?.requiredDirectives.NullOrEmpty() == false)
             {
                 int requiredDirectiveComplexity = 0;
                 foreach (DirectiveDef directiveDef in pawnKindExtension.requiredDirectives)
@@ -248,9 +234,211 @@ namespace MechHumanlikes
                 pawnComp.UpdateComplexity("Active Directives", requiredDirectiveComplexity + pawnComp.GetComplexityFromSource("Active Directives"));
                 pawnComp.SetDirectives(activeDirectiveDefs);
             }
+        }
+
+        // Randomize programmable drone's directives, work types, and skills. This is dependent upon the pawn kind primarily, and assumes required characteristics are already set.
+        public static void RandomizeDroneCharacteristics(Pawn pawn, PawnGroupMakerParms context = null)
+        {
+            CompReprogrammableDrone pawnComp = pawn.GetComp<CompReprogrammableDrone>();
+            PawnKindDef pawnKindDef = pawn.kindDef;
+            MDR_ProgrammableDroneKindExtension pawnKindExtension = pawnKindDef.GetModExtension<MDR_ProgrammableDroneKindExtension>();
+            MDR_ProgrammableDroneExtension pawnExtension = pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>();
+            List<SkillRange> skillRanges = pawnKindDef.skills;
+
+            // Get the complexity spare for discretionary spending on purchasing random effects. If the pawn kind does not exist, give 0-10 complexity.
+            float discretionaryComplexity;
+            if (pawnKindExtension == null)
+            {
+                discretionaryComplexity = Rand.RangeInclusive(0, 10);
+            }
             else
             {
-                // Create randomization, has to account for the context group maker and pawn kind adding weights for skills
+                discretionaryComplexity = pawnKindExtension.discretionaryComplexity.RandomInRange;
+            }
+
+            if (discretionaryComplexity < 0.5f)
+            {
+                return;
+            }
+
+            // Randomize directives
+            List<DirectiveDef> activeDirectiveDefs = new List<DirectiveDef>();
+            activeDirectiveDefs.AddRange(pawnComp.ActiveDirectives);
+            int discretionaryDirectives = Mathf.Min(
+                pawnKindExtension.discretionaryDirectives.RandomInRange,
+                pawnExtension.maxDirectives - (activeDirectiveDefs.Count - pawnExtension.inherentDirectives?.Count ?? 0));
+
+            if (discretionaryDirectives > 0)
+            {
+                List<DirectiveDef> desiredDirectiveDefs = new List<DirectiveDef>();
+                desiredDirectiveDefs.AddRange(pawnComp.ActiveDirectives);
+
+                // Acquire a list of legal directives with their weighted chance to be selected in this instance as a pair.
+                List<KeyValuePair<DirectiveDef, float>> legalDirectiveDefsWeighted = new List<KeyValuePair<DirectiveDef, float>>();
+                foreach (DirectiveDef directiveDef in cachedSortedDirectives)
+                {
+                    // If the pawn already has this directive, skip it.
+                    if (activeDirectiveDefs.Contains(directiveDef))
+                    {
+                        continue;
+                    }
+
+                    // Only valid directives with complexity lower than the spending limit are acceptable.
+                    if (directiveDef.ValidFor(pawn) && directiveDef.complexityCost < discretionaryComplexity)
+                    {
+                        float selectionWeight = 1f;
+                        // If this pawn is part of a group, consider the group kind weights of the directive.
+                        if (!directiveDef.groupKindWeights.NullOrEmpty() && context != null)
+                        {
+                            float groupKindWeight = directiveDef.groupKindWeights.GetWithFallback(context.groupKind, 1f);
+                            // If the group kind weight indicates this directive is undesirable, skip to the next directive.
+                            if (groupKindWeight <= 0)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                selectionWeight *= groupKindWeight;
+                            }
+                        }
+
+                        // If this directive has skill weights, consider those weights in comparison to the pawn's skills.
+                        if (!directiveDef.skillChoiceWeights.NullOrEmpty())
+                        {
+                            float skillWeight = 1f;
+                            foreach (KeyValuePair<SkillDef, float> skillWeightPair in directiveDef.skillChoiceWeights)
+                            {
+                                SkillRecord pawnSkill = pawn.skills.GetSkill(skillWeightPair.Key);
+                                // Positive weights mean the skill must be enabled, non-positive weights mean the skill must be disabled.
+                                if ((pawnSkill.TotallyDisabled && skillWeightPair.Value > 0f) || (!pawnSkill.TotallyDisabled && skillWeightPair.Value <= 0))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    skillWeight *= skillWeightPair.Value;
+                                }
+                            }
+                            selectionWeight *= skillWeight;
+                        }
+
+                        // Pair the calculated selection weight and the legal def for use in randomization.
+                        legalDirectiveDefsWeighted.Add(new KeyValuePair<DirectiveDef, float>(directiveDef, selectionWeight));
+                    }
+                }
+
+                if (legalDirectiveDefsWeighted.Count > 0)
+                {
+                    int directiveComplexity = 0;
+                    // Keep picking random directives until there's no valid ones, complexity left, or directive slots left.
+                    while (legalDirectiveDefsWeighted.Count > 0 && discretionaryComplexity > 0 && discretionaryDirectives > 0)
+                    {
+                        legalDirectiveDefsWeighted.TryRandomElementByWeight((valuePair => valuePair.Value), out KeyValuePair<DirectiveDef, float> result);
+                        // Previously added directives may change the discretionaryComplexity available without recalculating validity for the list.
+                        if (result.Key.complexityCost > discretionaryComplexity)
+                        {
+                            legalDirectiveDefsWeighted.Remove(result);
+                        }
+                        else
+                        {
+                            activeDirectiveDefs.Add(result.Key);
+                            legalDirectiveDefsWeighted.Remove(result);
+                            directiveComplexity += result.Key.complexityCost;
+                            discretionaryComplexity -= result.Key.complexityCost;
+                            discretionaryDirectives--;
+                        }
+                    }
+                    pawnComp.UpdateComplexity("Active Directives", directiveComplexity + pawnComp.GetComplexityFromSource("Active Directives"));
+                    pawnComp.SetDirectives(activeDirectiveDefs);
+                }
+            }
+
+            // If all discretionary complexity was used by directives, stop here.
+            if (discretionaryComplexity < 0.5f)
+            {
+                return;
+            }
+
+            // Randomize Work Types
+            int discretionaryWorkTypes = pawnKindExtension.discretionaryWorkTypes.RandomInRange;
+            if (discretionaryWorkTypes > 0)
+            {
+                List<WorkTypeDef> legalWorkTypes = new List<WorkTypeDef>();
+                foreach (WorkTypeDef workTypeDef in DefDatabase<WorkTypeDef>.AllDefs)
+                {
+                    MDR_WorkTypeExtension workExtension = workTypeDef.GetModExtension<MDR_WorkTypeExtension>();
+                    if ((workTypeDef.workTags != WorkTags.None || !workTypeDef.relevantSkills.NullOrEmpty())
+                        && !pawnExtension.forbiddenWorkTypes.NotNullAndContains(workTypeDef)
+                        && (workExtension?.ValidFor(pawn).Accepted ?? true) && !pawnComp.enabledWorkTypes.Contains(workTypeDef)
+                        && discretionaryComplexity >= workExtension?.ComplexityCostFor(pawn, true))
+                    {
+                        legalWorkTypes.Add(workTypeDef);
+                    }
+                }
+
+                int requiredWorkTypeComplexity = 0;
+                while (legalWorkTypes.Count > 0 && discretionaryComplexity > 0 && discretionaryWorkTypes > 0)
+                {
+                    legalWorkTypes.TryRandomElement(out WorkTypeDef result);
+                    int workTypeCost = result.GetModExtension<MDR_WorkTypeExtension>()?.ComplexityCostFor(pawn, true) ?? 1;
+                    if (workTypeCost > discretionaryComplexity)
+                    {
+                        legalWorkTypes.Remove(result);
+                    }
+                    else
+                    {
+                        pawnComp.enabledWorkTypes.Add(result);
+                        legalWorkTypes.Remove(result);
+                        requiredWorkTypeComplexity += workTypeCost;
+                        discretionaryComplexity -= workTypeCost;
+                        discretionaryWorkTypes--;
+                    }
+                }
+
+                pawn.Notify_DisabledWorkTypesChanged();
+                pawnComp.UpdateComplexity("Work Types", requiredWorkTypeComplexity + pawnComp.GetComplexityFromSource("Work Types"));
+            }
+
+            // If all discretionary complexity was used by work types, stop here.
+            if (discretionaryComplexity < 0.5f)
+            {
+                return;
+            }
+
+            // Randomize Skills
+            List<SkillRecord> legalSkills = new List<SkillRecord>();
+            legalSkills.AddRange(pawn.skills.skills.Where(
+                skillRecord => !skillRecord.TotallyDisabled && SkillComplexityThresholdFor(pawn, skillRecord.def) is int addThreshold 
+                && skillRecord.Level < Mathf.Min(addThreshold + 4, SkillRecord.MaxLevel)));
+
+            if (legalSkills.Count > 0)
+            {
+                float requiredSkillComplexity = 0;
+                while (legalSkills.Count > 0 && discretionaryComplexity > 0)
+                {
+                    legalSkills.TryRandomElement(out SkillRecord result);
+                    SkillRecord skillRecord = pawn.skills.GetSkill(result.def);
+                    if (SkillComplexityThresholdFor(pawn, result.def) is int complexityThreshold
+                        && skillRecord.Level >= Mathf.Min(complexityThreshold + 4, SkillRecord.MaxLevel))
+                    {
+                        legalSkills.Remove(result);
+                    }
+                    else
+                    {
+                        skillRecord.Level++;
+                        if (skillRecord.Level > complexityThreshold)
+                        {
+                            requiredSkillComplexity += 1;
+                            discretionaryComplexity -= 1;
+                        }
+                        else
+                        {
+                            requiredSkillComplexity += 0.5f;
+                            discretionaryComplexity -= 0.5f;
+                        }
+                    }
+                }
+                pawnComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(requiredSkillComplexity + pawnComp.GetComplexityFromSource("Skills"))));
             }
         }
     }

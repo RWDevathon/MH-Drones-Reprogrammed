@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using RimWorld;
 using UnityEngine;
@@ -73,7 +72,7 @@ namespace MechHumanlikes
             CacheLegalWorkTypes();
             proposedWorkTypeComplexity = 0;
             inherentSkills = programExtension.inherentSkills;
-            proposedSkillComplexity = -programComp.BaselineComplexity / 3;
+            proposedSkillComplexity = -programComp.BaselineComplexity / 10;
             skillDefs = DefDatabase<SkillDef>.AllDefsListForReading;
             skillTracker = pawn.skills;
         }
@@ -507,10 +506,9 @@ namespace MechHumanlikes
 
         protected void Accept()
         {
-            IEnumerable<string> warnings = GetWarnings();
-            if (warnings.Any())
+            if (programComp.MaxComplexity < ProposedComplexity)
             {
-                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("MDR_ComplexityLimitExceeded".Translate() + "\n\n" + "WantToContinue".Translate(), PostAccept));
+                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("MDR_ComplexityLimitExceeded".Translate(programComp.MaxComplexity, ProposedComplexity) + "\n\n" + "WantToContinue".Translate(), PostAccept));
             }
             else
             {
@@ -523,14 +521,6 @@ namespace MechHumanlikes
             programComp.UpdateComplexity("Work Types", proposedWorkTypeComplexity);
             programComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(proposedSkillComplexity)));
             Close();
-        }
-
-        private IEnumerable<string> GetWarnings()
-        {
-            if (programComp.MaxComplexity < ProposedComplexity)
-            {
-                yield return "MDR_ComplexityLimitExceeded".Translate();
-            }
         }
     }
 }
