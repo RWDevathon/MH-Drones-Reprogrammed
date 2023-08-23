@@ -186,6 +186,7 @@
     <Compile Include="Defs\DirectiveDef.cs" />
     <Compile Include="Dialogs\Dialog_SetDroneDirectives.cs" />
     <Compile Include="Dialogs\Dialog_ReprogramDrone.cs" />
+    <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_RequiredSkill.cs" />
     <Compile Include="Directives\Directive_BasicTicker.cs" />
     <Compile Include="Directives\Directive_Basic.cs" />
     <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_ExclusiveToRace.cs" />

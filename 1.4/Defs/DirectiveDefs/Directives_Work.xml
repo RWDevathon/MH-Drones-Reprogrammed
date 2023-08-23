@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+    <MechHumanlikes.DirectiveDef>
+        <defName>MDR_DirectiveEndurance</defName>
+        <label>Endurance Directives</label>
+        <description>Sometimes the rate at which things get done are of little consequence and it's more important for a drone to simply keep going.\n\nSpecialized directives can permit drones to minimize energy usage and general maintenance requirements at the cost of severely inhibiting general work capabilities - ideal for slow moving convoys, sentinels, and patrols.</description>
+        <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
+        <directiveCategory>Work</directiveCategory>
+        <hungerRateFactor>0.4</hungerRateFactor>
+        <statOffsets>
+            <MHC_MaintenanceRetention>1</MHC_MaintenanceRetention>
+        </statOffsets>
+        <statFactors>
+            <GlobalWorkSpeed>0.5</GlobalWorkSpeed>
+            <MoveSpeed>0.8</MoveSpeed>
+        </statFactors>
+        <complexityCost>1</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>-1</value></li>
+            <li><key>Trader</key><value>4</value></li>
+        </groupKindWeights>
+    </MechHumanlikes.DirectiveDef>
+
+    <MechHumanlikes.DirectiveDef>
+        <defName>MDR_DirectiveGrunt</defName>
+        <label>Grunt Directives</label>
+        <description>Sapients rarely enjoy grunt work. Many of humanity's greatest inventions were the result of trying to find ways to avoid it. Drones, unfeeling and uncomplaining as they are, present the perfect opportunity to rid sapients of the burden of such menial tasks.\n\nSpecialized directives allow drones to more precisely pick out and optimize menial tasks without relying on manual orders from nearby individuals - and without moving, touching, or trashing something they weren't supposed to.</description>
+        <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
+        <directiveCategory>Work</directiveCategory>
+        <statOffsets>
+            <CleaningSpeed>0.75</CleaningSpeed>
+            <SmeltingSpeed>0.75</SmeltingSpeed>
+        </statOffsets>
+        <statFactors>
+            <CarryingCapacity>1.25</CarryingCapacity>
+            <FilthRate>0.5</FilthRate>
+        </statFactors>
+        <complexityCost>1</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>-1</value></li>
+            <li><key>Peaceful</key><value>4</value></li>
+        </groupKindWeights>
+    </MechHumanlikes.DirectiveDef>
+
+    <MechHumanlikes.DirectiveDef>
+        <defName>MDR_DirectiveMobileConstructor</defName>
+        <label>Assembly Directives</label>
+        <description>Sapient beings rarely have insurmountable difficulties grasping the differences in how best to assemble structures. To an unthinking machine lacking foresight and comprehension of physics and cause-and-effect, even the slightest order of operations failure or abnormality in material can cause catastrophe.\n\nSpecialized directives can offset the inherent intricacies and potential for failure by providing better conditional responsiveness and ability to overcome slight inconsistencies in building materials.</description>
+        <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
+        <directiveCategory>Work</directiveCategory>
+        <statOffsets>
+            <ConstructionSpeed>0.5</ConstructionSpeed>
+        </statOffsets>
+        <statFactors>
+            <ConstructSuccessChance>1.25</ConstructSuccessChance>
+            <FixBrokenDownBuildingSuccessChance>1.25</FixBrokenDownBuildingSuccessChance>
+        </statFactors>
+        <complexityCost>1</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>-1</value></li>
+            <li><key>Peaceful</key><value>2</value></li>
+        </groupKindWeights>
+        <skillChoiceWeights>
+            <li><key>Construction</key><value>4</value></li>
+        </skillChoiceWeights>
+        <requirementWorkers>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredSkill">
+                <requiredSkills>
+                    <li>Construction</li>
+                </requiredSkills>
+            </li>
+        </requirementWorkers>
+    </MechHumanlikes.DirectiveDef>
+
+</Defs>

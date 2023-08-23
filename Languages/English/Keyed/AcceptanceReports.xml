@@ -6,5 +6,7 @@
     <MDR_ComplexityRequirementNotMet>it requires at least {1} maximum complexity but {2} has only {3}.</MDR_ComplexityRequirementNotMet>
     <MDR_RequiredWorkTypeNotMet>it requires {1} work type active.</MDR_RequiredWorkTypeNotMet>
     <MDR_RequiredWorkTypeSetNotMet>at least one of the {0} work types must be active.</MDR_RequiredWorkTypeSetNotMet>
+    <MDR_RequiredSkillNotMet>it requires {1} skill to be enabled.</MDR_RequiredSkillNotMet>
+    <MDR_RequiredSkillSetNotMet>at least one of the {0} skills must be enabled.</MDR_RequiredSkillSetNotMet>
 
 </LanguageData>
