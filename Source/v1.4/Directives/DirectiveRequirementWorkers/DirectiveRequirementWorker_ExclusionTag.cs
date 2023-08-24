@@ -10,17 +10,15 @@ namespace MechHumanlikes
             AcceptanceReport baseReport = base.CompatibleWith(other);
             if (!baseReport)
             {
-                Log.Error("WAAAAGHER");
                 return baseReport.Reason;
             }
 
-            if (def.exclusionTags.NullOrEmpty() || other.exclusionTags.NullOrEmpty())
+            if (def == other || def.exclusionTags.NullOrEmpty() || other.exclusionTags.NullOrEmpty())
             {
-                Log.Error("WAAAAGH");
                 return true;
             }
 
-            for (int i = def.exclusionTags.Count - 1; i > 0; i--)
+            for (int i = def.exclusionTags.Count - 1; i >= 0; i--)
             {
                 if (other.exclusionTags.Contains(def.exclusionTags[i]))
                 {

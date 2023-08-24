@@ -12,7 +12,7 @@
             <MHC_MaintenanceRetention>1</MHC_MaintenanceRetention>
         </statOffsets>
         <statFactors>
-            <GlobalWorkSpeed>0.5</GlobalWorkSpeed>
+            <WorkSpeedGlobal>0.5</WorkSpeedGlobal>
             <MoveSpeed>0.8</MoveSpeed>
         </statFactors>
         <complexityCost>1</complexityCost>

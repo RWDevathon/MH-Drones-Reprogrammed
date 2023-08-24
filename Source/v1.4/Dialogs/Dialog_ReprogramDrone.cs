@@ -45,7 +45,7 @@ namespace MechHumanlikes
 
         private static readonly CachedTexture backgroundTexture = new CachedTexture("UI/Icons/Settings/DrawPocket");
 
-        private int ProposedComplexity => programComp.Complexity + proposedWorkTypeComplexity + Mathf.Max(0, Mathf.CeilToInt(proposedSkillComplexity));
+        private int ProposedComplexity => programComp.Complexity;
 
         protected override float Margin => 12f;
 
@@ -70,9 +70,9 @@ namespace MechHumanlikes
             proposedDirectives.AddRange(programComp.ActiveDirectives);
             programExtension = pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>();
             CacheLegalWorkTypes();
-            proposedWorkTypeComplexity = 0;
+            proposedWorkTypeComplexity = programComp.GetComplexityFromSource("Work Types");
             inherentSkills = programExtension.inherentSkills;
-            proposedSkillComplexity = -programComp.BaselineComplexity / 10;
+            proposedSkillComplexity = programComp.GetComplexityFromSource("Skills") - (programComp.BaselineComplexity / 10);
             skillDefs = DefDatabase<SkillDef>.AllDefsListForReading;
             skillTracker = pawn.skills;
         }
