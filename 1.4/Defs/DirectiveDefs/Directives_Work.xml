@@ -44,6 +44,26 @@
     </MechHumanlikes.DirectiveDef>
 
     <MechHumanlikes.DirectiveDef>
+        <defName>MDR_DirectiveArtisan</defName>
+        <label>Artisan Directives</label>
+        <description>Lacking creativity and the ability to innovate, drones are unable to truly master the finer details of producing goods. Quantity, rather than quality, has always been the lot of drone assembly lines - but that is not always what is needed.\n\nExtremely specialized directives can permit units to consistently produce Excellent quality goods, but the sheer intricacy of the programming severely impairs the rate of work - even for work that is unskilled.</description>
+        <customEffectsDescription>Units with this directive always produce Excellent quality products when completing bills.</customEffectsDescription>
+        <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
+        <statFactors>
+            <WorkSpeedGlobal>0.5</WorkSpeedGlobal>
+        </statFactors>
+        <complexityCost>4</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>-1</value></li>
+        </groupKindWeights>
+        <requirementWorkers>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_MinimumComplexity">
+                <complexityRequirement>25</complexityRequirement>
+            </li>
+        </requirementWorkers>
+    </MechHumanlikes.DirectiveDef>
+
+    <MechHumanlikes.DirectiveDef>
         <defName>MDR_DirectiveMobileConstructor</defName>
         <label>Assembly Directives</label>
         <description>Sapient beings rarely have insurmountable difficulties grasping the differences in how best to assemble structures. To an unthinking machine lacking foresight and comprehension of physics and cause-and-effect, even the slightest order of operations failure or abnormality in material can cause catastrophe.\n\nSpecialized directives can offset the inherent intricacies and potential for failure by providing better conditional responsiveness and ability to overcome slight inconsistencies in building materials.</description>
@@ -68,6 +88,34 @@
             <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredSkill">
                 <requiredSkills>
                     <li>Construction</li>
+                </requiredSkills>
+            </li>
+        </requirementWorkers>
+    </MechHumanlikes.DirectiveDef>
+
+    <MechHumanlikes.DirectiveDef>
+        <defName>MDR_DirectiveChef</defName>
+        <label>Cooking Directives</label>
+        <description>Idealizing, preparing, cooking, and innovating upon meals is an art. The bare minimum, of course, is to avoid poisoning consumers and to manufacture nutritionally adequate sustenance - a task that any experienced chef would find trivial and mind-numbing. Specialized directives for drones may not be sufficient for appetizing gourmet cuisine, but it may offload a great deal of tedium.</description>
+        <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
+        <directiveCategory>Work</directiveCategory>
+        <statOffsets>
+            <CookSpeed>0.5</CookSpeed>
+        </statOffsets>
+        <statFactors>
+            <FoodPoisonChance>0.75</FoodPoisonChance>
+        </statFactors>
+        <complexityCost>1</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>-1</value></li>
+        </groupKindWeights>
+        <skillChoiceWeights>
+            <li><key>Cooking</key><value>4</value></li>
+        </skillChoiceWeights>
+        <requirementWorkers>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredSkill">
+                <requiredSkills>
+                    <li>Cooking</li>
                 </requiredSkills>
             </li>
         </requirementWorkers>

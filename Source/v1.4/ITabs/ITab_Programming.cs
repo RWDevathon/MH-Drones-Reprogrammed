@@ -83,7 +83,7 @@ namespace MechHumanlikes
                     {
                         TooltipHandler.TipRegion(directiveSect, delegate
                         {
-                            return directive.LabelCap.Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + directive.description + "\n" + directive.CustomDescription;
+                            return directive.LabelCap.Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + directive.description + "\n\n" + directive.CustomDescription;
                         }, 202248831);
                     }
                     xIndex = directiveSect.xMax + margin;

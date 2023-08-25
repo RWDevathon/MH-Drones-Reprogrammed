@@ -25,7 +25,7 @@ namespace MechHumanlikes
         // Open the dialog for reprogramming the unit.
         public override void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn billDoer, List<Thing> ingredients, Bill bill)
         {
-            pawn.health.AddHediff(recipe.addsHediff, part);
+            pawn.health.AddHediff(recipe.addsHediff);
             Find.WindowStack.Add(new Dialog_ReprogramDrone(pawn));
             // If the unit had the no programming hediff, remove that hediff.
             Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(MDR_HediffDefOf.MDR_NoProgramming);
@@ -38,6 +38,10 @@ namespace MechHumanlikes
             if (hediff != null)
             {
                 pawn.health.RemoveHediff(hediff);
+            }
+            else
+            {
+                hediff.Severity = hediff.def.initialSeverity;
             }
         }
     }

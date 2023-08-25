@@ -2,9 +2,9 @@
 <LanguageData>
 
     <MDR_IncapableOfTooltipProgramming>Caused by programming</MDR_IncapableOfTooltipProgramming>
+    <MDR_DirectiveDefHeader>When active, these effects apply:</MDR_DirectiveDefHeader>
     <MDR_DirectiveDefAbilities>This directive gives the following abilities: {0}</MDR_DirectiveDefAbilities>
     <MDR_DirectiveDefHediff>This directive is associated with the {0} hediff</MDR_DirectiveDefHediff>
-    <MDR_DirectiveDefStatsHeader>When active, these effects apply:</MDR_DirectiveDefStatsHeader>
     <MDR_DirectiveDefStatOffsetHeader>Stat offsets:</MDR_DirectiveDefStatOffsetHeader>
     <MDR_DirectiveDefStatFactorHeader>Stat factors:</MDR_DirectiveDefStatFactorHeader>
     <MDR_DirectiveDefStatIndent>- {0}: {1}</MDR_DirectiveDefStatIndent>

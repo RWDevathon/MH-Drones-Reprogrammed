@@ -358,7 +358,7 @@ namespace MechHumanlikes
             {
                 TooltipHandler.TipRegion(iconWrapperSection, delegate
                 {
-                    string text = directiveDef.LabelCap.Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + directiveDef.description + "\n" + directiveDef.CustomDescription;
+                    string text = directiveDef.LabelCap.Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + directiveDef.description + "\n\n" + directiveDef.CustomDescription;
                     if (DirectiveTip(directiveDef) != null)
                     {
                         string tooltip = DirectiveTip(directiveDef);
@@ -420,10 +420,6 @@ namespace MechHumanlikes
         {
             selectedDirectives.Remove(directiveDef);
             directiveComplexity -= directiveDef.complexityCost;
-        }
-
-        private void DoBottomButtons(Rect rect)
-        {
         }
 
         private bool CanAccept()

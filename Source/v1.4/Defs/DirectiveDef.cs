@@ -88,6 +88,7 @@ namespace MechHumanlikes
                 if (cachedCustomDescription == null)
                 {
                     StringBuilder customDescription = new StringBuilder();
+                    customDescription.AppendLine("MDR_DirectiveDefHeader".Translate());
                     if (customEffectsDescription != null)
                     {
                         customDescription.AppendLine(customEffectsDescription);
@@ -103,29 +104,25 @@ namespace MechHumanlikes
                     }
 
                     customDescription.AppendLine();
-                    if (statOffsets != null || statFactors != null || hungerRateFactor != 1f)
+                    if (statOffsets != null)
                     {
-                        customDescription.AppendLine("MDR_DirectiveDefStatsHeader".Translate());
-                        if (statOffsets != null)
+                        customDescription.AppendLine("MDR_DirectiveDefStatOffsetHeader".Translate());
+                        foreach (StatModifier statOffset in statOffsets)
                         {
-                            customDescription.AppendLine("MDR_DirectiveDefStatOffsetHeader".Translate());
-                            foreach (StatModifier statOffset in statOffsets)
-                            {
-                                customDescription.AppendLine("MDR_DirectiveDefStatIndent".Translate(statOffset.stat.LabelForFullStatListCap, statOffset.ValueToStringAsOffset));
-                            }
+                            customDescription.AppendLine("MDR_DirectiveDefStatIndent".Translate(statOffset.stat.LabelForFullStatListCap, statOffset.ValueToStringAsOffset));
                         }
-                        if (statFactors != null)
+                    }
+                    if (statFactors != null)
+                    {
+                        customDescription.AppendLine("MDR_DirectiveDefStatFactorHeader".Translate());
+                        foreach (StatModifier statFactor in statFactors)
                         {
-                            customDescription.AppendLine("MDR_DirectiveDefStatFactorHeader".Translate());
-                            foreach (StatModifier statFactor in statFactors)
-                            {
-                                customDescription.AppendLine("MDR_DirectiveDefStatIndent".Translate(statFactor.stat.LabelForFullStatListCap, statFactor.ToStringAsFactor));
-                            }
+                            customDescription.AppendLine("MDR_DirectiveDefStatIndent".Translate(statFactor.stat.LabelForFullStatListCap, statFactor.ToStringAsFactor));
                         }
-                        if (hungerRateFactor != 1f)
-                        {
-                            customDescription.AppendLine("MDR_DirectiveDefEnergyConsumptionFactor".Translate(hungerRateFactor.ToStringPercent()));
-                        }
+                    }
+                    if (hungerRateFactor != 1f)
+                    {
+                        customDescription.AppendLine("MDR_DirectiveDefEnergyConsumptionFactor".Translate(hungerRateFactor.ToStringPercent()));
                     }
                     cachedCustomDescription = customDescription.ToString();
                 }

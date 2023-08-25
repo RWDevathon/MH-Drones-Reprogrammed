@@ -180,6 +180,7 @@
   <ItemGroup>
     <Compile Include="Components\ThingComps\CompReprogrammableDrone.cs" />
     <Compile Include="Components\WorldDirectiveTicker.cs" />
+    <Compile Include="DefOfs\MDR_DirectiveDefOf.cs" />
     <Compile Include="DefOfs\MDR_HistoryEventDefOf.cs" />
     <Compile Include="DefOfs\MDR_NeedDefOf.cs" />
     <Compile Include="DefOfs\MDR_WorkTypeDefOf.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Extensions\PawnKindExtensions.cs" />
     <Compile Include="Extensions\WorkTypeExtensions.cs" />
     <Compile Include="Harmony\InteractionUtility_Patch_Patch.cs" />
+    <Compile Include="Harmony\QualityUtility_Patch.cs" />
     <Compile Include="Harmony\MHC_Utils_Patch.cs" />
     <Compile Include="Harmony\PawnGroupMakerUtility_Patch.cs" />
     <Compile Include="Harmony\CharacterCardUtility_Patch.cs" />
@@ -221,7 +223,6 @@
     <Compile Include="Recipes\Recipe_DroneDecreaseLevel.cs" />
     <Compile Include="Recipes\Recipe_ReprogramDrone.cs" />
     <Compile Include="StatWorkers\StatWorker_Drone.cs" />
-    <Compile Include="Utils\Enums.cs" />
     <Compile Include="Utils\MDR_Textures.cs" />
     <Compile Include="Utils\MDR_Utils.cs" />
     <Compile Include="Utils\QuirkMaker.cs" />

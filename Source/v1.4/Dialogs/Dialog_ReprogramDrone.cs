@@ -314,7 +314,7 @@ namespace MechHumanlikes
                     {
                         TooltipHandler.TipRegion(directiveSection, delegate
                         {
-                            return directiveDef.LabelCap.Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + directiveDef.description + "\n" + directiveDef.CustomDescription;
+                            return directiveDef.LabelCap.Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + directiveDef.description + "\n\n" + directiveDef.CustomDescription;
                         }, 209283172);
                     }
                     xIndex = blockSection.xMax + Margin;

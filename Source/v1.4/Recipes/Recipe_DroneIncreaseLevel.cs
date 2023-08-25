@@ -33,6 +33,7 @@ namespace MechHumanlikes
             if (hardwareComplexity != null)
             {
                 hardwareComplexity.Severity += 1f;
+                pawn.GetComp<CompReprogrammableDrone>()?.RecalculateComplexity();
             }
             else
             {

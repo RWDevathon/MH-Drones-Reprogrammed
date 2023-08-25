@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<LanguageData>
-
-    <MDR_LowComplexityHediffLabel>Low</MDR_LowComplexityHediffLabel>
-    <MDR_NormalComplexityHediffLabel>Normal</MDR_NormalComplexityHediffLabel>
-    <MDR_HighComplexityHediffLabel>High</MDR_HighComplexityHediffLabel>
-
-</LanguageData>
