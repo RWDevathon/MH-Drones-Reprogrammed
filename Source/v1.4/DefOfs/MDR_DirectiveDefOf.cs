@@ -12,5 +12,9 @@ namespace MechHumanlikes
         }
 
         public static DirectiveDef MDR_DirectiveArtisan;
+
+        public static DirectiveDef MDR_DirectiveMartyrdom;
+
+        public static DirectiveDef MDR_DirectiveBerserker;
     }
 }

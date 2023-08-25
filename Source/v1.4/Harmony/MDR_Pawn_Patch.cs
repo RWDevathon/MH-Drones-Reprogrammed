@@ -1,11 +1,12 @@
 ﻿using HarmonyLib;
 using Verse;
 using System.Collections.Generic;
-using System;
+using System.Linq;
+using RimWorld;
 
 namespace MechHumanlikes
 {
-    public static class Pawn_Patch
+    public static class MDR_Pawn_Patch
     {
         // Programmable drones have their disabled work types identified through their programming comp, and by no other mechanic or feature.
         [HarmonyPatch(typeof(Pawn), "GetDisabledWorkTypes")]
@@ -61,6 +62,28 @@ namespace MechHumanlikes
                     }
 
                     __result = ~enabledTags;
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        // Martyrdom directives cause drones to turn into slag when killed (which occurs when they are downed for foreign pawns).
+        [HarmonyPatch(typeof(Pawn), "Kill")]
+        public static class Kill_Patch
+        {
+            [HarmonyPrefix]
+            public static bool Listener(ref Pawn __instance, DamageInfo? dinfo, Hediff exactCulprit = null)
+            {
+                // Save details and destroy before doing the explosion to avoid the damage hitting the pawn, killing them again.
+                if (MDR_Utils.IsProgrammableDrone(__instance) && __instance.GetComp<CompReprogrammableDrone>().ActiveDirectives.Contains(MDR_DirectiveDefOf.MDR_DirectiveMartyrdom) && !__instance.Destroyed)
+                {
+                    IntVec3 tempPos = __instance.Position;
+                    Map tempMap = __instance.Map;
+                    __instance.Destroy();
+                    GenExplosion.DoExplosion(tempPos, tempMap, 0.4f, DamageDefOf.Bomb, __instance, 1);
+                    Thing slag = ThingMaker.MakeThing(ThingDefOf.ChunkSlagSteel);
+                    GenSpawn.Spawn(slag, tempPos, tempMap);
                     return false;
                 }
                 return true;

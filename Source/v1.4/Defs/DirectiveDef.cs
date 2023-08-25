@@ -103,9 +103,9 @@ namespace MechHumanlikes
                         customDescription.AppendLine("MDR_DirectiveDefHediff".Translate(associatedHediff.label));
                     }
 
-                    customDescription.AppendLine();
                     if (statOffsets != null)
                     {
+                        customDescription.AppendLine();
                         customDescription.AppendLine("MDR_DirectiveDefStatOffsetHeader".Translate());
                         foreach (StatModifier statOffset in statOffsets)
                         {
@@ -114,6 +114,7 @@ namespace MechHumanlikes
                     }
                     if (statFactors != null)
                     {
+                        customDescription.AppendLine();
                         customDescription.AppendLine("MDR_DirectiveDefStatFactorHeader".Translate());
                         foreach (StatModifier statFactor in statFactors)
                         {

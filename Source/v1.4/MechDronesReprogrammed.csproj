@@ -194,6 +194,7 @@
     <Compile Include="Extensions\PawnKindExtensions.cs" />
     <Compile Include="Extensions\WorkTypeExtensions.cs" />
     <Compile Include="Harmony\InteractionUtility_Patch_Patch.cs" />
+    <Compile Include="Harmony\MDR_Pawn_HealthTracker_Patch.cs" />
     <Compile Include="Harmony\QualityUtility_Patch.cs" />
     <Compile Include="Harmony\MHC_Utils_Patch.cs" />
     <Compile Include="Harmony\PawnGroupMakerUtility_Patch.cs" />
@@ -202,9 +203,10 @@
     <Compile Include="Harmony\Need_Food_Patch.cs" />
     <Compile Include="Harmony\StatWorker_Patch.cs" />
     <Compile Include="Harmony\InteractionUtility_Patch.cs" />
-    <Compile Include="Harmony\Pawn_Patch.cs" />
+    <Compile Include="Harmony\MDR_Pawn_Patch.cs" />
     <Compile Include="Hediffs\Hediff_Complexity.cs" />
     <Compile Include="ITabs\ITab_Programming.cs" />
+    <Compile Include="JobGivers\JobGiver_AIBerserkerRage.cs" />
     <Compile Include="MechDronesReprogrammed.cs" />
     <Compile Include="DefOfs\MDR_JobDefOf.cs" />
     <Compile Include="DefOfs\MDR_StatDefOf.cs" />
@@ -217,6 +219,7 @@
     <Compile Include="Directives\Directive_SustainHediff.cs" />
     <Compile Include="Directives\Directive.cs" />
     <Compile Include="Extensions\PawnExtensions.cs" />
+    <Compile Include="MentalStates\MentalState_BerserkerDirective.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recipes\Recipe_DroneIncreaseLevel.cs" />
     <Compile Include="Recipes\Recipe_RemoveProgramming.cs" />
@@ -231,7 +234,6 @@
     <Folder Include="Components\HediffComps\" />
     <Folder Include="Gizmos\" />
     <Folder Include="JobDrivers\" />
-    <Folder Include="JobGivers\" />
     <Folder Include="Toils\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
