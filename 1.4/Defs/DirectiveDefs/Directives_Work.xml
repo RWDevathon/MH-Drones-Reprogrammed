@@ -95,7 +95,7 @@
 
     <MechHumanlikes.DirectiveDef>
         <defName>MDR_DirectiveChef</defName>
-        <label>Cooking Directives</label>
+        <label>Chef Directives</label>
         <description>Idealizing, preparing, cooking, and innovating upon meals is an art. The bare minimum, of course, is to avoid poisoning consumers and to manufacture nutritionally adequate sustenance - a task that any experienced chef would find trivial and mind-numbing. Specialized directives for drones may not be sufficient for appetizing gourmet cuisine, but it may offload a great deal of tedium.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Work</directiveCategory>
@@ -116,6 +116,91 @@
             <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredSkill">
                 <requiredSkills>
                     <li>Cooking</li>
+                </requiredSkills>
+            </li>
+        </requirementWorkers>
+    </MechHumanlikes.DirectiveDef>
+
+    <MechHumanlikes.DirectiveDef>
+        <defName>MDR_DirectiveButcher</defName>
+        <label>Renderer Directives</label>
+        <description>Career butchers are often viewed with disdain, disgust, or distrust - usually involving the fact that taking satisfaction or being unusually skilled in dismantling corpses for parts is deemed unsavory. Machines, of course, pay no heed to such views and generally do not elicit suspicion, carrying out the task unflinchingly and unemotionally.\n\nSpecialized directives allow drones to identify key differences in the hundreds of factors between species to achieve maximimum utility from corpses, sparing individuals from the thankless work.</description>
+        <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
+        <directiveCategory>Work</directiveCategory>
+        <statOffsets>
+            <ButcheryFleshSpeed>0.5</ButcheryFleshSpeed>
+        </statOffsets>
+        <statFactors>
+            <ButcheryFleshEfficiency>1.25</ButcheryFleshEfficiency>
+        </statFactors>
+        <complexityCost>1</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>-1</value></li>
+        </groupKindWeights>
+        <skillChoiceWeights>
+            <li><key>Cooking</key><value>4</value></li>
+        </skillChoiceWeights>
+        <requirementWorkers>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredSkill">
+                <requiredSkills>
+                    <li>Cooking</li>
+                </requiredSkills>
+            </li>
+        </requirementWorkers>
+    </MechHumanlikes.DirectiveDef>
+
+    <MechHumanlikes.DirectiveDef>
+        <defName>MDR_DirectiveCultivation</defName>
+        <label>Cultivator Directives</label>
+        <description>Among the oldest and noblest of humanity's skillsets, agriculture has always been and continues to be a critical component of civilization - one that is also still constrained by the reality that plants are fickle and need close attention to avoid the myriad threats of disease, pests, over or under hydration and light, amongst others. Farmers tend to pick up necessary skills through strenuous practice and family tradition.\n\nSpecialized directives can provide drones with elements of that accumulated knowledge to streamline planting and tending operations.</description>
+        <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
+        <directiveCategory>Work</directiveCategory>
+        <statOffsets>
+            <PlantWorkSpeed>0.5</PlantWorkSpeed>
+        </statOffsets>
+        <statFactors>
+            <PlantHarvestYield>1.25</PlantHarvestYield>
+        </statFactors>
+        <complexityCost>1</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>-1</value></li>
+        </groupKindWeights>
+        <skillChoiceWeights>
+            <li><key>Plants</key><value>4</value></li>
+        </skillChoiceWeights>
+        <requirementWorkers>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredSkill">
+                <requiredSkills>
+                    <li>Plants</li>
+                </requiredSkills>
+            </li>
+        </requirementWorkers>
+    </MechHumanlikes.DirectiveDef>
+
+    <MechHumanlikes.DirectiveDef>
+        <defName>MDR_DirectiveExcavation</defName>
+        <label>Excavator Directives</label>
+        <description>One of the single most hazardos occupations for organic sapients is to be responsible for the physical extraction of minerals. From cave-ins and noxious fumes to claustrophobia and breakdowns in team cohesion, the energy and sanity sapping work of mining can not be overstated - and that's not including the risk of suddenly being on the frontlines of a furious hive of lethal insects. It is only logical, then, to attempt to offset these risks by handing the work to durable, emotionless - and most importantly, expendable - drones.\n\nSpecialzed directives can greatly enhance their ability to autonomously identify, analyze, and extract mineral resources without oversight or structural destabilization of the work space.</description>
+        <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
+        <directiveCategory>Work</directiveCategory>
+        <statOffsets>
+            <MiningSpeed>0.5</MiningSpeed>
+            <DeepDrillingSpeed>0.5</DeepDrillingSpeed>
+        </statOffsets>
+        <statFactors>
+            <MiningYield>1.25</MiningYield>
+        </statFactors>
+        <complexityCost>1</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>-1</value></li>
+        </groupKindWeights>
+        <skillChoiceWeights>
+            <li><key>Mining</key><value>4</value></li>
+        </skillChoiceWeights>
+        <requirementWorkers>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredSkill">
+                <requiredSkills>
+                    <li>Mining</li>
                 </requiredSkills>
             </li>
         </requirementWorkers>
