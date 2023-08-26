@@ -6,6 +6,7 @@ namespace MechHumanlikes
     {
         public DirectiveDef def;
 
+        [Unsaved(false)]
         public Pawn pawn;
         
         // Method for reacting to being made, prior to being added to a pawn.
@@ -52,9 +53,10 @@ namespace MechHumanlikes
         }
 
         // This method saves fields for save files so that the information isn't lost when saving/loading.
-        // The Def field gets filled in by the "directive tracker," CompReprogrammableDrone, on loading.
+        // The pawn field gets filled in by the "directive tracker," CompReprogrammableDrone, on loading.
         public virtual void ExposeData()
         {
+            Scribe_Defs.Look(ref def, "MDR_directiveDef");
         }
     }
 }

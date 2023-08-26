@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Patch>
+
+	<!-- Add the berserk directive mental state think tree to the MentalStateCritical think tree so it can be used -->
+	<Operation Class="PatchOperationAdd">
+		<xpath>Defs/ThinkTreeDef[defName="MentalStateCritical"]/thinkRoot/subNodes</xpath>
+		<value>
+            <li Class="ThinkNode_ConditionalMentalStateClass">
+                <stateClass>MechHumanlikes.MentalState_DirectiveBerserker</stateClass>
+                <subNodes>
+                    <li Class="ThinkNode_Priority">
+                        <subNodes>
+                            <li Class="MechHumanlikes.JobGiver_AIBerserkerRage" />
+                            <li Class="JobGiver_WanderAnywhere">
+                                <maxDanger>Deadly</maxDanger>
+                            </li>
+                        </subNodes>
+                    </li>
+                </subNodes>
+            </li>
+		</value>
+	</Operation>
+
+</Patch>

@@ -188,7 +188,8 @@
     <Compile Include="Dialogs\Dialog_SetDroneDirectives.cs" />
     <Compile Include="Dialogs\Dialog_ReprogramDrone.cs" />
     <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_RequiredSkill.cs" />
-    <Compile Include="Directives\Directive_BasicTicker.cs" />
+    <Compile Include="Directives\Directive_AbilityGiver.cs" />
+    <Compile Include="Directives\Directive_Ticker.cs" />
     <Compile Include="Directives\Directive_Basic.cs" />
     <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_ExclusiveToRace.cs" />
     <Compile Include="Extensions\PawnKindExtensions.cs" />
@@ -219,7 +220,7 @@
     <Compile Include="Directives\Directive_SustainHediff.cs" />
     <Compile Include="Directives\Directive.cs" />
     <Compile Include="Extensions\PawnExtensions.cs" />
-    <Compile Include="MentalStates\MentalState_BerserkerDirective.cs" />
+    <Compile Include="MentalStates\MentalState_DirectiveBerserker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recipes\Recipe_DroneIncreaseLevel.cs" />
     <Compile Include="Recipes\Recipe_RemoveProgramming.cs" />

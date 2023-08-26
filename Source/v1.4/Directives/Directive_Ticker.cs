@@ -3,7 +3,7 @@ using Verse;
 
 namespace MechHumanlikes
 {
-    public class Directive_BasicTicker : Directive
+    public class Directive_Ticker : Directive
     {
         // Method for reacting to the Directive being added to a particular pawn.
         public override void PostAdd()

@@ -6,7 +6,7 @@ using System.Linq;
 namespace MechHumanlikes
 {
     // Attack anything that isn't also under the influence of berserker directives.
-    public class MentalState_BerserkerDirective : MentalState
+    public class MentalState_DirectiveBerserker : MentalState
     {
         public override bool ForceHostileTo(Thing t)
         {

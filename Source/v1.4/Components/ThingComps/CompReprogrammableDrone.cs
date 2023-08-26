@@ -222,22 +222,13 @@ namespace MechHumanlikes
                         break;
                     }
                 }
-                // Directives should have their ticking restored.
+                // Directives should have their pawn reference set and any tickers restored.
                 foreach (Directive directive in directives)
                 {
+                    directive.pawn = Pawn;
                     if (directive.def.tickerType != TickerType.Never)
                     {
                         Find.World.GetComponent<WorldDirectiveTicker>().RegisterDirective(directive, directive.def.tickerType);
-                    }
-                }
-            }
-            else if (Scribe.mode == LoadSaveMode.ResolvingCrossRefs)
-            {
-                if (!directives.NullOrEmpty())
-                {
-                    for (int i = directives.Count - 1; i >= 0;)
-                    {
-                        directives[i].pawn = Pawn;
                     }
                 }
             }

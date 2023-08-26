@@ -95,7 +95,7 @@ namespace MechHumanlikes
                     }
                     if (!abilities.NullOrEmpty())
                     {
-                        string abilityLabels = abilities.Join();
+                        string abilityLabels = abilities.Join(abilityDef => abilityDef.LabelCap);
                         customDescription.AppendLine("MDR_DirectiveDefAbilities".Translate(abilityLabels));
                     }
                     if (associatedHediff != null)

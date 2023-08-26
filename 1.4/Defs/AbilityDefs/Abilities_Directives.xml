@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+    <AbilityDef>
+        <defName>MDR_InitiateBerserkDirective</defName>
+        <label>trigger berserker directives</label>
+        <description>Remotely trigger combat protocols and turn off IFF sensors for a few hours.</description>
+        <iconPath>UI/Icons/Gizmos/MHC_RestrictionGizmo</iconPath>
+        <cooldownTicksRange>60000</cooldownTicksRange>
+        <targetRequired>false</targetRequired>
+        <aiCanUse>true</aiCanUse>
+        <statBases>
+            <Ability_Duration>250</Ability_Duration>
+        </statBases>
+        <verbProperties>
+            <verbClass>Verb_CastAbility</verbClass>
+            <warmupTime>1</warmupTime>
+            <range>0.9</range>
+            <drawAimPie>false</drawAimPie>
+            <targetParams>
+                <canTargetSelf>true</canTargetSelf>
+            </targetParams>
+        </verbProperties>
+        <comps>
+            <li Class="CompProperties_AbilityGiveMentalState">
+                <compClass>CompAbilityEffect_GiveMentalState</compClass>
+                <stateDef>MDR_DirectiveBerserker</stateDef>
+                <applyToSelf>true</applyToSelf>
+            </li>
+            <li Class="CompProperties_AbilityGiveHediff">
+                <compClass>CompAbilityEffect_GiveHediff</compClass>
+                <hediffDef>MDR_DirectiveBerserker</hediffDef>
+                <onlyApplyToSelf>true</onlyApplyToSelf>
+            </li>
+        </comps>
+      </AbilityDef>
+
+</Defs>

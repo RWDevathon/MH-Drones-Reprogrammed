@@ -152,4 +152,20 @@
         </groupKindWeights>
     </MechHumanlikes.DirectiveDef>
 
+    <MechHumanlikes.DirectiveDef>
+        <defName>MDR_DirectiveBerserker</defName>
+        <label>Berserker Directives</label>
+        <description>Fantastical tales of legendary warriors winning battles after suffering normally lethal blows and of berserkerse who wage bloody conflict without regard for self or ally have always fascinated civilized peoples. Conveniently, the ability to ignore normally fatal damage and the "ability" to fail to recognize allies is relatively straightforward to institute in drones.\n\nSimple but specialized directives - and a great deal of removed safety protocols - can grant drones the capacity to mimic berserkers by instantaneously adapting to injuries without losing efficacy and by simply turning off most IFF sensors.</description>
+        <customEffectsDescription>Units with this directive gain an ability to enter a mental state to attack all non-berserking units and shrug off wounds.</customEffectsDescription>
+        <directiveClass>MechHumanlikes.Directive_AbilityGiver</directiveClass>
+        <abilities><li>MDR_InitiateBerserkDirective</li></abilities>
+        <directiveCategory>Military</directiveCategory>
+        <complexityCost>1</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>-1</value></li>
+            <li><key>Peaceful</key><value>-1</value></li>
+            <li><key>Trader</key><value>-1</value></li>
+        </groupKindWeights>
+    </MechHumanlikes.DirectiveDef>
+
 </Defs>

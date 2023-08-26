@@ -227,7 +227,7 @@ namespace MechHumanlikes
                     if (xIndex + directiveBlockWidth > rect.width)
                     {
                         xIndex = rect.x + (Margin / 2);
-                        yIndex += directiveBlockHeight;
+                        yIndex += directiveBlockHeight + Margin;
                         reachedWidthLimit = true;
                     }
                     bool categoryCollapsed = collapsedCategories[directiveDef.directiveCategory];
@@ -236,7 +236,7 @@ namespace MechHumanlikes
                         if (!reachedWidthLimit && reachedCategoryEnd)
                         {
                             xIndex = rect.x + (Margin / 2);
-                            yIndex += directiveBlockHeight;
+                            yIndex += directiveBlockHeight + Margin;
                         }
                         directiveCategory = directiveDef.directiveCategory;
                         Rect categoryHeaderSection = new Rect(xIndex, yIndex, rect.width - 8f, Text.LineHeight);
