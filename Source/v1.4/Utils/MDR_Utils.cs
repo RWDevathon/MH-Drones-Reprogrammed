@@ -14,7 +14,7 @@ namespace MechHumanlikes
 
         public static List<string> directiveCategories = new List<string>();
 
-        public static List<ThingDef> ProgrammableDrones
+        public static IEnumerable<ThingDef> ProgrammableDrones
         {
             get
             {
@@ -47,11 +47,21 @@ namespace MechHumanlikes
         }
 
 
-        // Given a pawn and skill, calculate the threshold at which additional skills will take double complexity to add.
-        // The threshold is based on baseline complexity and half of the pawn's inherent skill.
-        public static int SkillComplexityThresholdFor(Pawn pawn, SkillDef skill)
+        // Given a pawn and skill, calculate and return the complexity cost of the pawn's current skill level.
+        public static float SkillComplexityCostFor(Pawn pawn, SkillDef skill)
         {
-            return Mathf.FloorToInt(skillComplexityThresholds.Evaluate(pawn.GetComp<CompReprogrammableDrone>().BaselineComplexity)) + (pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>().inherentSkills.GetWithFallback(skill, 0) / 2);
+            int offsetSkillLevel = pawn.skills.GetSkill(skill).Level - pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>().inherentSkills.GetWithFallback(skill, 0);
+            if (offsetSkillLevel < 0)
+            {
+                Log.Warning("[MDR] A programmable drone, " + pawn.LabelShortCap + ", had a lower skill level than their inherent skills. Complexity calculations may be incorrect.");
+            }
+            return 0.5f * offsetSkillLevel;
+        }
+
+        // Given a pawn and skill, calculate the maximum level the pawn may have in the skill.
+        public static float SkillLimitFor(Pawn pawn, SkillDef skill)
+        {
+            return pawn.GetStatValue(MDR_StatDefOf.MDR_SkillLimit) + pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>()?.inherentSkills?.GetWithFallback(skill, 0) ?? 0;
         }
 
         public static void Deprogram(Pawn pawn)
@@ -174,33 +184,30 @@ namespace MechHumanlikes
 
             if (!skillRanges.NullOrEmpty())
             {
-                int requiredSkillComplexity = 0;
+                float requiredSkillComplexity = pawnComp.GetComplexityFromSource("Skills");
                 foreach (SkillRange skillRange in skillRanges)
                 {
                     SkillDef skillDef = skillRange.Skill;
-                    int skillComplexityThreshold = SkillComplexityThresholdFor(pawn, skillDef);
                     SkillRecord skillRecord = pawn.skills.GetSkill(skillDef);
                     int skillFloor = skillRange.Range.min;
-                    if (skillRecord.Level > skillFloor)
+                    int skillLevel = skillRecord.Level;
+                    if (skillLevel >= skillFloor)
                     {
                         continue;
                     }
 
-                    if (skillFloor > skillComplexityThreshold && skillComplexityThreshold > skillRecord.Level)
+                    float skillComplexityCost = SkillComplexityCostFor(pawn, skillDef);
+                    float skillComplexityUsage = 0;
+                    while (skillLevel < skillFloor)
                     {
-                        requiredSkillComplexity += Mathf.CeilToInt(Mathf.Max(0.5f * (skillComplexityThreshold - skillRecord.Level), 0) + skillFloor - skillComplexityThreshold);
+                        skillComplexityUsage += skillComplexityCost;
+                        skillComplexityCost += 0.5f;
+                        skillLevel++;
                     }
-                    else if (skillFloor > skillComplexityThreshold)
-                    {
-                        requiredSkillComplexity += skillFloor - skillRecord.Level;
-                    }
-                    else
-                    {
-                        requiredSkillComplexity += Mathf.CeilToInt(0.5f * (skillFloor - skillRecord.Level));
-                    }
+                    requiredSkillComplexity += skillComplexityUsage;
                     skillRecord.Level = skillFloor;
                 }
-                pawnComp.UpdateComplexity("Skills", requiredSkillComplexity + pawnComp.GetComplexityFromSource("Skills"));
+                pawnComp.UpdateComplexity("Skills", Mathf.CeilToInt(requiredSkillComplexity));
             }
         }
 
@@ -406,36 +413,34 @@ namespace MechHumanlikes
             }
 
             // Randomize Skills
-            List<SkillRecord> legalSkills = new List<SkillRecord>();
-            legalSkills.AddRange(pawn.skills.skills.Where(
-                skillRecord => !skillRecord.TotallyDisabled && SkillComplexityThresholdFor(pawn, skillRecord.def) is int addThreshold 
-                && skillRecord.Level < Mathf.Min(addThreshold + 4, SkillRecord.MaxLevel)));
 
-            if (legalSkills.Count > 0)
+            // Assemble a dictionary matching skill records to pairs of the cost to add and the maximum level possible for the skill.
+            Dictionary<SkillRecord, DroneSkillContext> skillsToRandomize = new Dictionary<SkillRecord, DroneSkillContext>();
+            foreach (SkillRecord skillRecord in pawn.skills.skills)
+            {
+                if (skillRecord.TotallyDisabled)
+                { 
+                    continue;
+                }
+                skillsToRandomize[skillRecord] = new DroneSkillContext(skillRecord);
+            }
+
+            if (skillsToRandomize.Count > 0)
             {
                 float requiredSkillComplexity = 0;
-                while (legalSkills.Count > 0 && discretionaryComplexity > 0)
+                while (skillsToRandomize.Count > 0 && discretionaryComplexity > 0)
                 {
-                    legalSkills.TryRandomElement(out SkillRecord result);
-                    SkillRecord skillRecord = pawn.skills.GetSkill(result.def);
-                    if (SkillComplexityThresholdFor(pawn, result.def) is int complexityThreshold
-                        && skillRecord.Level >= Mathf.Min(complexityThreshold + 4, SkillRecord.MaxLevel))
+                    skillsToRandomize.TryRandomElement(out KeyValuePair<SkillRecord, DroneSkillContext> randomSkill);
+                    if (randomSkill.Key.Level >= randomSkill.Value.skillCeiling)
                     {
-                        legalSkills.Remove(result);
+                        skillsToRandomize.Remove(randomSkill.Key);
                     }
                     else
                     {
-                        skillRecord.Level++;
-                        if (skillRecord.Level > complexityThreshold)
-                        {
-                            requiredSkillComplexity += 1;
-                            discretionaryComplexity -= 1;
-                        }
-                        else
-                        {
-                            requiredSkillComplexity += 0.5f;
-                            discretionaryComplexity -= 0.5f;
-                        }
+                        randomSkill.Key.Level++;
+                        requiredSkillComplexity += randomSkill.Value.skillComplexityCost;
+                        discretionaryComplexity -= randomSkill.Value.skillComplexityCost;
+                        randomSkill.Value.skillComplexityCost += 0.5f;
                     }
                 }
                 pawnComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(requiredSkillComplexity + pawnComp.GetComplexityFromSource("Skills"))));

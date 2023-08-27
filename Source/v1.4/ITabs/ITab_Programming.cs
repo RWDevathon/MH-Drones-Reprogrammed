@@ -93,22 +93,19 @@ namespace MechHumanlikes
 
             // Complexity Summary
             Rect summarySect = new Rect(margin, tabWindow.height - summaryHeight, tabWindow.width, summaryHeight);
-            float summaryLabelWidth = Text.CalcSize("MDR_ComplexityEffects".Translate()).x;
-            float summaryContentWidth = summaryLabelWidth + GenUI.SmallIconSize + (3 * margin);
             int complexity = programComp.Complexity;
             GUI.BeginGroup(summarySect);
             Rect complexityIconSect = new Rect(summarySect.x, (summaryHeight - GenUI.SmallIconSize) / 2f, GenUI.SmallIconSize, GenUI.SmallIconSize);
-            Rect complexityLabelSect = new Rect(complexityIconSect.xMax + margin, 0f, summaryLabelWidth, summaryHeight);
+            Rect complexityLabelSect = new Rect(complexityIconSect.xMax + margin, 0f, Text.CalcSize("MDR_ComplexityEffects".Translate()).x, summaryHeight);
             Rect complexityRow = new Rect(0f, complexityLabelSect.y, summarySect.width, summaryHeight);
             Widgets.DrawHighlightIfMouseover(complexityRow);
-            complexityRow.xMax = complexityLabelSect.xMax + summaryHeight;
             TooltipHandler.TipRegion(complexityRow, "MDR_ComplexityDesc".Translate());
             GUI.DrawTexture(complexityIconSect, MDR_Textures.complexityEffectIcon);
             Text.Anchor = TextAnchor.MiddleLeft;
             Widgets.Label(complexityLabelSect, "MDR_Complexity".Translate());
             Text.Anchor = TextAnchor.MiddleCenter;
             string complexityRelationText = complexity.ToString() + " / " + programComp.MaxComplexity.ToString();
-            Widgets.Label(new Rect(summaryContentWidth, 0f, Text.CalcSize(complexityRelationText).x, summaryHeight), complexityRelationText);
+            Widgets.Label(new Rect(complexityLabelSect.xMax + margin, 0f, Text.CalcSize(complexityRelationText).x, summaryHeight), complexityRelationText);
             Text.Anchor = TextAnchor.UpperLeft;
             GUI.EndGroup();
         }

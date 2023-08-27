@@ -24,8 +24,7 @@ namespace MechHumanlikes
         // Inherent skills cost no complexity, contribute to a higher skill ceiling, and can not be removed.
         public Dictionary<SkillDef, int> inherentSkills = new Dictionary<SkillDef, int>();
 
-        // Dictionary matching SkillDefs to the level that all members of this race will have as a minimum.
-        // Inherent skills cost no complexity, contribute to a higher skill ceiling, and can not be removed.
+        // Maximum number of directives units of this race may have.
         public int maxDirectives = 3;
         
         public override IEnumerable<string> ConfigErrors()

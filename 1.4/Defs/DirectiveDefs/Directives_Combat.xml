@@ -19,7 +19,7 @@
             <ShootingAccuracyPawn>0.6</ShootingAccuracyPawn>
             <PawnTrapSpringChance>0.2</PawnTrapSpringChance>
         </statFactors>
-        <complexityCost>1</complexityCost>
+        <complexityCost>3</complexityCost>
         <groupKindWeights>
             <li><key>Combat</key><value>3</value></li>
             <li><key>Peaceful</key><value>-1</value></li>
@@ -51,7 +51,7 @@
             <MeleeDodgeChance>0.6</MeleeDodgeChance>
             <PawnTrapSpringChance>2</PawnTrapSpringChance>
         </statFactors>
-        <complexityCost>1</complexityCost>
+        <complexityCost>3</complexityCost>
         <groupKindWeights>
             <li><key>Combat</key><value>3</value></li>
             <li><key>Peaceful</key><value>-1</value></li>
@@ -83,7 +83,7 @@
             <RangedWeapon_Cooldown>0.6</RangedWeapon_Cooldown>
             <PawnTrapSpringChance>0</PawnTrapSpringChance>
         </statFactors>
-        <complexityCost>3</complexityCost>
+        <complexityCost>6</complexityCost>
         <groupKindWeights>
             <li><key>Combat</key><value>4</value></li>
             <li><key>Peaceful</key><value>-1</value></li>

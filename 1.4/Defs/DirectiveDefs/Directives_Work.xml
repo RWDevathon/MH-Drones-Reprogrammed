@@ -4,7 +4,7 @@
     <MechHumanlikes.DirectiveDef>
         <defName>MDR_DirectiveEndurance</defName>
         <label>Endurance Directives</label>
-        <description>Sometimes the rate at which things get done are of little consequence and it's more important for a drone to simply keep going.\n\nSpecialized directives can permit drones to minimize energy usage and general maintenance requirements at the cost of severely inhibiting general work capabilities - ideal for slow moving convoys, sentinels, and patrols.</description>
+        <description>Sometimes the rate at which things get done are of little consequence and it's more important for a drone to simply keep going.\n\nSpecialized directives can permit drones to minimize energy usage and general maintenance requirements at the cost of severely inhibiting general work capabilities - ideal for slow moving convoys, sentinels, and mobile turrets.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Work</directiveCategory>
         <hungerRateFactor>0.4</hungerRateFactor>

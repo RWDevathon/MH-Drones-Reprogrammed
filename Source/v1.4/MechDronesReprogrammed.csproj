@@ -187,6 +187,7 @@
     <Compile Include="Defs\DirectiveDef.cs" />
     <Compile Include="Dialogs\Dialog_SetDroneDirectives.cs" />
     <Compile Include="Dialogs\Dialog_ReprogramDrone.cs" />
+    <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_ForbiddenSkill.cs" />
     <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_RequiredSkill.cs" />
     <Compile Include="Directives\Directive_AbilityGiver.cs" />
     <Compile Include="Directives\Directive_Ticker.cs" />
@@ -226,7 +227,8 @@
     <Compile Include="Recipes\Recipe_RemoveProgramming.cs" />
     <Compile Include="Recipes\Recipe_DroneDecreaseLevel.cs" />
     <Compile Include="Recipes\Recipe_ReprogramDrone.cs" />
-    <Compile Include="StatWorkers\StatWorker_Drone.cs" />
+    <Compile Include="StatWorkers\StatWorker_ProgrammableDrone.cs" />
+    <Compile Include="Utils\DroneSkillContext.cs" />
     <Compile Include="Utils\MDR_Textures.cs" />
     <Compile Include="Utils\MDR_Utils.cs" />
     <Compile Include="Utils\QuirkMaker.cs" />

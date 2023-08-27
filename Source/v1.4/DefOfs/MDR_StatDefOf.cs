@@ -11,5 +11,7 @@ namespace MechHumanlikes
         }
 
         public static StatDef MDR_ComplexityLimit;
+
+        public static StatDef MDR_SkillLimit;
     }
 }

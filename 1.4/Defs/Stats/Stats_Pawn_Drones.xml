@@ -2,12 +2,29 @@
 <Defs>
 
     <!-- Baseline Complexity Capacity -->
-    <!-- Directive Capacity -->
-
     <StatDef>
         <defName>MDR_ComplexityLimit</defName>
         <label>complexity capacity</label>
         <description>How much complexity this unit is able to handle without exceeding standard operating limits or without complexity offsetting.</description>
+        <workerClass>MechHumanlikes.StatWorker_ProgrammableDrone</workerClass>
+        <category>BasicsPawn</category>
+        <defaultBaseValue>0</defaultBaseValue>
+        <minValue>0</minValue>
+        <!-- SkyMind Compatibility?
+        <parts>
+            <li Class="StatPart_Food">
+                <factorStarving>0.6</factorStarving>
+            </li>
+
+        </parts>
+        -->
+    </StatDef>
+
+    <!-- Baseline Skill Capacity -->
+    <StatDef>
+        <defName>MDR_SkillLimit</defName>
+        <label>skill capacity</label>
+        <description>The maximum skill level this unit may have in any particular field, offset by inherent skills.</description>
         <workerClass>MechHumanlikes.StatWorker_ProgrammableDrone</workerClass>
         <category>BasicsPawn</category>
         <defaultBaseValue>0</defaultBaseValue>

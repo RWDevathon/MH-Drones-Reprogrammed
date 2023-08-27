@@ -34,7 +34,7 @@ namespace MechHumanlikes
                     // If this is a skill that is disabled and all skills must be enabled, this is invalid.
                     if (!anyOfTypeAcceptable)
                     {
-                        return "MDR_RequiredSkillNotMet".Translate(pawn, requiredSkills[i].label);
+                        return "MDR_RequiredSkillNotMet".Translate(requiredSkills[i].label);
                     }
                     // If it is disabled but only one of the types must be enabled, continue scanning.
                     else
@@ -54,7 +54,7 @@ namespace MechHumanlikes
             // If we scanned all required skill and all were disabled (did not terminate early), this is invalid.
             if (anyOfTypeAcceptable)
             {
-                return "MDR_RequiredSkillSetNotMet".Translate(pawn, requiredSkills.Join(skill => skill.defName));
+                return "MDR_RequiredSkillSetNotMet".Translate(requiredSkills.Join(skill => skill.defName));
             }
             // If we scanned all required skills and all were active, this is valid.
             return true;

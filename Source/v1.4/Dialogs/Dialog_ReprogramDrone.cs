@@ -21,11 +21,9 @@ namespace MechHumanlikes
 
         private List<WorkTypeDef> proposedEnabledWorkTypes = new List<WorkTypeDef>();
 
-        private List<SkillDef> skillDefs = new List<SkillDef>();
+        private Dictionary<SkillRecord, DroneSkillContext> skillContexts;
 
-        private Pawn_SkillTracker skillTracker;
-
-        private Dictionary<SkillDef, int> inherentSkills;
+        private List<SkillDef> skillDefs;
 
         private int proposedWorkTypeComplexity;
 
@@ -71,10 +69,13 @@ namespace MechHumanlikes
             programExtension = pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>();
             CacheLegalWorkTypes();
             proposedWorkTypeComplexity = programComp.GetComplexityFromSource("Work Types");
-            inherentSkills = programExtension.inherentSkills;
-            proposedSkillComplexity = programComp.GetComplexityFromSource("Skills") - (programComp.BaselineComplexity / 10);
+            skillContexts = new Dictionary<SkillRecord, DroneSkillContext>();
+            foreach (SkillRecord skillRecord in pawn.skills.skills)
+            {
+                skillContexts[skillRecord] = new DroneSkillContext(skillRecord);
+            }
+            proposedSkillComplexity = programComp.GetComplexityFromSource("Skills");
             skillDefs = DefDatabase<SkillDef>.AllDefsListForReading;
-            skillTracker = pawn.skills;
         }
 
         public override void DoWindowContents(Rect inRect)
@@ -144,23 +145,14 @@ namespace MechHumanlikes
                                     continue;
                                 }
 
-                                SkillRecord skillRecord = skillTracker.GetSkill(oldEnabledSkillDef);
-                                int inherentSkill = Mathf.Max(programExtension.inherentSkills.GetWithFallback(oldEnabledSkillDef, 0), 0);
-                                int skillThreshold = MDR_Utils.SkillComplexityThresholdFor(pawn, oldEnabledSkillDef);
-                                if (skillRecord.Level > inherentSkill)
+                                SkillRecord skillRecord = pawn.skills.GetSkill(oldEnabledSkillDef);
+                                DroneSkillContext skillContext = skillContexts[skillRecord];
+                                int inherentSkill = skillContext.skillFloor;
+                                while (skillRecord.Level > skillContext.skillFloor)
                                 {
-                                    while (skillRecord.Level > inherentSkill)
-                                    {
-                                        if (skillRecord.Level > skillThreshold)
-                                        {
-                                            proposedSkillComplexity -= 1;
-                                        }
-                                        else
-                                        {
-                                            proposedSkillComplexity -= 0.5f;
-                                        }
-                                        skillRecord.Level--;
-                                    }
+                                    proposedSkillComplexity -= skillContext.skillComplexityCost;
+                                    skillContext.skillComplexityCost -= 0.5f;
+                                    skillRecord.Level--;
                                 }
                             }
                         }
@@ -190,41 +182,40 @@ namespace MechHumanlikes
                 {
                     continue;
                 }
-                listingStandard.Label(skillDef.LabelCap + ": " + skill.Level.ToString(), tooltip: skillDef.description + "\n\n" + SkillComplexityTooltip(skill, true) + "\n" + SkillComplexityTooltip(skill, false));
+                DroneSkillContext context = skillContexts[skill];
+                listingStandard.Label(skillDef.LabelCap + ": " + skill.Level.ToString(), tooltip: skillDef.description + "\n\n" + SkillComplexityTooltip(skill, context, true) + "\n" + SkillComplexityTooltip(skill, context, false));
                 Listing_Standard subsection = listingStandard.BeginHiddenSection(out float subsectionHeight);
                 subsection.ColumnWidth = (rect.width - Margin) / 2;
-                if (subsection.ButtonText("MDR_AddSkillLevel".Translate()) && MDR_Utils.SkillComplexityThresholdFor(pawn, skillDef) is int addThreshold && skill.Level < Mathf.Min(addThreshold + 4, SkillRecord.MaxLevel))
+                if (subsection.ButtonText("MDR_AddSkillLevel".Translate()))
                 {
-                    skill.Level++;
-                    if (skill.Level > addThreshold)
+                    if (skill.Level >= context.skillCeiling)
                     {
-                        proposedSkillComplexity += 1;
+                        Messages.Message("MDR_CantExceedSkillMax".Translate(pawn.LabelShortCap, context.skillCeiling), MessageTypeDefOf.RejectInput, false);
                     }
                     else
                     {
-                        proposedSkillComplexity += 0.5f;
+                        proposedSkillComplexity += context.skillComplexityCost + 0.5f;
+                        context.skillComplexityCost += 0.5f;
+                        skill.Level++;
+                        programComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(proposedSkillComplexity)));
                     }
-                    programComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(proposedSkillComplexity)));
                 }
 
                 subsection.NewHiddenColumn(ref subsectionHeight);
                 if (subsection.ButtonText("MDR_RemoveSkillLevel".Translate()))
                 {
-                    if (skill.Level <= inherentSkills?.GetWithFallback(skill.def, -1))
+                    if (skill.Level <= SkillRecord.MinLevel)
                     {
-                        Messages.Message("MDR_HasInherentSkills".Translate(pawn.LabelShortCap, skill.def.label, inherentSkills[skill.def]), MessageTypeDefOf.RejectInput, false);
+                        Messages.Message("MDR_CantExceedSkillMin".Translate(pawn.LabelShortCap), MessageTypeDefOf.RejectInput, false);
                     }
-                    else if (skill.Level > SkillRecord.MinLevel)
+                    else if (skill.Level <= context.skillFloor)
                     {
-                        int skillThreshold = MDR_Utils.SkillComplexityThresholdFor(pawn, skillDef);
-                        if (skill.Level > skillThreshold)
-                        {
-                            proposedSkillComplexity -= 1;
-                        }
-                        else
-                        {
-                            proposedSkillComplexity -= 0.5f;
-                        }
+                        Messages.Message("MDR_HasInherentSkills".Translate(pawn.LabelShortCap, skill.def.label, context.skillFloor), MessageTypeDefOf.RejectInput, false);
+                    }
+                    else
+                    {
+                        proposedSkillComplexity -= context.skillComplexityCost;
+                        context.skillComplexityCost -= 0.5f;
                         skill.Level--;
                         programComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(proposedSkillComplexity)));
                     }
@@ -455,38 +446,31 @@ namespace MechHumanlikes
             return stringBuilder.ToString();
         }
 
-        private string SkillComplexityTooltip(SkillRecord skill, bool adding)
+        private string SkillComplexityTooltip(SkillRecord skill, DroneSkillContext context, bool adding)
         {
-            int skillThreshold = MDR_Utils.SkillComplexityThresholdFor(pawn, skill.def);
-            float cost = (skill.Level > skillThreshold) ? 1 : 0.5f;
-
-            if (adding && skill.Level > Mathf.Min(skillThreshold + 4, SkillRecord.MaxLevel))
+            if (adding && skill.Level >= context.skillCeiling)
             {
-                return "MDR_CantExceedSkillMax".Translate(pawn.LabelShortCap, Mathf.Min(skillThreshold + 4, SkillRecord.MaxLevel));
-            }
-            else if (!adding && skill.Level <= inherentSkills?.GetWithFallback(skill.def, -1))
-            {
-                return "MDR_HasInherentSkills".Translate(pawn.LabelShortCap, skill.def.label, inherentSkills[skill.def]);
+                return "MDR_CantExceedSkillMax".Translate(pawn.LabelShortCap, context.skillCeiling);
             }
             else if (!adding && skill.Level <= SkillRecord.MinLevel)
             {
                 return "MDR_CantExceedSkillMin".Translate(pawn.LabelShortCap);
             }
+            else if (!adding && skill.Level <= context.skillFloor)
+            {
+                return "MDR_HasInherentSkills".Translate(pawn.LabelShortCap, skill.def.label, context.skillFloor);
+            }
 
             StringBuilder stringBuilder = new StringBuilder();
             if (adding)
             {
-                stringBuilder.AppendLine("MDR_SkillComplexityTooltip".Translate("MDR_Adding".Translate().CapitalizeFirst(), "MDR_Cost".Translate(), cost.ToString(), pawn.LabelShortCap, skillThreshold.ToString()));
+                stringBuilder.AppendLine("MDR_SkillComplexityTooltip".Translate("MDR_Adding".Translate().CapitalizeFirst(), "MDR_Cost".Translate(), (context.skillComplexityCost + 0.5f).ToString()));
             }
             else
             {
-                stringBuilder.AppendLine("MDR_SkillComplexityTooltip".Translate("MDR_Removing".Translate().CapitalizeFirst(), "MDR_Refund".Translate(), cost.ToString(), pawn.LabelShortCap, skillThreshold.ToString()));
+                stringBuilder.AppendLine("MDR_SkillComplexityTooltip".Translate("MDR_Removing".Translate().CapitalizeFirst(), "MDR_Refund".Translate(), context.skillComplexityCost.ToString()));
             }
 
-            if (cost > 0.5f)
-            {
-                stringBuilder.AppendLine("MDR_SkillComplexityThresholdTooltip".Translate(pawn.LabelShortCap, skillThreshold));
-            }
             return stringBuilder.ToString();
         }
 

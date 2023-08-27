@@ -24,12 +24,11 @@
 
     <!-- Tooltips for the reprogramming dialogs -->
     <MDR_CantRemoveInherentWorkTypes>{0} can't be removed as it is an inherent work type of {1}. Inherent work types have no complexity cost.</MDR_CantRemoveInherentWorkTypes>
-    <MDR_CantExceedSkillMax>{0} is unable to possess a skill higher than {1}, limited by baseline complexity and inherent skills.</MDR_CantExceedSkillMax>
+    <MDR_CantExceedSkillMax>{0} is unable to possess a skill higher than {1}, limited by inherent qualities of the drone type.</MDR_CantExceedSkillMax>
     <MDR_CantExceedSkillMin>{0} is unable to possess less than the minimum skill level. Skills can only be disabled by disabling all corresponding work types (some of which may be inherent and cost no complexity).</MDR_CantExceedSkillMin>
     <MDR_HasInherentSkills>{0} has {2} inherent skill points for {1} and can not be programmed with lower skill. Inherent skills have no complexity cost.</MDR_HasInherentSkills>
     <MDR_WorkTypeComplexityHeaderTooltip>{0} this work type will {1} {2} complexity because:</MDR_WorkTypeComplexityHeaderTooltip>
     <MDR_SkillComplexityTooltip>{0} this skill will {1} {2} complexity.</MDR_SkillComplexityTooltip>
-    <MDR_SkillComplexityThresholdTooltip>{0} can have up to {1} points allocated before complexity costs double.</MDR_SkillComplexityThresholdTooltip>
     <MDR_Adding>adding</MDR_Adding> <!-- Adding/Removing used in {0} slot -->
     <MDR_Removing>removing</MDR_Removing>
     <MDR_Cost>cost</MDR_Cost> <!-- Cost/Refund used in {1} slot -->
