@@ -44,6 +44,18 @@ Example:
 </AlienRace.ThingDef_AlienRace>
 ```
 
+### Stats
+* In order to fully use the programmable drone system, your race will need to assign two stat bases so that their maximum complexity and maximum skill levels default correctly:
+    * MDR_ComplexityLimit: Baseline complexity for the race, and max complexity without any other effects active.
+    * MDR_SkillLimit: Hard cap on maximum skill level for the race. It is offset by the inherent skills of a race (IE. a drone with inherent 4 shooting and a skill limit of 5 can not have more than 9 in shooting)
+```xml
+<statBases>
+    <!-- ... -->
+    <MDR_ComplexityLimit MayRequire="Killathon.MechanicalHumanlikes.MechDronesReprogrammed">10</MDR_ComplexityLimit>
+    <MDR_SkillLimit MayRequire="Killathon.MechanicalHumanlikes.MechDronesReprogrammed">4</MDR_SkillLimit>
+</statBases>
+```
+
 ### Work Types
 * Work Types may have different complexity costs to enable and a minimum complexity requirement. If you want to apply custom costs to your custom work type, give it MDR_WorkTypeExtension. Options are explained here: [Work Type extension](https://github.com/RWDevathon/MH-Drones-Reprogrammed/blob/main/Source/v1.4/Extensions/WorkTypeExtensions.cs).
 * If you want to create a patch for another mod's work types, see here for examples: [Work Type extension patches](https://github.com/RWDevathon/MH-Drones-Reprogrammed/blob/main/1.4/Patches/MDR_WorkTypeExtensionPatch.xml).
