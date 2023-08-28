@@ -7,7 +7,7 @@
 </h3>
 
 # Description
-* A submod of Mechanical Humanlikes that completely changes how drones work to make them more interesting mechanically and intrinsically.
+* A submod of Mechanical Humanlikes that completely changes how drones work to make them more mechanically involved and configurable.
 
 ## Features
 * Any race that is a drone by MHC's settings may opt-in to the reprogramming mechanic via a def mod extension.

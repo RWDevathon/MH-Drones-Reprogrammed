@@ -33,6 +33,37 @@
                 <onlyApplyToSelf>true</onlyApplyToSelf>
             </li>
         </comps>
-      </AbilityDef>
+    </AbilityDef>
+
+    <AbilityDef>
+        <defName>MDR_InitiateInterferenceDirective</defName>
+        <label>trigger interference directives</label>
+        <description>Release an incredibly loud and painful metallic screech by scraping parts that are intentionally moved improperly while outputting a massive wave of radio signals so as to impair both organic and mechanical sensory devices. Doing this crashes the unit, requiring a full restart.</description>
+        <iconPath>UI/Icons/Gizmos/MHC_RestrictionGizmo</iconPath>
+        <cooldownTicksRange>6000</cooldownTicksRange>
+        <targetRequired>false</targetRequired>
+        <aiCanUse>false</aiCanUse>
+        <statBases>
+            <Ability_EffectRadius>6.9</Ability_EffectRadius>
+        </statBases>
+        <verbProperties>
+            <verbClass>Verb_CastAbility</verbClass>
+            <warmupTime>1</warmupTime>
+            <range>6.9</range>
+            <drawAimPie>false</drawAimPie>
+            <targetParams>
+                <canTargetSelf>true</canTargetSelf>
+            </targetParams>
+        </verbProperties>
+        <comps>
+            <li Class="MechHumanlikes.CompProperties_AbilityGiveHediffsUserTarget">
+                <compClass>MechHumanlikes.CompAbilityEffect_GiveHediffsUserTarget</compClass>
+                <hediffDefSelf>MHC_Restarting</hediffDefSelf>
+                <hediffDefTarget>MDR_DirectiveInterference</hediffDefTarget>
+                <severitySelf>0.5</severitySelf>
+                <severityTarget>1</severityTarget>
+            </li>
+        </comps>
+    </AbilityDef>
 
 </Defs>

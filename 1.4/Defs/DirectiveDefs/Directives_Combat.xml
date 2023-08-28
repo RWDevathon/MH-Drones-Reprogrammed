@@ -168,4 +168,20 @@
         </groupKindWeights>
     </MechHumanlikes.DirectiveDef>
 
+    <MechHumanlikes.DirectiveDef>
+        <defName>MDR_DirectiveInterference</defName>
+        <label>Interference Directives</label>
+        <description>Placeholder.</description>
+        <customEffectsDescription>Units with this directive gain an ability to hit all nearby pawns with interference that will cause pain, reduced hearing and psychic sensitivity, and may cause wandering mental breaks. Using the ability causes a crash, requiring a full restart of the drone.</customEffectsDescription>
+        <directiveClass>MechHumanlikes.Directive_AbilityGiver</directiveClass>
+        <abilities><li>MDR_InitiateInterferenceDirective</li></abilities>
+        <directiveCategory>Military</directiveCategory>
+        <complexityCost>1</complexityCost>
+        <groupKindWeights>
+            <li><key>Combat</key><value>-1</value></li>
+            <li><key>Peaceful</key><value>-1</value></li>
+            <li><key>Trader</key><value>-1</value></li>
+        </groupKindWeights>
+    </MechHumanlikes.DirectiveDef>
+
 </Defs>

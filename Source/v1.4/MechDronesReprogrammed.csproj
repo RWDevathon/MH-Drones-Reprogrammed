@@ -178,6 +178,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\AbilityComps\CompAbilityEffect_GiveHediffsUserTarget.cs" />
+    <Compile Include="Components\AbilityComps\CompProperties_AbilityGiveHediffsUserTarget.cs" />
     <Compile Include="Components\ThingComps\CompReprogrammableDrone.cs" />
     <Compile Include="Components\WorldDirectiveTicker.cs" />
     <Compile Include="DefOfs\MDR_DirectiveDefOf.cs" />

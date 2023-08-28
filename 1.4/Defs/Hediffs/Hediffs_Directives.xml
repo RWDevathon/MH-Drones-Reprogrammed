@@ -37,4 +37,41 @@
         </stages>
     </HediffDef>
 
+    <HediffDef>
+        <defName>MDR_DirectiveInterference</defName>
+        <label>interference</label>
+        <description>This individual has been hit by a concussive blast of overwhelming audio and radiological input, greatly impairing their hearing and focus, as well as causing a great deal of pain.</description>
+        <hediffClass>HediffWithComps</hediffClass>
+        <initialSeverity>1</initialSeverity>
+        <defaultLabelColor>(0.6, 0.6, 0.6)</defaultLabelColor>
+        <scenarioCanAdd>false</scenarioCanAdd>
+        <isBad>false</isBad>
+        <comps>
+            <li Class="HediffCompProperties_SeverityPerDay">
+                <severityPerDay>-2</severityPerDay>
+                <showHoursToRecover>true</showHoursToRecover>
+            </li>
+        </comps>
+        <stages>
+            <li>
+                <painOffset>0.2</painOffset>
+                <statFactors>
+                    <PsychicSensitivity>0.5</PsychicSensitivity>
+                </statFactors>
+                <capMods>
+                    <li>
+                        <capacity>Hearing</capacity>
+                        <postFactor>0.5</postFactor>
+                    </li>
+                </capMods>
+				<mentalStateGivers>
+					<li>
+						<mentalState>WanderConfused</mentalState>
+						<mtbDays>4</mtbDays>
+					</li>
+				</mentalStateGivers>
+            </li>
+        </stages>
+    </HediffDef>
+
 </Defs>
