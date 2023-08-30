@@ -171,7 +171,7 @@
     <MechHumanlikes.DirectiveDef>
         <defName>MDR_DirectiveInterference</defName>
         <label>Interference Directives</label>
-        <description>Placeholder.</description>
+        <description>The value of communication and hearing in all situations can not be overstated. Interfering with those capabilities is widely considered one of the most critical aspects of any conflict, both physical and non-physical. Because organics are unable to fully shut down their hearing, and mechanical units are always listening to any passing signals, interfering with those abilities is simple - just fill the air with overwhelming amounts of junk data.\n\nSpecialized directives can grant drones the ability to emit a massive disrupting wave of audio and radiological signals, greatly impairing nearby anyone nearby.</description>
         <customEffectsDescription>Units with this directive gain an ability to hit all nearby pawns with interference that will cause pain, reduced hearing and psychic sensitivity, and may cause wandering mental breaks. Using the ability causes a crash, requiring a full restart of the drone.</customEffectsDescription>
         <directiveClass>MechHumanlikes.Directive_AbilityGiver</directiveClass>
         <abilities><li>MDR_InitiateInterferenceDirective</li></abilities>

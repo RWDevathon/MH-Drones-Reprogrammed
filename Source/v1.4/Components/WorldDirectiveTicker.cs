@@ -19,11 +19,11 @@ namespace MechHumanlikes
 
         public WorldDirectiveTicker(World world) : base(world)
         {
-            for (int i = 250; i > 0; i--)
+            for (int i = GenTicks.TickRareInterval; i > 0; i--)
             {
                 rareTickDirectives.Add(new List<Directive>());
             }
-            for (int i = 2000; i > 0; i--)
+            for (int i = GenTicks.TickLongInterval; i > 0; i--)
             {
                 longTickDirectives.Add(new List<Directive>());
             }
@@ -33,10 +33,7 @@ namespace MechHumanlikes
         {
             foreach (Directive directive in directivesToRegister.Keys)
             {
-                Log.Warning("Directive " + directive.def.defName + " was registered and is being given a bucket now.");
-                List<Directive> bucket = BucketOf(directivesToRegister[directive], directive);
-                bucket.Add(directive);
-                Log.Warning("Directive " + directive.def.defName + " was given a bucket whose count is now " + bucket.Count);
+                BucketOf(directivesToRegister[directive], directive).Add(directive);
             }
             directivesToRegister.Clear();
 
@@ -49,38 +46,38 @@ namespace MechHumanlikes
             List<Directive> directives = tickDirectives;
             for (int i = directives.Count - 1; i >= 0; i--)
             {
-                if (Find.TickManager.TicksGame % 100 == 0)
-                {
-                    Log.Warning("Normal ticker for " + directives[i].def.defName + " is working.");
-                }
                 directives[i].Tick();
             }
 
-            directives = rareTickDirectives[Find.TickManager.TicksGame % 250];
+            directives = rareTickDirectives[Find.TickManager.TicksGame % GenTicks.TickRareInterval];
             for (int i = directives.Count - 1; i >= 0; i--)
             {
-                Log.Warning("Normal ticker for " + directives[i].def.defName + " is working.");
                 directives[i].TickRare();
             }
 
-            directives = longTickDirectives[Find.TickManager.TicksGame % 2000];
+            directives = longTickDirectives[Find.TickManager.TicksGame % GenTicks.TickLongInterval];
             for (int i = directives.Count - 1; i >= 0; i--)
             {
-                Log.Warning("Normal ticker for " + directives[i].def.defName + " is working.");
                 directives[i].TickLong();
+            }
+
+            if (GenTicks.TicksGame % GenTicks.TickLongInterval == 0)
+            {
+                foreach (Map map in Find.Maps)
+                {
+                    MDR_Utils.UpdateAmicableDroneCount(map);
+                }
             }
         }
 
         public void RegisterDirective(Directive directive, TickerType tickType)
         {
             directivesToRegister.Add(directive, tickType);
-            Log.Warning("Directive " + directive.def.defName + " has requested registration for " + tickType);
         }
 
         public void DeregisterDirective(Directive directive, TickerType tickType)
         {
             directivesToDeregister.Add(directive, tickType);
-            Log.Warning("Directive " + directive.def.defName + " has requested deregistration for " + tickType);
         }
 
         private List<Directive> BucketOf(TickerType type, Directive directive)
@@ -94,31 +91,13 @@ namespace MechHumanlikes
             switch (type)
             {
                 case TickerType.Normal:
-                    Log.Warning("Directive " + directive.def.defName + " has matched normal ticking.");
                     return tickDirectives;
                 case TickerType.Rare:
-                    Log.Warning("Directive " + directive.def.defName + " has matched rare ticking at the " + hashCode % 250 + " interval mark.");
-                    return rareTickDirectives[hashCode % 250];
+                    return rareTickDirectives[hashCode % GenTicks.TickRareInterval];
                 case TickerType.Long:
-                    Log.Warning("Directive " + directive.def.defName + " has matched long ticking at the " + hashCode % 2000 + " interval mark.");
-                    return longTickDirectives[hashCode % 2000];
+                    return longTickDirectives[hashCode % GenTicks.TickLongInterval];
                 default:
                     return null;
-            }
-        }
-
-        private int TickInterval(TickerType type)
-        {
-            switch (type)
-            {
-                case TickerType.Normal:
-                    return 1;
-                case TickerType.Rare:
-                    return 250;
-                case TickerType.Long:
-                    return 2000;
-                default:
-                    return -1;
             }
         }
     }

@@ -230,6 +230,7 @@
     <Compile Include="Recipes\Recipe_DroneDecreaseLevel.cs" />
     <Compile Include="Recipes\Recipe_ReprogramDrone.cs" />
     <Compile Include="StatWorkers\StatWorker_ProgrammableDrone.cs" />
+    <Compile Include="ThoughtWorkers\ThoughtWorker_DirectiveAmicability.cs" />
     <Compile Include="Utils\DroneSkillContext.cs" />
     <Compile Include="Utils\MDR_Textures.cs" />
     <Compile Include="Utils\MDR_Utils.cs" />

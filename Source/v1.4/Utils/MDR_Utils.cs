@@ -14,6 +14,8 @@ namespace MechHumanlikes
 
         public static List<string> directiveCategories = new List<string>();
 
+        public static Dictionary<Map, int> amicableDroneCount = new Dictionary<Map, int>();
+
         public static IEnumerable<ThingDef> ProgrammableDrones
         {
             get
@@ -445,6 +447,22 @@ namespace MechHumanlikes
                 }
                 pawnComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(requiredSkillComplexity + pawnComp.GetComplexityFromSource("Skills"))));
             }
+        }
+
+        public static void UpdateAmicableDroneCount(Map map)
+        {
+            List<Pawn> playerPawns = map.mapPawns.SpawnedPawnsInFaction(Faction.OfPlayer);
+            amicableDroneCount = new Dictionary<Map, int>();
+            int resultCount = 0;
+            for (int i = playerPawns.Count - 1; i >= 0; i--)
+            {
+                Pawn pawn = playerPawns[i];
+                if (IsProgrammableDrone(pawn) && pawn.GetComp<CompReprogrammableDrone>().ActiveDirectives.Contains(MDR_DirectiveDefOf.MDR_DirectiveAmicability))
+                {
+                    resultCount++;
+                }
+            }
+            amicableDroneCount[map] = resultCount;
         }
     }
 }
