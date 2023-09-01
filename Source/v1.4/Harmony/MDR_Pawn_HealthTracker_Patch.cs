@@ -14,7 +14,7 @@ namespace MechHumanlikes
             [HarmonyPrefix]
             public static bool Listener(Pawn_HealthTracker __instance, DamageInfo? dinfo, Hediff hediff, ref Pawn ___pawn)
             {
-                if (___pawn.Faction != Faction.OfPlayer && MDR_Utils.IsProgrammableDrone(___pawn) && ___pawn.GetComp<CompReprogrammableDrone>().ActiveDirectives.Contains(MDR_DirectiveDefOf.MDR_DirectiveMartyrdom))
+                if (MDR_Utils.IsProgrammableDrone(___pawn) && ___pawn.Faction != Faction.OfPlayerSilentFail && ___pawn.GetComp<CompReprogrammableDrone>().ActiveDirectives.Contains(MDR_DirectiveDefOf.MDR_DirectiveMartyrdom))
                 {
                     ___pawn.Kill(dinfo, hediff);
                     return false;

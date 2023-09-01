@@ -20,7 +20,13 @@ namespace MechHumanlikes
         {
             get
             {
-                return cachedProgrammableDrones;
+                for (int i = cachedProgrammableDrones.Count - 1; i >= 0; i--)
+                {
+                    if (MHC_Utils.IsConsideredMechanicalDrone(cachedProgrammableDrones[i]))
+                    {
+                        yield return cachedProgrammableDrones[i];
+                    }
+                }
             }
         }
 
