@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <MDR_DirectiveBerserker.label>директивы «Берсерк»</MDR_DirectiveBerserker.label>
+  <MDR_DirectiveBerserker.description>У этого дрона активированы директивы «берсерк», придающие ему неестественную прочность и быстроту реакции ценой повышенного энергопотребления. Любопытно, что действие директивы длится дольше, чем время, в течение которого датчики «друг/враг» находятся в автономном режиме, что означает, что юнит может воспользоваться директивой, принимая приказы после завершения начального состояния директивы.</MDR_DirectiveBerserker.description>
+
+  <MDR_DirectiveInterference.label>«Помехи»</MDR_DirectiveInterference.label>
+  <MDR_DirectiveInterference.description>Этот индивид подвергся сотрясающему воздействию мощного звукового и радиологического излучения, что значительно ухудшило его слух и концентрацию внимания, а также вызвало сильную боль.</MDR_DirectiveInterference.description>
+
+
+</LanguageData>

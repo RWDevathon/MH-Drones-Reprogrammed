@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <MDR_InvalidFor>{0} недопустимо на {1}, так как {2}</MDR_InvalidFor>
+  <MDR_MaxDirectivesExceeded>Выбрано {0} несвязных директив, но {1} может иметь только {2}</MDR_MaxDirectivesExceeded>
+  <MDR_CantRemoveInherentDirectives>{0} не может быть удалена, так как она является важной директивой {1}</MDR_CantRemoveInherentDirectives>
+
+</LanguageData>

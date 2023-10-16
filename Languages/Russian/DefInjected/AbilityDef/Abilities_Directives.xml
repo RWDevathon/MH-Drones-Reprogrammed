@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <MDR_InitiateBerserkDirective.label>запуск директив «Берсерк»</MDR_InitiateBerserkDirective.label>
+  <MDR_InitiateBerserkDirective.description>Дистанционное включение боевых протоколов и отключение датчиков «друг/враг» на несколько часов.</MDR_InitiateBerserkDirective.description>
+
+  <MDR_InitiateInterferenceDirective.label>запуск директив «Помехи»</MDR_InitiateInterferenceDirective.label>
+  <MDR_InitiateInterferenceDirective.description>Издаёт невероятно громкий и болезненный металлический визг, скребя деталями, которые намеренно неправильно перемещаются, при этом излучая мощную волну радиосигналов, чтобы нарушить работу как органических, так и механических сенсоров. При этом происходит сбой работы юнита, требующий его перезапуска.</MDR_InitiateInterferenceDirective.description>
+
+
+</LanguageData>

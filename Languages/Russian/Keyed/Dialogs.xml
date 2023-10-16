@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Reprogramming Dialog -->
+  <MDR_Directives>Директивы</MDR_Directives>
+  <MDR_SelectedDirectives>Активные директивы</MDR_SelectedDirectives>
+  <MDR_SetDroneDirectives>Выбрать директивы</MDR_SetDroneDirectives>
+  <MDR_SelectSkills>Выбрать навыки</MDR_SelectSkills>
+  <MDR_AddSkillLevel>+</MDR_AddSkillLevel>
+  <MDR_RemoveSkillLevel>-</MDR_RemoveSkillLevel>
+  <MDR_SelectedWorkTypes>Включённые типы работ</MDR_SelectedWorkTypes>
+  <MDR_Complexity>Сложность</MDR_Complexity>
+  <MDR_ComplexityDesc>Насколько сложным является программирование дрона.</MDR_ComplexityDesc>
+  <MDR_ComplexityDirectiveDesc>Сколько сложности добавляет эта директива в общем.</MDR_ComplexityDirectiveDesc>
+  <MDR_ComplexityEffects>Эффекты сложности</MDR_ComplexityEffects>
+  <MDR_ComplexityEffectsDesc>Эффект, который сложность наложит на пешку.</MDR_ComplexityEffectsDesc>
+  <MDR_ComplexityEffectPositive>Бонус эффективности</MDR_ComplexityEffectPositive>
+  <MDR_ComplexityEffectNeutral>Слабые эффекты</MDR_ComplexityEffectNeutral>
+  <MDR_ComplexityEffectNegative>Сильное снижение эффективности</MDR_ComplexityEffectNegative>
+  <MDR_ComplexityLimitExceeded>Превышен лимит сложности {0} при общей сложности {1}. Это приведёт к серьёзным негативным последствиям!</MDR_ComplexityLimitExceeded>
+  <MDR_BaselineComplexity>Базовая сложность</MDR_BaselineComplexity>
+  <MDR_BaselineComplexityDesc>С каким уровнем сложности может справиться юнит, не выходя за стандартные пределы или не компенсируя сложность.</MDR_BaselineComplexityDesc>
+  <MDR_ReprogramDrone>Перепрограммировать {0}.</MDR_ReprogramDrone>
+
+  <!-- Tooltips for the reprogramming dialogs -->
+  <MDR_CantRemoveInherentWorkTypes>{0} не может быть удалён, так как является врождённым типом работы {1}. Врождённые типы работ не имеют сложности.</MDR_CantRemoveInherentWorkTypes>
+  <MDR_CantExceedSkillMax>{0} не может обладать навыком выше {1}, ограничиваясь качествами, присущими данному типу дрона.</MDR_CantExceedSkillMax>
+  <MDR_CantExceedSkillMin>{0} не может иметь меньше минимального уровня навыка. Отключение навыков возможно только при отключении всех соответствующих видов работ (некоторые из которых могут быть важными и не иметь сложности).</MDR_CantExceedSkillMin>
+  <MDR_HasInherentSkills>{0} имеет {2} врождённых {1} очков навыков и не может быть запрограммирован на более низкий уровень навыка. Врождённые навыки не имеют сложности.</MDR_HasInherentSkills>
+  <MDR_WorkTypeComplexityHeaderTooltip>{0} этот тип работы будет {1} {2} сложным, потому что:</MDR_WorkTypeComplexityHeaderTooltip>
+  <MDR_SkillComplexityTooltip>{0} этот навык будет {1} {2} сложнее.</MDR_SkillComplexityTooltip>
+  <MDR_Adding>добавление</MDR_Adding>  <!-- Adding/Removing used in {0} slot -->
+  <MDR_Removing>удаление</MDR_Removing>
+  <MDR_Cost>стоимость</MDR_Cost>  <!-- Cost/Refund used in {1} slot -->
+  <MDR_Refund>возврат</MDR_Refund>
+  <MDR_WorkTypeComplexityBaseTooltip>{0} имеет базовую сложность {1}</MDR_WorkTypeComplexityBaseTooltip>
+  <MDR_WorkTypeComplexitySkillsTooltip>{0} позволяет получить навыки сложности {1}</MDR_WorkTypeComplexitySkillsTooltip>
+  <MDR_WorkTypeComplexitySkillsUnusedTooltip>- При удалении типа работы возвращаются все очки навыков, которые были бы отключены.</MDR_WorkTypeComplexitySkillsUnusedTooltip>
+
+</LanguageData>
