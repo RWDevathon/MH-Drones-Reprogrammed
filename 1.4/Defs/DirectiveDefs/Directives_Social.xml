@@ -8,6 +8,7 @@
         <customEffectsDescription>Drones with this directive give a small constant mood buff to sapients on the map. (Note: effect only applies to players, updates infrequently for performance)</customEffectsDescription>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Social</directiveCategory>
+        <iconPath>UI/Icons/Directive_Amicability</iconPath>
         <complexityCost>1</complexityCost>
         <groupKindWeights>
             <li><key>Combat</key><value>-1</value></li>

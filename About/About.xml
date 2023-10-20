@@ -25,7 +25,8 @@
         <li>erdelf.HumanoidAlienRaces</li><!-- Dependency -->
     </loadAfter>
     <description><![CDATA[MHDR is a submod of MHC to give drones greater flexibility, specialization, and generally more mechanics.
-        Programmable drones have their work types and skills configured in order to carry out those tasks, and can benefit from unique directives.
 
-        Version <color=#FFD800>0.1.0</color> with more to come.]]></description>
+Programmable drones have their work types and skills configured in order to carry out those tasks, and can benefit from unique directives.
+
+Version <color=#FFD800>1.0.0</color> with more to come.]]></description>
 </ModMetaData>

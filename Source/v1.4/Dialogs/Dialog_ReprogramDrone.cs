@@ -43,6 +43,8 @@ namespace MechHumanlikes
 
         private static readonly CachedTexture backgroundTexture = new CachedTexture("UI/Icons/Settings/DrawPocket");
 
+        private const float directiveBlockHeight = 80f;
+
         private int ProposedComplexity => programComp.Complexity;
 
         protected override float Margin => 12f;
@@ -239,10 +241,9 @@ namespace MechHumanlikes
             }
             yIndex += 30f + Margin;
             float directiveBlockWidth = (rect.width - (4 * Margin)) / 3;
-            float directiveBlockHeight = 80f;
             float xMaxIndex = rect.x + rect.width;
             float directiveBlockWithMarginWidth = directiveBlockWidth + Margin;
-            float directiveIconSize = Mathf.Min(directiveBlockWidth - Margin / 3, directiveBlockHeight - (Margin / 4));
+            float directiveIconSize = Mathf.Min(directiveBlockWidth - Margin / 3, directiveBlockHeight - (Margin / 2));
             Rect contentBGSection = new Rect(xIndex, yIndex, rect.width, rect.height);
             Widgets.DrawRectFast(contentBGSection, Widgets.MenuSectionBGFillColor);
             xIndex += Margin;
@@ -286,21 +287,23 @@ namespace MechHumanlikes
                     xIndex += statTextWidth + (Margin / 3);
 
                     // Icon section
-                    Rect directiveSection = new Rect(xIndex, yIndex + (Margin / 3), directiveBlockWidth - statTextWidth - Margin, directiveBlockHeight - (2 * Margin / 3));
+                    Rect directiveSection = new Rect(xIndex, yIndex + (Margin / 4), directiveBlockWidth - statTextWidth - Margin, directiveBlockHeight);
                     GUI.BeginGroup(directiveSection);
-                    Rect blockIconSection = new Rect(directiveSection.width - directiveIconSize, 0f, directiveIconSize, directiveIconSize);
-                    GUI.DrawTexture(blockIconSection, backgroundTexture.Texture);
-                    Widgets.DefIcon(blockIconSection, directiveDef, null, 0.9f, null, drawPlaceholder: false);
+                    Rect iconSection = new Rect(directiveSection.width - directiveIconSize, 0f, directiveIconSize, directiveIconSize);
+                    GUI.DrawTexture(iconSection, backgroundTexture.Texture);
+                    Widgets.DrawTextureFitted(iconSection, directiveDef.Icon, 0.9f);
+                    GUI.EndGroup();
+
+                    // Label section
                     Text.Font = GameFont.Tiny;
-                    float directiveLabelHeight = Text.CalcHeight(directiveDef.LabelCap, directiveSection.width);
-                    Rect directiveLabelBackground = new Rect(0f, blockSection.yMax - directiveLabelHeight, blockSection.width, directiveLabelHeight);
-                    GUI.DrawTexture(new Rect(directiveLabelBackground.x, directiveLabelBackground.yMax - directiveLabelHeight, directiveLabelBackground.width, directiveLabelHeight), TexUI.GrayTextBG);
-                    Text.Anchor = TextAnchor.LowerCenter;
+                    float directiveLabelHeight = Text.CalcHeight(directiveDef.LabelCap, blockSection.width);
+                    Rect directiveLabelBackground = new Rect(blockSection.x, blockSection.y + directiveBlockHeight - directiveLabelHeight, blockSection.width, directiveLabelHeight);
+                    GUI.DrawTexture(new Rect(blockSection.x, blockSection.y + directiveBlockHeight - directiveLabelHeight, directiveLabelBackground.width, directiveLabelHeight), TexUI.GrayTextBG);
+                    Text.Anchor = TextAnchor.MiddleCenter;
                     Widgets.Label(directiveLabelBackground, directiveDef.LabelCap);
-                    GUI.color = Color.white;
                     Text.Anchor = TextAnchor.UpperLeft;
                     Text.Font = GameFont.Small;
-                    GUI.EndGroup();
+
                     if (Mouse.IsOver(directiveSection))
                     {
                         TooltipHandler.TipRegion(directiveSection, delegate

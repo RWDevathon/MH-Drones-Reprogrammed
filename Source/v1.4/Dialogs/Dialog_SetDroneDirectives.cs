@@ -337,23 +337,26 @@ namespace MechHumanlikes
                 TooltipHandler.TipRegion(statSection, "MDR_Complexity".Translate().Colorize(ColoredText.TipSectionTitleColor) + "\n\n" + "MDR_ComplexityDirectiveDesc".Translate());
             }
             xIndex += statTextWidth + (Margin / 3);
+            yIndex += Margin / 2;
 
             // Icon section
-            Rect iconWrapperSection = new Rect(xIndex, yIndex + (Margin / 2), directiveBlockWidth - statTextWidth - Margin, directiveBlockHeight - Margin);
+            Rect iconWrapperSection = new Rect(xIndex, yIndex, directiveBlockWidth - statTextWidth - Margin, directiveBlockHeight);
             GUI.BeginGroup(iconWrapperSection);
             Rect iconSection = new Rect(iconWrapperSection.width - directiveIconSize, 0f, directiveIconSize, directiveIconSize);
             GUI.DrawTexture(iconSection, backgroundTexture.Texture);
-            Widgets.DefIcon(iconSection, directiveDef, null, 0.9f, null, drawPlaceholder: false);
+            Widgets.DrawTextureFitted(iconSection, directiveDef.Icon, 0.9f);
+            GUI.EndGroup();
+
+            // Label section
             Text.Font = GameFont.Tiny;
-            float directiveLabelHeight = Text.CalcHeight(directiveDef.LabelCap, iconWrapperSection.width);
-            Rect directiveLabelBackground = new Rect(0f, blockSection.yMax - directiveLabelHeight, blockSection.width, directiveLabelHeight);
-            GUI.DrawTexture(new Rect(directiveLabelBackground.x, directiveLabelBackground.yMax - directiveLabelHeight, directiveLabelBackground.width, directiveLabelHeight), TexUI.GrayTextBG);
-            Text.Anchor = TextAnchor.LowerCenter;
+            float directiveLabelHeight = Text.CalcHeight(directiveDef.LabelCap, blockSection.width);
+            Rect directiveLabelBackground = new Rect(blockSection.x, blockSection.y + directiveBlockHeight - directiveLabelHeight, blockSection.width, directiveLabelHeight);
+            GUI.DrawTexture(new Rect(blockSection.x, blockSection.y + directiveBlockHeight - directiveLabelHeight, directiveLabelBackground.width, directiveLabelHeight), TexUI.GrayTextBG);
+            Text.Anchor = TextAnchor.MiddleCenter;
             Widgets.Label(directiveLabelBackground, directiveDef.LabelCap);
-            GUI.color = Color.white;
             Text.Anchor = TextAnchor.UpperLeft;
             Text.Font = GameFont.Small;
-            GUI.EndGroup();
+
             if (Mouse.IsOver(iconWrapperSection))
             {
                 TooltipHandler.TipRegion(iconWrapperSection, delegate
@@ -442,6 +445,7 @@ namespace MechHumanlikes
             if (!selectedDirectives.NullOrEmpty() && selectedDirectives.Count - inherentDirectiveCount > maxDirectives)
             {
                 Messages.Message("MDR_MaxDirectivesExceeded".Translate(selectedDirectives.Count - inherentDirectiveCount, pawn.LabelShortCap, maxDirectives), null, MessageTypeDefOf.RejectInput, historical: false);
+                return false;
             }
             return true;
         }
@@ -481,7 +485,6 @@ namespace MechHumanlikes
         {
             programComp.UpdateComplexity("Active Directives", directiveComplexity);
             programComp.SetDirectives(selectedDirectives);
-            Log.Warning("[Directives] Count: " + programComp.ActiveDirectives.Count());
             Close();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using RimWorld;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace MechHumanlikes
@@ -194,6 +195,19 @@ namespace MechHumanlikes
                     }
                 };
                 yield return subtract1BaselineComplexityFromRace;
+                Command_Action printDirectives = new Command_Action
+                {
+                    defaultLabel = "DEV: Print Active Directives",
+                    action = delegate
+                    {
+                        Log.Warning("[Directives] Count: " + ActiveDirectives.Count());
+                        foreach (DirectiveDef directive in ActiveDirectives)
+                        {
+                            Log.Warning("[MHC] " + directive.defName);
+                        }
+                    }
+                };
+                yield return printDirectives;
             }
             yield break;
         }
@@ -225,6 +239,7 @@ namespace MechHumanlikes
                 // Directives should have their pawn reference set and any tickers restored.
                 foreach (Directive directive in directives)
                 {
+                    directiveDefs.Add(directive.def);
                     directive.pawn = Pawn;
                     if (directive.def.tickerType != TickerType.Never)
                     {

@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Verse;
+using Verse.Noise;
 
 namespace MechHumanlikes
 {
     public class ITab_Programming : ITab
     {
-        public override bool IsVisible => CanShowProgrammingTab();
-
-        protected override bool StillValid => base.StillValid && CanShowProgrammingTab();
-
         private const float margin = 12f;
 
         private Vector2 scrollPosition;
@@ -68,16 +65,14 @@ namespace MechHumanlikes
                     }
                     Rect directiveSect = new Rect(xIndex, yIndex, directiveBlockSize, directiveBlockSize);
                     Widgets.DrawOptionBackground(directiveSect, false);
+                    Widgets.DrawTextureFitted(directiveSect, directive.Icon, 0.75f);
                     GUI.BeginGroup(directiveSect);
-                    Widgets.DefIcon(directiveSect, directive, null, 0.9f, null, drawPlaceholder: false);
                     float directiveLabelHeight = Text.CalcHeight(directive.LabelCap, directiveSect.width);
-                    Rect directiveLabelSect = new Rect(0f, directiveSect.yMax - directiveLabelHeight, directiveSect.width, directiveLabelHeight);
-                    GUI.DrawTexture(new Rect(directiveLabelSect.x, directiveLabelSect.yMax - directiveLabelHeight, directiveLabelSect.width, directiveLabelHeight), TexUI.GrayTextBG);
-                    Text.Anchor = TextAnchor.LowerCenter;
+                    Rect directiveLabelSect = new Rect(0, directiveBlockSize - directiveLabelHeight, directiveSect.width, directiveLabelHeight);
+                    GUI.DrawTexture(new Rect(0, directiveLabelSect.y, directiveLabelSect.width, directiveLabelHeight), TexUI.GrayTextBG);
+                    Text.Anchor = TextAnchor.MiddleCenter;
                     Widgets.Label(directiveLabelSect, directive.LabelCap);
-                    GUI.color = Color.white;
                     Text.Anchor = TextAnchor.UpperLeft;
-                    Text.Font = GameFont.Small;
                     GUI.EndGroup();
                     if (Mouse.IsOver(directiveSect))
                     {
@@ -105,14 +100,9 @@ namespace MechHumanlikes
             Widgets.Label(complexityLabelSect, "MDR_Complexity".Translate());
             Text.Anchor = TextAnchor.MiddleCenter;
             string complexityRelationText = complexity.ToString() + " / " + programComp.MaxComplexity.ToString();
-            Widgets.Label(new Rect(complexityLabelSect.xMax + margin, 0f, Text.CalcSize(complexityRelationText).x, summaryHeight), complexityRelationText);
+            Widgets.Label(new Rect(complexityLabelSect.xMax + margin, 0f, Text.CalcSize(complexityRelationText).x + margin, summaryHeight), complexityRelationText);
             Text.Anchor = TextAnchor.UpperLeft;
             GUI.EndGroup();
-        }
-
-        private bool CanShowProgrammingTab()
-        {
-            return SelThing is Pawn pawn && MDR_Utils.IsProgrammableDrone(pawn);
         }
     }
 }

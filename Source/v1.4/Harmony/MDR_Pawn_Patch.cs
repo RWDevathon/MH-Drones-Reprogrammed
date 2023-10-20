@@ -23,8 +23,7 @@ namespace MechHumanlikes
                         List<WorkTypeDef> enabledWorkTypes = __instance.GetComp<CompReprogrammableDrone>().enabledWorkTypes;
                         if (enabledWorkTypes == null || enabledWorkTypes.Count == 0)
                         {
-                            Log.Warning("[MDR] Pawn " + __instance.LabelShortCap + " has no enabled work types!");
-                            return true;
+                            return false;
                         }
                         else
                         {

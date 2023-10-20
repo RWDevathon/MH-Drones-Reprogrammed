@@ -70,7 +70,7 @@ namespace MechHumanlikes
                 {
                     if (iconPath.NullOrEmpty())
                     {
-                        cachedIcon = BaseContent.BadTex;
+                        cachedIcon = MDR_Textures.complexityIcon;
                     }
                     else
                     {

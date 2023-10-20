@@ -35,7 +35,7 @@ namespace MechHumanlikes
             foreach (ThingDef thingDef in DefDatabase<ThingDef>.AllDefsListForReading)
             {
                 // Programmable drones have a race and a programmable drone pawn extension, and should have the programming ITab.
-                if (thingDef.race != null && thingDef.GetModExtension<MDR_ProgrammableDroneExtension>() is MDR_ProgrammableDroneExtension extension)
+                if (thingDef.race != null && MHC_Utils.IsConsideredMechanicalDrone(thingDef) && thingDef.GetModExtension<MDR_ProgrammableDroneExtension>() is MDR_ProgrammableDroneExtension extension)
                 {
                     MDR_Utils.cachedProgrammableDrones.Add(thingDef);
 
