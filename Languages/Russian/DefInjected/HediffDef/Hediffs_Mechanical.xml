@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <MDR_NoProgramming.label>Пустой Дрон</MDR_NoProgramming.label>
+  <MDR_NoProgramming.description>Юнит не имеет программы и является неактивным.</MDR_NoProgramming.description>
+
+  <MDR_ComplexityRelation.label>деформация сложности</MDR_ComplexityRelation.label>
+  <MDR_ComplexityRelation.description>Данный юнит испытывает побочные эффекты, связанные с текущим уровнем программирования относительно его максимальной сложности. Если мощность дрона ниже базовой, то он получает незначительную прибавку.</MDR_ComplexityRelation.description>
+
+  <MDR_EnhancedComplexity.label>дополнительная память</MDR_EnhancedComplexity.label>
+  <MDR_EnhancedComplexity.description>У этого юнита установлена дополнительная память и прочие компоненты, что позволяет повысить его сложность. Превышение стандартных расчётных параметров приводит к потере мощности и эффективности техобслуживания.</MDR_EnhancedComplexity.description>
+
+
+</LanguageData>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Baseline Complexity Capacity -->
+
+  <MDR_ComplexityLimit.label>потенциал сложности</MDR_ComplexityLimit.label>
+  <MDR_ComplexityLimit.description>С каким уровнем сложности может справиться юнит, не выходя за стандартные пределы или не компенсируя сложность.</MDR_ComplexityLimit.description>
+
+
+  <!-- Baseline Skill Capacity -->
+
+  <MDR_SkillLimit.label>потенциал навыков</MDR_SkillLimit.label>
+  <MDR_SkillLimit.description>Максимальный уровень навыков, которым может обладать данный юнит в разных областях, компенсируемый врождёнными навыками.</MDR_SkillLimit.description>
+
+
+</LanguageData>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <MDR_LowComplexityHediffLabel>Слабое</MDR_LowComplexityHediffLabel>
+  <MDR_NormalComplexityHediffLabel>Умеренное</MDR_NormalComplexityHediffLabel>
+  <MDR_HighComplexityHediffLabel>Высокое</MDR_HighComplexityHediffLabel>
+
+</LanguageData>

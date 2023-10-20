@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Surgery to reprogram drones to serve the colony -->
+
+  <MDR_ReprogramDrone.label>перепрограммировать дрон</MDR_ReprogramDrone.label>
+  <MDR_ReprogramDrone.description>Перепрограммирование дрона — трудоёмкая, но безвредная операция, позволяющая распределить его рабочие возможности, навыки и директивы.</MDR_ReprogramDrone.description>
+  <MDR_ReprogramDrone.jobString>Перепрограммирует дрон.</MDR_ReprogramDrone.jobString>
+
+
+  <!-- Surgery to remove programming from a programmed drone -->
+
+  <MDR_RemoveProgramming.label>удаление программы</MDR_RemoveProgramming.label>
+  <MDR_RemoveProgramming.description>Простая операция, позволяющая удалить все директивы и программы с дрона, оставив его пустым, в режиме ожидания.</MDR_RemoveProgramming.description>
+  <MDR_RemoveProgramming.jobString>Перепрограммирует дрон.</MDR_RemoveProgramming.jobString>
+
+
+  <!-- Surgery to provide drones with higher complexity -->
+
+  <MDR_InstallAdditionalHardware.label>установить дополнительное оборудование</MDR_InstallAdditionalHardware.label>
+  <MDR_InstallAdditionalHardware.description>Большее количество аппаратных средств не всегда означает большую вычислительную мощность, но дополнительная память и аппаратные средства могут повысить максимальную сложность дрона за счет снижения энергопотребления и эффективности техобслуживания.</MDR_InstallAdditionalHardware.description>
+  <MDR_InstallAdditionalHardware.jobString>Установка оборудования.</MDR_InstallAdditionalHardware.jobString>
+
+
+  <!-- Surgery to remove some of the drone's extra higher complexity -->
+
+  <MDR_RemoveAdditionalHardware.label>удалить дополнительное оборудование</MDR_RemoveAdditionalHardware.label>
+  <MDR_RemoveAdditionalHardware.description>Иногда, превышение стандартных физических характеристик юнита, уже не требуется. Дроны, к счастью, не жалуются, когда приходит время убрать то, что делает их более совершенными. Однако им требуется перезапуск, для адаптации к потерянной мощности.</MDR_RemoveAdditionalHardware.description>
+  <MDR_RemoveAdditionalHardware.jobString>Установка оборудования.</MDR_RemoveAdditionalHardware.jobString>
+
+
+</LanguageData>

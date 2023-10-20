@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <MDR_IncapableOfTooltipProgramming>Вызвано программированием</MDR_IncapableOfTooltipProgramming>
+  <MDR_DirectiveDefHeader>В активном состоянии применяются:</MDR_DirectiveDefHeader>
+  <MDR_DirectiveDefAbilities>Эта директива предоставляет такие возможности: {0}</MDR_DirectiveDefAbilities>
+  <MDR_DirectiveDefHediff>Директива связана с {0}</MDR_DirectiveDefHediff>
+  <MDR_DirectiveDefStatOffsetHeader>Stat offsets:</MDR_DirectiveDefStatOffsetHeader>
+  <MDR_DirectiveDefStatFactorHeader>Stat factors:</MDR_DirectiveDefStatFactorHeader>
+  <MDR_DirectiveDefStatIndent>- {0}: {1}</MDR_DirectiveDefStatIndent>
+  <MDR_DirectiveDefEnergyConsumptionFactor>Энергопотребление: {0}</MDR_DirectiveDefEnergyConsumptionFactor>
+  <MDR_StatsReport_Directives>Директивы</MDR_StatsReport_Directives>
+
+</LanguageData>

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <MDR_DirectiveBerserker.label>директивы «Берсерк»</MDR_DirectiveBerserker.label>
+  <MDR_DirectiveBerserker.recoveryMessage>Действие директив «Берсерк» у {0} прекратилось.</MDR_DirectiveBerserker.recoveryMessage>
+  <MDR_DirectiveBerserker.baseInspectLine>Психическое состояние: Директивы «Берсерк»</MDR_DirectiveBerserker.baseInspectLine>
+
+
+</LanguageData>
