@@ -111,19 +111,7 @@ namespace MechHumanlikes
                 }
             }
 
-            // Initialize enabledWorkTypes with those that are inherent to this pawn's race. They have no cost and do not reduce the number of free work types.
-            foreach (WorkTypeDef workTypeDef in Pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>().inherentWorkTypes)
-            {
-                enabledWorkTypes.Add(workTypeDef);
-            }
-            // Programmable drones may also inherently do any task which has no associated work tags and no relevant skills, like bed resting.
-            foreach (WorkTypeDef workTypeDef in DefDatabase<WorkTypeDef>.AllDefs)
-            {
-                if (workTypeDef.relevantSkills.NullOrEmpty() && workTypeDef.workTags == WorkTags.None)
-                {
-                    enabledWorkTypes.Add(workTypeDef);
-                }
-            }
+            InitializeEnabledWorkTypes();
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -170,47 +158,10 @@ namespace MechHumanlikes
                         }
                     }
                 };
-                yield return subtract1Complexity;
-                Command_Action add1BaselineComplexityToRace = new Command_Action
-                {
-                    defaultLabel = "DEV: Add 1 Baseline Complexity To Race",
-                    action = delegate
-                    {
-                        StatModifier complexityStat = Pawn.def.statBases.Find(match => match.stat == MDR_StatDefOf.MDR_ComplexityLimit);
-                        complexityStat.value += 1;
-                        cachedBaselineComplexity = (int)complexityStat.value;
-                        complexityHediff.UpdateHediffStage();
-                    }
-                };
-                yield return add1BaselineComplexityToRace;
-                Command_Action subtract1BaselineComplexityFromRace = new Command_Action
-                {
-                    defaultLabel = "DEV: Subtract 1 Baseline Complexity From Race",
-                    action = delegate
-                    {
-                        StatModifier complexityStat = Pawn.def.statBases.Find(match => match.stat == MDR_StatDefOf.MDR_ComplexityLimit);
-                        complexityStat.value -= 1;
-                        cachedBaselineComplexity = (int)complexityStat.value;
-                        complexityHediff.UpdateHediffStage();
-                    }
-                };
-                yield return subtract1BaselineComplexityFromRace;
-                Command_Action printDirectives = new Command_Action
-                {
-                    defaultLabel = "DEV: Print Active Directives",
-                    action = delegate
-                    {
-                        Log.Warning("[Directives] Count: " + ActiveDirectives.Count());
-                        foreach (DirectiveDef directive in ActiveDirectives)
-                        {
-                            Log.Warning("[MHC] " + directive.defName);
-                        }
-                    }
-                };
-                yield return printDirectives;
             }
             yield break;
         }
+
         public override void PostExposeData()
         {
             base.PostExposeData();
@@ -222,7 +173,15 @@ namespace MechHumanlikes
             {
                 if (enabledWorkTypes == null)
                 {
-                    enabledWorkTypes = new List<WorkTypeDef>();
+                    InitializeEnabledWorkTypes();
+                }
+                if (complexitySources == null)
+                {
+                    complexitySources = new Dictionary<string, int>();
+                }
+                if (directives == null)
+                {
+                    directives = new List<Directive>();
                 }
                 RecalculateComplexity();
                 // Cache the baseline complexity stat from the pawn's statBases. Do this exactly once as it does not change without reloading the game.
@@ -237,6 +196,7 @@ namespace MechHumanlikes
                     }
                 }
                 // Directives should have their pawn reference set and any tickers restored.
+                directiveDefs = new List<DirectiveDef>();
                 foreach (Directive directive in directives)
                 {
                     directiveDefs.Add(directive.def);
@@ -281,6 +241,25 @@ namespace MechHumanlikes
             }
         }
 
+        // Initialize inherent work tasks for the drone as per the race and work types that should always be permitted.
+        public void InitializeEnabledWorkTypes()
+        {
+            enabledWorkTypes = new List<WorkTypeDef> {};
+            // Initialize enabledWorkTypes with those that are inherent to this pawn's race. They have no cost and do not reduce the number of free work types.
+            foreach (WorkTypeDef workTypeDef in Pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>().inherentWorkTypes)
+            {
+                enabledWorkTypes.Add(workTypeDef);
+            }
+            // Programmable drones may also inherently do any task which has no associated work tags and no relevant skills, like bed resting.
+            foreach (WorkTypeDef workTypeDef in DefDatabase<WorkTypeDef>.AllDefs)
+            {
+                if (workTypeDef.relevantSkills.NullOrEmpty() && workTypeDef.workTags == WorkTags.None)
+                {
+                    enabledWorkTypes.Add(workTypeDef);
+                }
+            }
+        }
+
         // Take a source as the key value and an int as the value to update, and recalculate complexity.
         // If source does not exist as a key and value is not 0, then add it as a source.
         // If the source exists, update its existing value. If value is 0, remove the source and value.
@@ -318,7 +297,7 @@ namespace MechHumanlikes
         public void RecalculateComplexity()
         {
             int sum = 0;
-            foreach (int complexity in complexitySources.Values) 
+            foreach (int complexity in complexitySources.Values)
             {
                 sum += complexity;
             }

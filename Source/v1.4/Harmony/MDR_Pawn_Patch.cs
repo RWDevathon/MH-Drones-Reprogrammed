@@ -23,7 +23,7 @@ namespace MechHumanlikes
                         List<WorkTypeDef> enabledWorkTypes = __instance.GetComp<CompReprogrammableDrone>().enabledWorkTypes;
                         if (enabledWorkTypes == null || enabledWorkTypes.Count == 0)
                         {
-                            return false;
+                            ___cachedDisabledWorkTypes = allWorkTypes.ToList();
                         }
                         else
                         {
