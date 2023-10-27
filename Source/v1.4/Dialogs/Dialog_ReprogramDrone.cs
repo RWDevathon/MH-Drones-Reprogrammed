@@ -35,7 +35,7 @@ namespace MechHumanlikes
 
         private const float WidthWithTabs = 1500f;
 
-        private const float OptionTabIn = 30f;
+        private const float ButtonHeight = 30f;
 
         private float summaryCachedWidth = -1;
 
@@ -82,14 +82,19 @@ namespace MechHumanlikes
 
         public override void DoWindowContents(Rect inRect)
         {
-            Text.Font = GameFont.Small;
+            Text.Font = GameFont.Medium;
             float curX = 0f;
             float curY = 0f;
             TaggedString title = "MDR_ReprogramDrone".Translate(pawn.LabelShortCap);
             float titleWidth = Text.CalcSize(title).x;
             Widgets.Label(curX, ref curY, titleWidth, title);
+            Text.Font = GameFont.Small;
             Widgets.InfoCardButton(inRect.width - (3 * Margin), 0f, pawn);
             curY += Margin;
+            if (Event.current.type == EventType.Layout)
+            {
+                scrollHeight = 700f;
+            }
             Rect workTypeRect = new Rect(curX, curY, 240, scrollHeight);
             proposedEnabledWorkTypes = programComp.enabledWorkTypes;
             DrawWorkTypes(workTypeRect);
@@ -100,18 +105,14 @@ namespace MechHumanlikes
             Rect directiveRect = new Rect(curX, curY, 450, scrollHeight);
             DrawDirectives(directiveRect);
             curX += 450 + Margin;
-            if (Event.current.type == EventType.Layout)
-            {
-                scrollHeight = 700f;
-            }
             Rect cardSection = new Rect(curX, curY, 600f, scrollHeight);
             cardSection.xMin += 2f * Margin;
             cardSection.yMax -= Margin + CloseButSize.y;
             cardSection.yMin += 32f;
             CharacterCardUtility.DrawCharacterCard(cardSection, pawn, null, default, showName: true);
-            Rect summaryRect = new Rect(Margin, inRect.height - Text.LineHeight * 4.5f - Margin, inRect.width - CloseButSize.x - (2 * Margin), Text.LineHeight * 4.5f);
+            Rect summaryRect = new Rect(Margin, inRect.height - Text.LineHeight * 4.5f - Margin, inRect.width - CloseButSize.x - (5 * Margin), Text.LineHeight * 4.5f);
             DrawSummary(summaryRect);
-            Rect closeButton = new Rect(inRect.width - CloseButSize.x, inRect.height - CloseButSize.y - Margin, CloseButSize.x, CloseButSize.y);
+            Rect closeButton = new Rect(inRect.width - CloseButSize.x - (3 * Margin), inRect.height - CloseButSize.y - Margin, CloseButSize.x, CloseButSize.y);
             if (Widgets.ButtonText(closeButton, "OK".Translate()))
             {
                 Accept();
@@ -120,20 +121,27 @@ namespace MechHumanlikes
 
         private void DrawWorkTypes(Rect rect)
         {
-            Listing_Standard listingStandard = new Listing_Standard();
-            listingStandard.Begin(rect);
-            listingStandard.Label("MDR_SelectedWorkTypes".Translate());
+            RectDivider workSection = new RectDivider(rect, 8102830, new Vector2(0, 0));
+            TaggedString sectionLabel = "MDR_SelectedWorkTypes".Translate();
+            Widgets.Label(workSection.NewRow(Text.CalcHeight(sectionLabel, workSection.Rect.width)), sectionLabel);
             foreach (WorkTypeDef workTypeDef in legalWorkTypes)
             {
                 bool active = proposedEnabledWorkTypes.Contains(workTypeDef);
-                if (listingStandard.RadioButton(workTypeDef.labelShort.CapitalizeFirst(), active, OptionTabIn, WorkTypeComplexityTooltip(workTypeDef, !active)))
+                bool originalState = active;
+
+                RectDivider typeDefSection = workSection.NewRow(ButtonHeight);
+                TooltipHandler.TipRegion(typeDefSection.Rect, WorkTypeComplexityTooltip(workTypeDef, !active));
+                Widgets.CheckboxLabeled(typeDefSection.Rect, workTypeDef.labelShort.CapitalizeFirst(), ref active);
+
+                if (originalState != active)
                 {
                     if (programExtension.inherentWorkTypes.NotNullAndContains(workTypeDef))
                     {
+                        active = originalState;
                         continue;
                     }
 
-                    if (active)
+                    if (!active)
                     {
                         programComp.enabledWorkTypes.Remove(workTypeDef);
                         proposedWorkTypeComplexity -= workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ComplexityCostFor(pawn, false) ?? 1;
@@ -168,14 +176,13 @@ namespace MechHumanlikes
                     programComp.UpdateComplexity("Work Types", proposedWorkTypeComplexity);
                 }
             }
-            listingStandard.End();
         }
 
         private void DrawSkills(Rect rect)
         {
-            Listing_Standard listingStandard = new Listing_Standard();
-            listingStandard.Begin(rect);
-            listingStandard.Label("MDR_SelectSkills".Translate());
+            RectDivider skillSection = new RectDivider(rect, 8102830, new Vector2(0, Margin / 2));
+            TaggedString sectionLabel = "MDR_SelectSkills".Translate();
+            Widgets.Label(skillSection.NewRow(Text.CalcHeight(sectionLabel, skillSection.Rect.width)), sectionLabel);
             foreach (SkillDef skillDef in skillDefs)
             {
                 SkillRecord skill = pawn.skills.GetSkill(skillDef);
@@ -185,26 +192,18 @@ namespace MechHumanlikes
                     continue;
                 }
                 DroneSkillContext context = skillContexts[skill];
-                listingStandard.Label(skillDef.LabelCap + ": " + skill.Level.ToString(), tooltip: skillDef.description + "\n\n" + SkillComplexityTooltip(skill, context, true) + "\n" + SkillComplexityTooltip(skill, context, false));
-                Listing_Standard subsection = listingStandard.BeginHiddenSection(out float subsectionHeight);
-                subsection.ColumnWidth = (rect.width - Margin) / 2;
-                if (subsection.ButtonText("MDR_AddSkillLevel".Translate()))
-                {
-                    if (skill.Level >= context.skillCeiling)
-                    {
-                        Messages.Message("MDR_CantExceedSkillMax".Translate(pawn.LabelShortCap, context.skillCeiling), MessageTypeDefOf.RejectInput, false);
-                    }
-                    else
-                    {
-                        proposedSkillComplexity += context.skillComplexityCost + 0.5f;
-                        context.skillComplexityCost += 0.5f;
-                        skill.Level++;
-                        programComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(proposedSkillComplexity)));
-                    }
-                }
+                string skillDefLabel = skillDef.LabelCap + ": " + skill.Level.ToString();
+                Vector2 skillDefLabelSize = Text.CalcSize(skillDefLabel);
+                RectDivider skillDefRow = skillSection.NewRow(skillDefLabelSize.y + (Margin / 2) + ButtonHeight);
+                Rect skillDefRowLabel = skillDefRow.NewRow(skillDefLabelSize.y).Rect;
+                TooltipHandler.TipRegion(skillDefRowLabel, skillDef.description);
+                Widgets.Label(skillDefRowLabel, skillDefLabel);
 
-                subsection.NewHiddenColumn(ref subsectionHeight);
-                if (subsection.ButtonText("MDR_RemoveSkillLevel".Translate()))
+                RectDivider skillDefRowButtons = skillDefRow.NewRow(ButtonHeight);
+                float skillDefColumnWidth = (skillDefRowButtons.Rect.width - Margin) / 2;
+                RectDivider removeSkillLevelButton = skillDefRowButtons.NewCol(skillDefColumnWidth, HorizontalJustification.Left);
+                TooltipHandler.TipRegion(removeSkillLevelButton, SkillComplexityTooltip(skill, context, false));
+                if (Widgets.ButtonText(removeSkillLevelButton, "MDR_RemoveSkillLevel".Translate()))
                 {
                     if (skill.Level <= SkillRecord.MinLevel)
                     {
@@ -222,11 +221,26 @@ namespace MechHumanlikes
                         programComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(proposedSkillComplexity)));
                     }
                 }
-                listingStandard.EndHiddenSection(subsection, subsectionHeight);
+
+                RectDivider addSkillLevelButton = skillDefRowButtons.NewCol(skillDefColumnWidth, HorizontalJustification.Right);
+                TooltipHandler.TipRegion(addSkillLevelButton, SkillComplexityTooltip(skill, context, true));
+                if (Widgets.ButtonText(addSkillLevelButton, "MDR_AddSkillLevel".Translate()))
+                {
+                    if (skill.Level >= context.skillCeiling)
+                    {
+                        Messages.Message("MDR_CantExceedSkillMax".Translate(pawn.LabelShortCap, context.skillCeiling), MessageTypeDefOf.RejectInput, false);
+                    }
+                    else
+                    {
+                        proposedSkillComplexity += context.skillComplexityCost + 0.5f;
+                        context.skillComplexityCost += 0.5f;
+                        skill.Level++;
+                        programComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(proposedSkillComplexity)));
+                    }
+                }
             }
-            listingStandard.End();
         }
-        
+
         private void DrawDirectives(Rect rect)
         {
             float xIndex = rect.x;
@@ -235,11 +249,11 @@ namespace MechHumanlikes
             Rect headerSection = new Rect(xIndex, yIndex, rect.width, Text.LineHeight);
             Widgets.Label(headerSection, "MDR_SelectedDirectives".Translate());
             yIndex += Text.LineHeight + Margin;
-            if (Widgets.ButtonText(new Rect(xIndex, yIndex, rect.width, 30f), "MDR_SetDroneDirectives".Translate()))
+            if (Widgets.ButtonText(new Rect(xIndex, yIndex, rect.width, ButtonHeight), "MDR_SetDroneDirectives".Translate()))
             {
                 Find.WindowStack.Add(new Dialog_SetDroneDirectives(pawn, ref proposedDirectives));
             }
-            yIndex += 30f + Margin;
+            yIndex += ButtonHeight + Margin;
             float directiveBlockWidth = (rect.width - (4 * Margin)) / 3;
             float xMaxIndex = rect.x + rect.width;
             float directiveBlockWithMarginWidth = directiveBlockWidth + Margin;
@@ -320,7 +334,7 @@ namespace MechHumanlikes
         private void DrawSummary(Rect summaryWrapper)
         {
             float summaryHeaderWidth = Mathf.Max(Text.CalcSize("MDR_BaselineComplexity".Translate()).x, Text.CalcSize("MDR_ComplexityEffects".Translate()).x);
-            float summaryFullHeaderWidth = summaryHeaderWidth + 30f;
+            float summaryFullHeaderWidth = summaryHeaderWidth + ButtonHeight;
             float summaryRowHeight = summaryWrapper.height / 2;
             int proposedComplexity = ProposedComplexity;
             GUI.BeginGroup(summaryWrapper);
@@ -369,7 +383,7 @@ namespace MechHumanlikes
 
         private string ComplexityEffectDescAt(int complexity, int maxComplexity)
         {
-            if (complexity <= programComp.BaselineComplexity && complexity <= maxComplexity)
+            if (complexity <= programComp.BaselineComplexity && complexity < maxComplexity)
             {
                 return "MDR_ComplexityEffectPositive".Translate();
             }
@@ -430,7 +444,7 @@ namespace MechHumanlikes
                 // Refund all skills that would be disabled if the parent work type were removed. Account for skills that are never disabled and other work types.
                 foreach (SkillDef skillDef in workTypeDef.relevantSkills)
                 {
-                    if (!skillDef.neverDisabledBasedOnWorkTypes && !otherEnabledWorkTypes.Any(workType => workType.relevantSkills.NotNullAndContains(skillDef)))
+                    if (!otherEnabledWorkTypes.Any(workType => workType.relevantSkills.NotNullAndContains(skillDef)))
                     {
                         skillTypeComplexity += 1;
                     }

@@ -15,8 +15,8 @@
     <MDR_ComplexityEffects>Complexity effects</MDR_ComplexityEffects>
     <MDR_ComplexityEffectsDesc>The current effect the complexity will have on the pawn.</MDR_ComplexityEffectsDesc>
     <MDR_ComplexityEffectPositive>Efficiency bonus</MDR_ComplexityEffectPositive>
-    <MDR_ComplexityEffectNeutral>Minor effects</MDR_ComplexityEffectNeutral>
-    <MDR_ComplexityEffectNegative>Severe efficiency loss</MDR_ComplexityEffectNegative>
+    <MDR_ComplexityEffectNeutral>Minimal effects</MDR_ComplexityEffectNeutral>
+    <MDR_ComplexityEffectNegative>Efficiency loss</MDR_ComplexityEffectNegative>
     <MDR_ComplexityLimitExceeded>The {0} complexity limit has been exceeded with {1} total complexity. This will have severe adverse effects!</MDR_ComplexityLimitExceeded>
     <MDR_BaselineComplexity>Baseline complexity</MDR_BaselineComplexity>
     <MDR_BaselineComplexityDesc>How much complexity this unit is able to handle without exceeding standard operating limits or without complexity offsetting.</MDR_BaselineComplexityDesc>

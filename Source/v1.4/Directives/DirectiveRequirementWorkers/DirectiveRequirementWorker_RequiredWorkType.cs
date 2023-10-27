@@ -33,7 +33,7 @@ namespace MechHumanlikes
                     // If this is a work type that is disabled and all work types must be enabled, this is invalid.
                     if (!anyOfTypeAcceptable)
                     {
-                        return "MDR_RequiredWorkTypeNotMet".Translate(pawn, requiredWorkTypes[i].label);
+                        return "MDR_RequiredWorkTypeNotMet".Translate(pawn, requiredWorkTypes[i].labelShort);
                     }
                     // If it is disabled but only one of the types must be enabled, continue scanning.
                     else

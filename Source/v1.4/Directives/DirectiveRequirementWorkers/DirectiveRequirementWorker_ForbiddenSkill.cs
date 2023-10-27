@@ -31,7 +31,7 @@ namespace MechHumanlikes
                     return "MDR_ForbiddenSkillPresent".Translate(forbiddenSkills[i].label);
                 }
             }
-            // If we scanned all skills and no forbidden skill was active, this is valid.
+            // If we scanned all skills and no forbidden skill were active, this is valid.
             return true;
         }
     }

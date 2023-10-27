@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-	<MDR_ExclusionTagConflict>{0} and {1} are mutually exclusive, and share the {2} tag.</MDR_ExclusionTagConflict>
-    <MDR_ExclusiveToRace>it is not applicable to the race of {1}.</MDR_ExclusiveToRace>
+	<MDR_ExclusionTagConflict>{0} and {1} are mutually exclusive.</MDR_ExclusionTagConflict>
+    <MDR_ExclusiveToRace>{1}'s race does not allow this.</MDR_ExclusiveToRace>
     <MDR_ComplexityRequirementNotMet>it requires at least {1} maximum complexity but {2} has only {3}.</MDR_ComplexityRequirementNotMet>
-    <MDR_RequiredWorkTypeNotMet>it requires {1} work type active.</MDR_RequiredWorkTypeNotMet>
-    <MDR_RequiredWorkTypeSetNotMet>at least one of the {0} work types must be active.</MDR_RequiredWorkTypeSetNotMet>\
-    <MDR_ForbiddenSkillPresent>it is incompatible with the {0} skill</MDR_ForbiddenSkillPresent>
-    <MDR_RequiredSkillNotMet>it requires {0} skill to be enabled.</MDR_RequiredSkillNotMet>
-    <MDR_RequiredSkillSetNotMet>at least one of the {0} skills must be enabled.</MDR_RequiredSkillSetNotMet>
+    <MDR_RequiredWorkTypeNotMet>the {1} work type is disabled.</MDR_RequiredWorkTypeNotMet>
+    <MDR_RequiredWorkTypeSetNotMet>at least one of these work types must be enabled: {0}.</MDR_RequiredWorkTypeSetNotMet>\
+    <MDR_ForbiddenSkillPresent>the {0} skill is enabled.</MDR_ForbiddenSkillPresent>
+    <MDR_ForbiddenWorkTypePresent>the {0} work type is enabled.</MDR_ForbiddenWorkTypePresent>
+    <MDR_RequiredSkillNotMet>the {0} skill is disabled.</MDR_RequiredSkillNotMet>
+    <MDR_RequiredSkillSetNotMet>at least one of these skills must be enabled: {0}.</MDR_RequiredSkillSetNotMet>
 
 </LanguageData>

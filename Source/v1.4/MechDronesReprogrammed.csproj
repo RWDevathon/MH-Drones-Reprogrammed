@@ -191,6 +191,7 @@
     <Compile Include="Dialogs\Dialog_ReprogramDrone.cs" />
     <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_ForbiddenSkill.cs" />
     <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_RequiredSkill.cs" />
+    <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_ForbiddenWorkType.cs" />
     <Compile Include="Directives\Directive_AbilityGiver.cs" />
     <Compile Include="Directives\Directive_Ticker.cs" />
     <Compile Include="Directives\Directive_Basic.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Extensions\WorkTypeExtensions.cs" />
     <Compile Include="Harmony\InteractionUtility_Patch_Patch.cs" />
     <Compile Include="Harmony\MDR_Pawn_HealthTracker_Patch.cs" />
+    <Compile Include="Harmony\MDR_Pawn_StoryTracker_Patch.cs" />
     <Compile Include="Harmony\QualityUtility_Patch.cs" />
     <Compile Include="Harmony\MHC_Utils_Patch.cs" />
     <Compile Include="Harmony\PawnGroupMakerUtility_Patch.cs" />

@@ -56,7 +56,7 @@ namespace MechHumanlikes
                 // Refund all skills that would be disabled if the parent work type were removed. Account for skills that are never disabled and other work types.
                 foreach (SkillDef skillDef in def.relevantSkills)
                 {
-                    if (!skillDef.neverDisabledBasedOnWorkTypes && !otherEnabledWorkTypes.Any(workType => workType.relevantSkills.NotNullAndContains(skillDef)))
+                    if (!otherEnabledWorkTypes.Any(workType => workType.relevantSkills.NotNullAndContains(skillDef)))
                     {
                         result += 1;
                     }

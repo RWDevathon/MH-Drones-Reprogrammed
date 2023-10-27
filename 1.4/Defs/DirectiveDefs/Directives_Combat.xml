@@ -31,6 +31,11 @@
         </skillChoiceWeights>
         <requirementWorkers>
             <li Class="MechHumanlikes.DirectiveRequirementWorker_ExclusionTag"/>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredWorkType">
+                <requiredWorkTypes>
+                    <li>Hunting</li>
+                </requiredWorkTypes>
+            </li>
         </requirementWorkers>
     </MechHumanlikes.DirectiveDef>
 
@@ -64,6 +69,11 @@
         </skillChoiceWeights>
         <requirementWorkers>
             <li Class="MechHumanlikes.DirectiveRequirementWorker_ExclusionTag"/>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredWorkType">
+                <requiredWorkTypes>
+                    <li>Hunting</li>
+                </requiredWorkTypes>
+            </li>
         </requirementWorkers>
     </MechHumanlikes.DirectiveDef>
 
@@ -101,6 +111,11 @@
                 <complexityRequirement>30</complexityRequirement>
             </li>
             <li Class="MechHumanlikes.DirectiveRequirementWorker_ExclusionTag"/>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredWorkType">
+                <requiredWorkTypes>
+                    <li>Hunting</li>
+                </requiredWorkTypes>
+            </li>
         </requirementWorkers>
     </MechHumanlikes.DirectiveDef>
 
@@ -138,6 +153,11 @@
         </skillChoiceWeights>
         <requirementWorkers>
             <li Class="MechHumanlikes.DirectiveRequirementWorker_ExclusionTag"/>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_ForbiddenWorkType">
+                <forbiddenWorkTypes>
+                    <li>Hunting</li>
+                </forbiddenWorkTypes>
+            </li>
         </requirementWorkers>
     </MechHumanlikes.DirectiveDef>
 
@@ -172,6 +192,13 @@
             <li><key>Peaceful</key><value>-1</value></li>
             <li><key>Trader</key><value>-1</value></li>
         </groupKindWeights>
+        <requirementWorkers>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredWorkType">
+                <requiredWorkTypes>
+                    <li>Hunting</li>
+                </requiredWorkTypes>
+            </li>
+        </requirementWorkers>
     </MechHumanlikes.DirectiveDef>
 
     <MechHumanlikes.DirectiveDef>
