@@ -7,7 +7,6 @@
         <description>Sometimes the rate at which things get done are of little consequence and it's more important for a drone to simply keep going.\n\nSpecialized directives can permit drones to minimize energy usage and general maintenance requirements at the cost of severely inhibiting general work capabilities - ideal for slow moving convoys, sentinels, and mobile turrets.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Work</directiveCategory>
-        <iconPath>UI/Icons/Directive_Endurance</iconPath>
         <hungerRateFactor>0.4</hungerRateFactor>
         <statOffsets>
             <MHC_MaintenanceRetention>1</MHC_MaintenanceRetention>
@@ -29,7 +28,6 @@
         <description>Sapients rarely enjoy grunt work. Many of humanity's greatest inventions were the result of trying to find ways to avoid it. Drones, unfeeling and uncomplaining as they are, present the perfect opportunity to rid sapients of the burden of such menial tasks.\n\nSpecialized directives allow drones to more precisely pick out and optimize menial tasks without relying on manual orders from nearby individuals - and without moving, touching, or trashing something they weren't supposed to.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Work</directiveCategory>
-        <iconPath>UI/Icons/Directive_Grunt</iconPath>
         <statOffsets>
             <CleaningSpeed>0.75</CleaningSpeed>
             <SmeltingSpeed>0.75</SmeltingSpeed>
@@ -51,7 +49,6 @@
         <description>Lacking creativity and the ability to innovate, drones are unable to truly master the finer details of producing goods. Quantity, rather than quality, has always been the lot of drone assembly lines - but that is not always what is needed.\n\nExtremely specialized directives can permit units to consistently produce Excellent quality goods, but the sheer intricacy of the programming severely impairs the rate of work - even for work that is unskilled.</description>
         <customEffectsDescription>Units with this directive always produce Excellent quality products when completing bills.</customEffectsDescription>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
-        <iconPath>UI/Icons/Directive_Artisan</iconPath>
         <statFactors>
             <WorkSpeedGlobal>0.5</WorkSpeedGlobal>
         </statFactors>
@@ -72,7 +69,6 @@
         <description>Sapient beings rarely have insurmountable difficulties grasping the differences in how best to assemble structures. To an unthinking machine lacking foresight and comprehension of physics and cause-and-effect, even the slightest order of operations failure or abnormality in material can cause catastrophe.\n\nSpecialized directives can offset the inherent intricacies and potential for failure by providing better conditional responsiveness and ability to overcome slight inconsistencies in building materials.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Work</directiveCategory>
-        <iconPath>UI/Icons/Directive_Assembly</iconPath>
         <statOffsets>
             <ConstructionSpeed>0.5</ConstructionSpeed>
         </statOffsets>
@@ -103,7 +99,6 @@
         <description>Idealizing, preparing, cooking, and innovating upon meals is an art. The bare minimum, of course, is to avoid poisoning consumers and to manufacture nutritionally adequate sustenance - a task that any experienced chef would find trivial and mind-numbing. Specialized directives for drones may not be sufficient for appetizing gourmet cuisine, but it may offload a great deal of tedium.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Work</directiveCategory>
-        <iconPath>UI/Icons/Directive_Chef</iconPath>
         <statOffsets>
             <CookSpeed>0.5</CookSpeed>
         </statOffsets>
@@ -132,7 +127,6 @@
         <description>Career butchers are often viewed with disdain, disgust, or distrust - usually involving the fact that taking satisfaction or being unusually skilled in dismantling corpses for parts is deemed unsavory. Machines, of course, pay no heed to such views and generally do not elicit suspicion, carrying out the task unflinchingly and unemotionally.\n\nSpecialized directives allow drones to identify key differences in the hundreds of factors between species to achieve maximimum utility from corpses, sparing individuals from the thankless work.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Work</directiveCategory>
-        <iconPath>UI/Icons/Directive_Renderer</iconPath>
         <statOffsets>
             <ButcheryFleshSpeed>0.5</ButcheryFleshSpeed>
         </statOffsets>
@@ -161,7 +155,6 @@
         <description>Among the oldest and noblest of humanity's skillsets, agriculture has always been and continues to be a critical component of civilization - one that is also still constrained by the reality that plants are fickle and need close attention to avoid the myriad threats of disease, pests, over or under hydration and light, amongst others. Farmers tend to pick up necessary skills through strenuous practice and family tradition.\n\nSpecialized directives can provide drones with elements of that accumulated knowledge to streamline planting and tending operations.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Work</directiveCategory>
-        <iconPath>UI/Icons/Directive_Cultivator</iconPath>
         <statOffsets>
             <PlantWorkSpeed>0.5</PlantWorkSpeed>
         </statOffsets>
@@ -190,7 +183,6 @@
         <description>One of the single most hazardos occupations for organic sapients is to be responsible for the physical extraction of minerals. From cave-ins and noxious fumes to claustrophobia and breakdowns in team cohesion, the energy and sanity sapping work of mining can not be overstated - and that's not including the risk of suddenly being on the frontlines of a furious hive of lethal insects. It is only logical, then, to attempt to offset these risks by handing the work to durable, emotionless - and most importantly, expendable - drones.\n\nSpecialzed directives can greatly enhance their ability to autonomously identify, analyze, and extract mineral resources without oversight or structural destabilization of the work space.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Work</directiveCategory>
-        <iconPath>UI/Icons/Directive_Excavator</iconPath>
         <statOffsets>
             <MiningSpeed>0.5</MiningSpeed>
             <DeepDrillingSpeed>0.5</DeepDrillingSpeed>

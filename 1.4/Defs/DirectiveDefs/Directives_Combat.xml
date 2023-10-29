@@ -7,7 +7,6 @@
         <description>Additional specialized melee combat directives can be implemented into a drone to enhance close quarters combat efficiency and survival rate. The directives severely impair long range movement prediction and identification systems, however.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Military</directiveCategory>
-        <iconPath>UI/Icons/Directive_Brawler</iconPath>
         <exclusionTags>
             <li>CombatDirectives</li>
         </exclusionTags>
@@ -45,7 +44,6 @@
         <description>Additional specialized ranged combat directives can be implemented into a drone to enhance ranged combat efficiency. The directives severely impair close range reactiveness and survivability, however.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Military</directiveCategory>
-        <iconPath>UI/Icons/Directive_Sharpshooter</iconPath>
         <exclusionTags>
             <li>CombatDirectives</li>
         </exclusionTags>
@@ -83,7 +81,6 @@
         <description>Highly sophisticated and complicated directives can be implemented into a drone to enhance overall combat efficiency. Optimized for combat at all ranges and scenarios, units with these directives have significant combat advantages at the cost of higher upkeep.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Military</directiveCategory>
-        <iconPath>UI/Icons/Directive_Veteran</iconPath>
         <exclusionTags>
             <li>CombatDirectives</li>
         </exclusionTags>
@@ -125,7 +122,6 @@
         <description>Simplification directives can be implemented into a drone to strip out the need for friend/foe targetting and remove all combat capabilities. The spare computational capabilities can be refocused toward purely utilitarian and productive purposes, greatly enhancing general efficiency.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Military</directiveCategory>
-        <iconPath>UI/Icons/Directive_Pacifist</iconPath>
         <exclusionTags>
             <li>CombatDirectives</li>
         </exclusionTags>
@@ -168,7 +164,6 @@
         <customEffectsDescription>Units with this directive break down into steel slag upon death.</customEffectsDescription>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Military</directiveCategory>
-        <iconPath>UI/Icons/Directive_Martyrdom</iconPath>
         <complexityCost>-4</complexityCost>
         <groupKindWeights>
             <li><key>Combat</key><value>0.5</value></li>
@@ -185,7 +180,6 @@
         <directiveClass>MechHumanlikes.Directive_AbilityGiver</directiveClass>
         <abilities><li>MDR_InitiateBerserkDirective</li></abilities>
         <directiveCategory>Military</directiveCategory>
-        <iconPath>UI/Icons/Directive_Berserker</iconPath>
         <complexityCost>1</complexityCost>
         <groupKindWeights>
             <li><key>Combat</key><value>-1</value></li>
@@ -209,7 +203,6 @@
         <directiveClass>MechHumanlikes.Directive_AbilityGiver</directiveClass>
         <abilities><li>MDR_InitiateInterferenceDirective</li></abilities>
         <directiveCategory>Military</directiveCategory>
-        <iconPath>UI/Icons/Directive_Interference</iconPath>
         <complexityCost>1</complexityCost>
         <groupKindWeights>
             <li><key>Combat</key><value>-1</value></li>
