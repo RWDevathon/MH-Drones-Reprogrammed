@@ -521,7 +521,7 @@ namespace MechHumanlikes
                 // Refund all skills that would be disabled if the parent work type were removed. Account for other work types.
                 foreach (SkillDef skillDef in workTypeDef.relevantSkills)
                 {
-                    if (!otherEnabledWorkTypes.Any(workType => workType.relevantSkills.NotNullAndContains(skillDef) && !skillDef.neverDisabledBasedOnWorkTypes))
+                    if (!otherEnabledWorkTypes.Any(workType => workType.relevantSkills.NotNullAndContains(skillDef)) && !skillDef.neverDisabledBasedOnWorkTypes)
                     {
                         result += 1;
                         addedSkills.Add(skillDef);
@@ -533,8 +533,8 @@ namespace MechHumanlikes
                 foreach (SkillDef skillDef in cachedSkillsDisabledByWorkTags)
                 {
                     WorkTags workTags = skillDef.disablingWorkTags;
-                    if (!otherEnabledWorkTypes.Any(workType => (workType.workTags & workTags) != WorkTags.None) && !addedSkills.Contains(skillDef)
-                        && !DefDatabase<WorkTypeDef>.AllDefsListForReading.Any(workType => (workType.workTags & workTags) != WorkTags.None && !skillDef.neverDisabledBasedOnWorkTypes))
+                    if (!otherEnabledWorkTypes.Any(workType => (workType.workTags & workTags) != WorkTags.None) && !addedSkills.Contains(skillDef) && !pawn.skills.GetSkill(skillDef).TotallyDisabled
+                        && !otherEnabledWorkTypes.Any(workType => workType.relevantSkills.NotNullAndContains(skillDef)))
                     {
                         result += 1;
                     }
