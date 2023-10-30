@@ -144,7 +144,7 @@ namespace MechHumanlikes
                     if (!active)
                     {
                         programComp.enabledWorkTypes.Remove(workTypeDef);
-                        proposedWorkTypeComplexity -= workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ComplexityCostFor(pawn, false) ?? 1;
+                        proposedWorkTypeComplexity -= MDR_Utils.ComplexityCostFor(workTypeDef, pawn, false);
                         // If the disabled work type def would result in a skill becoming totally disabled, remove all assigned skill points for it to avoid a complexity "leak".
                         if (workTypeDef.relevantSkills != null)
                         {
@@ -170,7 +170,7 @@ namespace MechHumanlikes
                     else
                     {
                         programComp.enabledWorkTypes.Add(workTypeDef);
-                        proposedWorkTypeComplexity += workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ComplexityCostFor(pawn, true) ?? 1;
+                        proposedWorkTypeComplexity += MDR_Utils.ComplexityCostFor(workTypeDef, pawn, true);
                     }
                     pawn.Notify_DisabledWorkTypesChanged();
                     programComp.UpdateComplexity("Work Types", proposedWorkTypeComplexity);
@@ -402,18 +402,17 @@ namespace MechHumanlikes
                 return "MDR_CantRemoveInherentWorkTypes".Translate(workTypeDef.labelShort.CapitalizeFirst(), pawn.LabelShortCap);
             }
 
-            MDR_WorkTypeExtension workTypeExtension = workTypeDef.GetModExtension<MDR_WorkTypeExtension>();
             StringBuilder stringBuilder = new StringBuilder();
             if (adding)
             {
-                stringBuilder.AppendLine("MDR_WorkTypeComplexityHeaderTooltip".Translate("MDR_Adding".Translate().CapitalizeFirst(), "MDR_Cost".Translate(), workTypeExtension.ComplexityCostFor(pawn, adding).ToString()));
+                stringBuilder.AppendLine("MDR_WorkTypeComplexityHeaderTooltip".Translate("MDR_Adding".Translate().CapitalizeFirst(), "MDR_Cost".Translate(), MDR_Utils.ComplexityCostFor(workTypeDef, pawn, adding).ToString()));
             }
             else
             {
-                stringBuilder.AppendLine("MDR_WorkTypeComplexityHeaderTooltip".Translate("MDR_Removing".Translate().CapitalizeFirst(), "MDR_Refund".Translate(), workTypeExtension.ComplexityCostFor(pawn, adding).ToString()));
+                stringBuilder.AppendLine("MDR_WorkTypeComplexityHeaderTooltip".Translate("MDR_Removing".Translate().CapitalizeFirst(), "MDR_Refund".Translate(), MDR_Utils.ComplexityCostFor(workTypeDef, pawn, adding).ToString()));
             }
             stringBuilder.AppendLine();
-            stringBuilder.AppendLine("MDR_WorkTypeComplexityBaseTooltip".Translate(workTypeDef.labelShort.CapitalizeFirst(), workTypeExtension.baseComplexity.ToStringWithSign()));
+            stringBuilder.AppendLine("MDR_WorkTypeComplexityBaseTooltip".Translate(workTypeDef.labelShort.CapitalizeFirst(), workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.baseComplexity.ToStringWithSign() ?? "+1"));
 
             int skillTypeComplexity = 0;
             if (adding)
@@ -433,7 +432,7 @@ namespace MechHumanlikes
                 // In order to properly calculate the complexity cost reduction, the worker must take into account other enabled work types.
                 // It will only refund the additional complexity for skills that have 0 other work types enabling them.
                 List<WorkTypeDef> otherEnabledWorkTypes = new List<WorkTypeDef>();
-                foreach (WorkTypeDef enabledWorkTypeDef in pawn.GetComp<CompReprogrammableDrone>().enabledWorkTypes)
+                foreach (WorkTypeDef enabledWorkTypeDef in programComp.enabledWorkTypes)
                 {
                     if (enabledWorkTypeDef != workTypeDef)
                     {

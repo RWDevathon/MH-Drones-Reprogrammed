@@ -10,6 +10,8 @@ namespace MechHumanlikes
     {
         internal static List<ThingDef> cachedProgrammableDrones = new List<ThingDef>();
 
+        internal static List<SkillDef> cachedSkillsDisabledByWorkTags = new List<SkillDef>();
+
         public static List<DirectiveDef> cachedSortedDirectives = new List<DirectiveDef>();
 
         public static List<string> directiveCategories = new List<string>();
@@ -158,7 +160,7 @@ namespace MechHumanlikes
                     {
                         pawnComp.enabledWorkTypes.Add(workTypeDef);
 
-                        requiredWorkTypeComplexity += workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ComplexityCostFor(pawn, true) ?? 1;
+                        requiredWorkTypeComplexity += MDR_Utils.ComplexityCostFor(workTypeDef, pawn, true);
                     }
                 }
 
@@ -171,7 +173,7 @@ namespace MechHumanlikes
                         {
                             pawnComp.enabledWorkTypes.Add(workTypeDef);
 
-                            requiredWorkTypeComplexity += workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ComplexityCostFor(pawn, true) ?? 1;
+                            requiredWorkTypeComplexity += MDR_Utils.ComplexityCostFor(workTypeDef, pawn, true);
                         }
                     }
                 }
@@ -385,7 +387,7 @@ namespace MechHumanlikes
                     if ((workTypeDef.workTags != WorkTags.None || !workTypeDef.relevantSkills.NullOrEmpty())
                         && !pawnExtension.forbiddenWorkTypes.NotNullAndContains(workTypeDef)
                         && (workExtension?.ValidFor(pawn).Accepted ?? true) && !pawnComp.enabledWorkTypes.Contains(workTypeDef)
-                        && discretionaryComplexity >= workExtension?.ComplexityCostFor(pawn, true))
+                        && discretionaryComplexity >= ComplexityCostFor(workTypeDef, pawn, true))
                     {
                         legalWorkTypes.Add(workTypeDef);
                     }
@@ -395,7 +397,7 @@ namespace MechHumanlikes
                 while (legalWorkTypes.Count > 0 && discretionaryComplexity > 0 && discretionaryWorkTypes > 0)
                 {
                     legalWorkTypes.TryRandomElement(out WorkTypeDef result);
-                    int workTypeCost = result.GetModExtension<MDR_WorkTypeExtension>()?.ComplexityCostFor(pawn, true) ?? 1;
+                    int workTypeCost = ComplexityCostFor(result, pawn, true);
                     if (workTypeCost > discretionaryComplexity)
                     {
                         legalWorkTypes.Remove(result);
@@ -455,6 +457,7 @@ namespace MechHumanlikes
             }
         }
 
+        // For a given map, recache the number of player drones on it with the amicability directive.
         public static void UpdateAmicableDroneCount(Map map)
         {
             List<Pawn> playerPawns = map.mapPawns.SpawnedPawnsInFaction(Faction.OfPlayer);
@@ -469,6 +472,75 @@ namespace MechHumanlikes
                 }
             }
             amicableDroneCount[map] = resultCount;
+        }
+
+        // For the given work type def, pawn, and whether it is adding or removing, determine the complexity that would be spent or refunded.
+        public static int ComplexityCostFor(WorkTypeDef workTypeDef, Pawn pawn, bool adding)
+        {
+            int result = workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.baseComplexity ?? 1;
+            if (adding)
+            {
+                List<SkillDef> addedSkills = new List<SkillDef>();
+                // The additional cost is only applied to skills that are currently disabled.
+                // It does not apply if another work type enabled it already.
+                foreach (SkillDef skillDef in workTypeDef.relevantSkills)
+                {
+                    if (pawn.skills.GetSkill(skillDef).TotallyDisabled)
+                    {
+                        result += 1;
+                        addedSkills.Add(skillDef);
+                    }
+                }
+
+                // Some skills are disabled by WorkTags rather than by WorkTypes. Account for them.
+                // Only count skills that are disabled by a WorkTag this type has, but that no other work type directly has.
+                WorkTags workTags = workTypeDef.workTags;
+                foreach (SkillDef skillDef in cachedSkillsDisabledByWorkTags)
+                {
+                    if (pawn.skills.GetSkill(skillDef).TotallyDisabled && (skillDef.disablingWorkTags & workTags) != WorkTags.None && !addedSkills.Contains(skillDef)
+                        && !DefDatabase<WorkTypeDef>.AllDefsListForReading.Any(workType => workType.relevantSkills.NotNullAndContains(skillDef) && !skillDef.neverDisabledBasedOnWorkTypes))
+                    {
+                        result += 1;
+                    }
+                }
+            }
+            else
+            {
+                List<SkillDef> addedSkills = new List<SkillDef>();
+                // In order to properly calculate the complexity cost reduction, the worker must take into account other enabled work types.
+                // It will only refund the additional complexity for skills that have 0 other work types enabling them.
+                List<WorkTypeDef> otherEnabledWorkTypes = new List<WorkTypeDef>();
+                foreach (WorkTypeDef enabledWorkTypeDef in pawn.GetComp<CompReprogrammableDrone>().enabledWorkTypes)
+                {
+                    if (enabledWorkTypeDef != workTypeDef)
+                    {
+                        otherEnabledWorkTypes.Add(enabledWorkTypeDef);
+                    }
+                }
+
+                // Refund all skills that would be disabled if the parent work type were removed. Account for other work types.
+                foreach (SkillDef skillDef in workTypeDef.relevantSkills)
+                {
+                    if (!otherEnabledWorkTypes.Any(workType => workType.relevantSkills.NotNullAndContains(skillDef) && !skillDef.neverDisabledBasedOnWorkTypes))
+                    {
+                        result += 1;
+                        addedSkills.Add(skillDef);
+                    }
+                }
+
+                // Some skills are disabled by WorkTags rather than by WorkTypes. Account for them.
+                // Only count skills that are disabled by a WorkTag this type has, but that no other work type directly has.
+                foreach (SkillDef skillDef in cachedSkillsDisabledByWorkTags)
+                {
+                    WorkTags workTags = skillDef.disablingWorkTags;
+                    if (!otherEnabledWorkTypes.Any(workType => (workType.workTags & workTags) != WorkTags.None) && !addedSkills.Contains(skillDef)
+                        && !DefDatabase<WorkTypeDef>.AllDefsListForReading.Any(workType => (workType.workTags & workTags) != WorkTags.None && !skillDef.neverDisabledBasedOnWorkTypes))
+                    {
+                        result += 1;
+                    }
+                }
+            }
+            return result;
         }
     }
 }

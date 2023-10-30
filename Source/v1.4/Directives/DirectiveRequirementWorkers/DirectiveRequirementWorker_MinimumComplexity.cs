@@ -18,7 +18,7 @@ namespace MechHumanlikes
             int pawnMaxComplexity = pawn.GetComp<CompReprogrammableDrone>().MaxComplexity;
             if (pawnMaxComplexity < complexityRequirement)
             {
-                return "MDR_ComplexityRequirementNotMet".Translate(def.LabelCap, complexityRequirement, pawn.LabelShortCap, pawnMaxComplexity);
+                return "MDR_ComplexityRequirementInsufficient".Translate(def.LabelCap, complexityRequirement, pawn.LabelShortCap, pawnMaxComplexity);
             }
             return true;
         }

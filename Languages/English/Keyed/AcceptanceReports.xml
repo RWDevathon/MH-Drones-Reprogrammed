@@ -3,12 +3,16 @@
 
 	<MDR_ExclusionTagConflict>{0} and {1} are mutually exclusive.</MDR_ExclusionTagConflict>
     <MDR_ExclusiveToRace>{1}'s race does not allow this.</MDR_ExclusiveToRace>
-    <MDR_ComplexityRequirementNotMet>it requires at least {1} maximum complexity but {2} has only {3}.</MDR_ComplexityRequirementNotMet>
-    <MDR_RequiredWorkTypeNotMet>the {1} work type is disabled.</MDR_RequiredWorkTypeNotMet>
-    <MDR_RequiredWorkTypeSetNotMet>at least one of these work types must be enabled: {0}.</MDR_RequiredWorkTypeSetNotMet>\
+    <MDR_ComplexityRequirementInsufficient>it requires at least {1} maximum complexity but {2} has only {3}.</MDR_ComplexityRequirementInsufficient>
+
     <MDR_ForbiddenSkillPresent>the {0} skill is enabled.</MDR_ForbiddenSkillPresent>
+    <MDR_ForbiddenWorkTagsPresent>the {0} tags must be disabled.</MDR_ForbiddenWorkTagsPresent>
     <MDR_ForbiddenWorkTypePresent>the {0} work type is enabled.</MDR_ForbiddenWorkTypePresent>
-    <MDR_RequiredSkillNotMet>the {0} skill is disabled.</MDR_RequiredSkillNotMet>
-    <MDR_RequiredSkillSetNotMet>at least one of these skills must be enabled: {0}.</MDR_RequiredSkillSetNotMet>
+
+    <MDR_RequiredWorkTypeAbsent>the {0} work type is disabled.</MDR_RequiredWorkTypeAbsent>
+    <MDR_RequiredWorkTypeSetAbsent>at least one of these work types must be enabled: {0}.</MDR_RequiredWorkTypeSetAbsent>\
+    <MDR_RequiredWorkTagAbsent>the {0} tags must be enabled.</MDR_RequiredWorkTagAbsent>
+    <MDR_RequiredSkillAbsent>the {0} skill is disabled.</MDR_RequiredSkillAbsent>
+    <MDR_RequiredSkillSetAbsent>at least one of these skills must be enabled: {0}.</MDR_RequiredSkillSetAbsent>
 
 </LanguageData>

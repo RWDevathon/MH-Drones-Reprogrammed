@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using RimWorld;
 using System.Reflection;
 using Verse;
 
@@ -35,7 +36,7 @@ namespace MechHumanlikes
             foreach (ThingDef thingDef in DefDatabase<ThingDef>.AllDefsListForReading)
             {
                 // Programmable drones have a race and a programmable drone pawn extension, and should have the programming ITab.
-                if (thingDef.race != null && MHC_Utils.IsConsideredMechanicalDrone(thingDef) && thingDef.GetModExtension<MDR_ProgrammableDroneExtension>() is MDR_ProgrammableDroneExtension extension)
+                if (thingDef.race != null && MHC_Utils.IsConsideredMechanicalDrone(thingDef) && thingDef.HasModExtension<MDR_ProgrammableDroneExtension>())
                 {
                     MDR_Utils.cachedProgrammableDrones.Add(thingDef);
 
@@ -56,6 +57,15 @@ namespace MechHumanlikes
                 if (workTypeDef.GetModExtension<MDR_WorkTypeExtension>() is MDR_WorkTypeExtension workTypeExtension)
                 {
                     workTypeExtension.def = workTypeDef;
+                }
+            }
+
+            // Some SkillDefs are disabled by WorkTags rather than by WorkTypes alone. We need to keep track of them here.
+            foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
+            {
+                if (skillDef.disablingWorkTags != WorkTags.None)
+                {
+                    MDR_Utils.cachedSkillsDisabledByWorkTags.Add(skillDef);
                 }
             }
         }

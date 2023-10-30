@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
@@ -226,7 +225,7 @@ namespace MechHumanlikes
                     bool reachedWidthLimit = false;
                     if (xIndex + directiveBlockWidth > rect.width)
                     {
-                        xIndex = rect.x + (Margin / 2);
+                        xIndex = rect.x;
                         yIndex += directiveBlockHeight + Margin;
                         reachedWidthLimit = true;
                     }
@@ -235,7 +234,7 @@ namespace MechHumanlikes
                     {
                         if (!reachedWidthLimit && reachedCategoryEnd)
                         {
-                            xIndex = rect.x + (Margin / 2);
+                            xIndex = rect.x;
                             yIndex += directiveBlockHeight + Margin;
                         }
                         directiveCategory = directiveDef.directiveCategory;

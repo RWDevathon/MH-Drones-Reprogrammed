@@ -3,7 +3,7 @@
 
     <MechHumanlikes.DirectiveDef>
         <defName>MDR_DirectiveAmicability</defName>
-        <label>Amicability Directives</label>
+        <label>Friend</label>
         <description>Many sapient individuals develop fond opinions of machines that perform valuable tasks - from a favorite coffee machine to a beloved car and from a trusted electric toothbrush to a dependable vacuum, machines are often the recipients of affections despite being wholly unable to actually reciprocate.\n\nHighly specialized directives baked into a drone can mimic - as closely as feasible - some basic forms of prepared compliments, behaviors, responses to prompts, or other positive reactions to others. Most appreciate the small acts of kindness and lightness that can take an edge out of a stressful day.</description>
         <customEffectsDescription>Drones with this directive give a small constant mood buff to sapients on the map. (Note: effect only applies to players, updates infrequently for performance)</customEffectsDescription>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>

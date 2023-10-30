@@ -190,6 +190,8 @@
     <Compile Include="Dialogs\Dialog_SetDroneDirectives.cs" />
     <Compile Include="Dialogs\Dialog_ReprogramDrone.cs" />
     <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_ForbiddenSkill.cs" />
+    <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_RequiredWorkTag.cs" />
+    <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_ForbiddenWorkTag.cs" />
     <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_RequiredSkill.cs" />
     <Compile Include="Directives\DirectiveRequirementWorkers\DirectiveRequirementWorker_ForbiddenWorkType.cs" />
     <Compile Include="Directives\Directive_AbilityGiver.cs" />

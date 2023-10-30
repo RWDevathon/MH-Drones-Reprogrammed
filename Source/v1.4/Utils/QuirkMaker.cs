@@ -1,7 +1,4 @@
-﻿
-
-using System.Security.Cryptography;
-using System;
+﻿using System;
 using Verse;
 
 namespace MechHumanlikes

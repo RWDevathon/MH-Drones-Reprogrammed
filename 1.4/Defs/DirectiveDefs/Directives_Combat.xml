@@ -3,7 +3,7 @@
 
     <MechHumanlikes.DirectiveDef>
         <defName>MDR_DirectiveMeleeOptimized</defName>
-        <label>Brawler Directives</label>
+        <label>Brawler</label>
         <description>Additional specialized melee combat directives can be implemented into a drone to enhance close quarters combat efficiency and survival rate. The directives severely impair long range movement prediction and identification systems, however.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Military</directiveCategory>
@@ -30,17 +30,17 @@
         </skillChoiceWeights>
         <requirementWorkers>
             <li Class="MechHumanlikes.DirectiveRequirementWorker_ExclusionTag"/>
-            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredWorkType">
-                <requiredWorkTypes>
-                    <li>Hunting</li>
-                </requiredWorkTypes>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredWorkTag">
+                <requiredWorkTags>
+                    <li>Violent</li>
+                </requiredWorkTags>
             </li>
         </requirementWorkers>
     </MechHumanlikes.DirectiveDef>
 
     <MechHumanlikes.DirectiveDef>
         <defName>MDR_DirectiveRangeOptimized</defName>
-        <label>Sharpshooter Directives</label>
+        <label>Sharpshooter</label>
         <description>Additional specialized ranged combat directives can be implemented into a drone to enhance ranged combat efficiency. The directives severely impair close range reactiveness and survivability, however.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Military</directiveCategory>
@@ -67,17 +67,17 @@
         </skillChoiceWeights>
         <requirementWorkers>
             <li Class="MechHumanlikes.DirectiveRequirementWorker_ExclusionTag"/>
-            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredWorkType">
-                <requiredWorkTypes>
-                    <li>Hunting</li>
-                </requiredWorkTypes>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredWorkTag">
+                <requiredWorkTags>
+                    <li>Violent</li>
+                </requiredWorkTags>
             </li>
         </requirementWorkers>
     </MechHumanlikes.DirectiveDef>
 
     <MechHumanlikes.DirectiveDef>
         <defName>MDR_DirectiveVeterancy</defName>
-        <label>Veterancy Directives</label>
+        <label>Veteran</label>
         <description>Highly sophisticated and complicated directives can be implemented into a drone to enhance overall combat efficiency. Optimized for combat at all ranges and scenarios, units with these directives have significant combat advantages at the cost of higher upkeep.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Military</directiveCategory>
@@ -108,17 +108,17 @@
                 <complexityRequirement>30</complexityRequirement>
             </li>
             <li Class="MechHumanlikes.DirectiveRequirementWorker_ExclusionTag"/>
-            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredWorkType">
-                <requiredWorkTypes>
-                    <li>Hunting</li>
-                </requiredWorkTypes>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredWorkTag">
+                <requiredWorkTags>
+                    <li>Violent</li>
+                </requiredWorkTags>
             </li>
         </requirementWorkers>
     </MechHumanlikes.DirectiveDef>
 
     <MechHumanlikes.DirectiveDef>
         <defName>MDR_DirectivePacifism</defName>
-        <label>Pacifism Directives</label>
+        <label>Pacifist</label>
         <description>Simplification directives can be implemented into a drone to strip out the need for friend/foe targetting and remove all combat capabilities. The spare computational capabilities can be refocused toward purely utilitarian and productive purposes, greatly enhancing general efficiency.</description>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
         <directiveCategory>Military</directiveCategory>
@@ -149,17 +149,17 @@
         </skillChoiceWeights>
         <requirementWorkers>
             <li Class="MechHumanlikes.DirectiveRequirementWorker_ExclusionTag"/>
-            <li Class="MechHumanlikes.DirectiveRequirementWorker_ForbiddenWorkType">
-                <forbiddenWorkTypes>
-                    <li>Hunting</li>
-                </forbiddenWorkTypes>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_ForbiddenWorkTag">
+                <forbiddenWorkTags>
+                    <li>Violent</li>
+                </forbiddenWorkTags>
             </li>
         </requirementWorkers>
     </MechHumanlikes.DirectiveDef>
 
     <MechHumanlikes.DirectiveDef>
         <defName>MDR_DirectiveMartyrdom</defName>
-        <label>Martyrdom Directives</label>
+        <label>Martyr</label>
         <description>Sacrifice is a common theme amongst self-righteous causes, and martyrdom is widely held as a virtue for the selfless. Drones, whose entire existence revolves around serving another individual's cause and who are generally incapable of bringing disgrace are thus perfect martyrs and eminently sacrificiable. Alas, they are also relatively easy to resuscitate if killed, which impairs the narrative strength of their destruction.\n\nIntentionally overridden safety measures and intentionally destabilizing directives targeting those measures ensure defeated drones come to a decisive and glorious end. The severely reduced safety protocols also makes room for other programs, conveniently.</description>
         <customEffectsDescription>Units with this directive break down into steel slag upon death.</customEffectsDescription>
         <directiveClass>MechHumanlikes.Directive_Basic</directiveClass>
@@ -174,7 +174,7 @@
 
     <MechHumanlikes.DirectiveDef>
         <defName>MDR_DirectiveBerserker</defName>
-        <label>Berserker Directives</label>
+        <label>Berserker</label>
         <description>Fantastical tales of legendary warriors winning battles after suffering normally lethal blows and of berserkerse who wage bloody conflict without regard for self or ally have always fascinated civilized peoples. Conveniently, the ability to ignore normally fatal damage and the "ability" to fail to recognize allies is relatively straightforward to institute in drones.\n\nSimple but specialized directives - and a great deal of removed safety protocols - can grant drones the capacity to mimic berserkers by instantaneously adapting to injuries without losing efficacy and by simply turning off most IFF sensors.</description>
         <customEffectsDescription>Units with this directive gain an ability to enter a mental state to attack all non-berserking units and shrug off wounds.</customEffectsDescription>
         <directiveClass>MechHumanlikes.Directive_AbilityGiver</directiveClass>
@@ -187,17 +187,17 @@
             <li><key>Trader</key><value>-1</value></li>
         </groupKindWeights>
         <requirementWorkers>
-            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredWorkType">
-                <requiredWorkTypes>
-                    <li>Hunting</li>
-                </requiredWorkTypes>
+            <li Class="MechHumanlikes.DirectiveRequirementWorker_RequiredWorkTag">
+                <requiredWorkTags>
+                    <li>Violent</li>
+                </requiredWorkTags>
             </li>
         </requirementWorkers>
     </MechHumanlikes.DirectiveDef>
 
     <MechHumanlikes.DirectiveDef>
         <defName>MDR_DirectiveInterference</defName>
-        <label>Interference Directives</label>
+        <label>Interdictor</label>
         <description>The value of communication and hearing in all situations can not be overstated. Interfering with those capabilities is widely considered one of the most critical aspects of any conflict, both physical and non-physical. Because organics are unable to fully shut down their hearing, and mechanical units are always listening to any passing signals, interfering with those abilities is simple - just fill the air with overwhelming amounts of junk data.\n\nSpecialized directives can grant drones the ability to emit a massive disrupting wave of audio and radiological signals, greatly impairing nearby anyone nearby.</description>
         <customEffectsDescription>Units with this directive gain an ability to hit all nearby pawns with interference that will cause pain, reduced hearing and psychic sensitivity, and may cause wandering mental breaks. Using the ability causes a crash, requiring a full restart of the drone.</customEffectsDescription>
         <directiveClass>MechHumanlikes.Directive_AbilityGiver</directiveClass>
