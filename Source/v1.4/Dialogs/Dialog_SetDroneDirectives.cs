@@ -283,7 +283,7 @@ namespace MechHumanlikes
                     }
                     xIndex += Margin;
                     reachedCategoryEnd = true;
-                    if (DrawDirective(directiveDef, !adding, ref xIndex, yIndex, containingRect) && directiveDef.ValidFor(pawn) && CompatibleWithSelections(directiveDef))
+                    if (DrawDirective(directiveDef, !adding, ref xIndex, yIndex, containingRect) && directiveDef.ValidFor(pawn) && CompatibleWithSelections(directiveDef) && !inherentDirectives.Contains(directiveDef))
                     {
                         if (selectedDirectives.Contains(directiveDef))
                         {

@@ -3,6 +3,7 @@
 
     <MDR_InvalidFor>{0} is invalid on {1} because {2}</MDR_InvalidFor>
     <MDR_MaxDirectivesExceeded>There are {0} non-inherent directives selected but {1} may only have {2}</MDR_MaxDirectivesExceeded>
+    <MDR_InvalidDirectivesRemoved>One or more directives became invalid and were removed.</MDR_InvalidDirectivesRemoved>
     <MDR_CantRemoveInherentDirectives>{0} can't be removed as it is an inherent directive of {1}</MDR_CantRemoveInherentDirectives>
 
 </LanguageData>

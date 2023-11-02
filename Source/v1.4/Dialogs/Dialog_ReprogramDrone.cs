@@ -166,11 +166,13 @@ namespace MechHumanlikes
                                 }
                             }
                         }
+                        CheckLegalDirectives();
                     }
                     else
                     {
                         programComp.enabledWorkTypes.Add(workTypeDef);
                         proposedWorkTypeComplexity += MDR_Utils.ComplexityCostFor(workTypeDef, pawn, true);
+                        CheckLegalDirectives();
                     }
                     pawn.Notify_DisabledWorkTypesChanged();
                     programComp.UpdateComplexity("Work Types", proposedWorkTypeComplexity);
@@ -219,6 +221,7 @@ namespace MechHumanlikes
                         context.skillComplexityCost -= 0.5f;
                         skill.Level--;
                         programComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(proposedSkillComplexity)));
+                        CheckLegalDirectives();
                     }
                 }
 
@@ -236,6 +239,7 @@ namespace MechHumanlikes
                         context.skillComplexityCost += 0.5f;
                         skill.Level++;
                         programComp.UpdateComplexity("Skills", Mathf.Max(0, Mathf.CeilToInt(proposedSkillComplexity)));
+                        CheckLegalDirectives();
                     }
                 }
             }
@@ -488,6 +492,32 @@ namespace MechHumanlikes
             }
 
             return stringBuilder.ToString();
+        }
+
+        // Ensure that any directive that is now invalid is removed and notify the player.
+        private void CheckLegalDirectives()
+        {
+            int directiveComplexity = 0;
+            bool removedDirective = false;
+            for (int i = proposedDirectives.Count - 1; i >= 0; i--)
+            {
+                if (!proposedDirectives[i].ValidFor(pawn) && !programExtension.inherentDirectives.Contains(proposedDirectives[i]))
+                {
+                    removedDirective = true;
+                    proposedDirectives.RemoveAt(i);
+                }
+                else
+                {
+                    directiveComplexity += proposedDirectives[i].complexityCost;
+                }
+            }
+
+            if (removedDirective)
+            {
+                programComp.UpdateComplexity("Active Directives", directiveComplexity);
+                programComp.SetDirectives(proposedDirectives);
+                Messages.Message("MDR_InvalidDirectivesRemoved".Translate(), MessageTypeDefOf.CautionInput, false);
+            }
         }
 
         private void CacheLegalWorkTypes()

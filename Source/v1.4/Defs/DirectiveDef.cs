@@ -88,7 +88,7 @@ namespace MechHumanlikes
                 if (cachedCustomDescription == null)
                 {
                     StringBuilder customDescription = new StringBuilder();
-                    customDescription.AppendLine("MDR_DirectiveDefHeader".Translate());
+                    customDescription.AppendLine("MDR_DirectiveDefHeader".Translate().Colorize(ColoredText.TipSectionTitleColor));
                     if (customEffectsDescription != null)
                     {
                         customDescription.AppendLine(customEffectsDescription);
@@ -106,7 +106,7 @@ namespace MechHumanlikes
                     if (statOffsets != null)
                     {
                         customDescription.AppendLine();
-                        customDescription.AppendLine("MDR_DirectiveDefStatOffsetHeader".Translate());
+                        customDescription.AppendLine("MDR_DirectiveDefStatOffsetHeader".Translate().Colorize(ColoredText.TipSectionTitleColor));
                         foreach (StatModifier statOffset in statOffsets)
                         {
                             customDescription.AppendLine("MDR_DirectiveDefStatIndent".Translate(statOffset.stat.LabelForFullStatListCap, statOffset.ValueToStringAsOffset));
@@ -115,7 +115,7 @@ namespace MechHumanlikes
                     if (statFactors != null)
                     {
                         customDescription.AppendLine();
-                        customDescription.AppendLine("MDR_DirectiveDefStatFactorHeader".Translate());
+                        customDescription.AppendLine("MDR_DirectiveDefStatFactorHeader".Translate().Colorize(ColoredText.TipSectionTitleColor));
                         foreach (StatModifier statFactor in statFactors)
                         {
                             customDescription.AppendLine("MDR_DirectiveDefStatIndent".Translate(statFactor.stat.LabelForFullStatListCap, statFactor.ToStringAsFactor));
