@@ -4,6 +4,7 @@ using System.Text;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Noise;
 
 namespace MechHumanlikes
 {
@@ -29,11 +30,9 @@ namespace MechHumanlikes
 
         private float proposedSkillComplexity;
 
-        private float scrollHeight;
-
-        private Vector2 scrollPosition;
-
         private const float WidthWithTabs = 1500f;
+
+        private const float ContentHeight = 700f;
 
         private const float ButtonHeight = 30f;
 
@@ -80,6 +79,15 @@ namespace MechHumanlikes
             skillDefs = DefDatabase<SkillDef>.AllDefsListForReading;
         }
 
+        Vector2 workTypeScrollPosition = Vector2.zero;
+        float workTypeCachedScrollHeight = ContentHeight;
+
+        Vector2 skillScrollPosition = Vector2.zero;
+        float skillCachedScrollHeight = ContentHeight;
+
+        Vector2 directiveScrollPosition = Vector2.zero;
+        float directiveCachedScrollHeight = ContentHeight;
+
         public override void DoWindowContents(Rect inRect)
         {
             Text.Font = GameFont.Medium;
@@ -91,21 +99,20 @@ namespace MechHumanlikes
             Text.Font = GameFont.Small;
             Widgets.InfoCardButton(inRect.width - (3 * Margin), 0f, pawn);
             curY += Margin;
-            if (Event.current.type == EventType.Layout)
-            {
-                scrollHeight = 700f;
-            }
-            Rect workTypeRect = new Rect(curX, curY, 240, scrollHeight);
+
+            Rect workTypeRect = new Rect(curX, curY, 240, ContentHeight);
             proposedEnabledWorkTypes = programComp.enabledWorkTypes;
             DrawWorkTypes(workTypeRect);
             curX += 240 + Margin;
-            Rect skillsRect = new Rect(curX, curY, 240, scrollHeight);
+
+            Rect skillsRect = new Rect(curX, curY, 240, ContentHeight);
             DrawSkills(skillsRect);
             curX += 240 + Margin;
-            Rect directiveRect = new Rect(curX, curY, 450, scrollHeight);
+
+            Rect directiveRect = new Rect(curX, curY, 450, ContentHeight);
             DrawDirectives(directiveRect);
             curX += 450 + Margin;
-            Rect cardSection = new Rect(curX, curY, 600f, scrollHeight);
+            Rect cardSection = new Rect(curX, curY, 600f, ContentHeight);
             cardSection.xMin += 2f * Margin;
             cardSection.yMax -= Margin + CloseButSize.y;
             cardSection.yMin += 32f;
@@ -121,24 +128,32 @@ namespace MechHumanlikes
 
         private void DrawWorkTypes(Rect rect)
         {
-            RectDivider workSection = new RectDivider(rect, 8102830, new Vector2(0, 0));
-            TaggedString sectionLabel = "MDR_SelectedWorkTypes".Translate();
-            Widgets.Label(workSection.NewRow(Text.CalcHeight(sectionLabel, workSection.Rect.width)), sectionLabel);
+            Rect contentRect = new Rect(rect);
+            bool needToScroll = workTypeCachedScrollHeight > rect.height;
+            if (needToScroll)
+            {
+                contentRect.width -= 20f;
+                contentRect.height = workTypeCachedScrollHeight;
+                Widgets.BeginScrollView(rect, ref workTypeScrollPosition, contentRect);
+            }
+            Listing_Standard listingStandard = new Listing_Standard
+            {
+                maxOneColumn = true
+            };
+            listingStandard.Begin(contentRect);
+
+            listingStandard.Label("MDR_SelectedWorkTypes".Translate());
             foreach (WorkTypeDef workTypeDef in legalWorkTypes)
             {
                 bool active = proposedEnabledWorkTypes.Contains(workTypeDef);
                 bool originalState = active;
 
-                RectDivider typeDefSection = workSection.NewRow(ButtonHeight);
-                TooltipHandler.TipRegion(typeDefSection.Rect, WorkTypeComplexityTooltip(workTypeDef, !active));
-                Widgets.CheckboxLabeled(typeDefSection.Rect, workTypeDef.labelShort.CapitalizeFirst(), ref active);
-
-                if (originalState != active)
+                listingStandard.CheckboxLabeled(workTypeDef.labelShort.CapitalizeFirst(), ref active, WorkTypeComplexityTooltip(workTypeDef, !active), onChange: delegate
                 {
                     if (programExtension.inherentWorkTypes.NotNullAndContains(workTypeDef))
                     {
                         active = originalState;
-                        continue;
+                        return;
                     }
 
                     if (!active)
@@ -176,15 +191,33 @@ namespace MechHumanlikes
                     }
                     pawn.Notify_DisabledWorkTypesChanged();
                     programComp.UpdateComplexity("Work Types", proposedWorkTypeComplexity);
-                }
+                });
             }
+            if (needToScroll)
+            {
+                Widgets.EndScrollView();
+            }
+            workTypeCachedScrollHeight = listingStandard.CurHeight;
+            listingStandard.End();
         }
 
         private void DrawSkills(Rect rect)
         {
-            RectDivider skillSection = new RectDivider(rect, 8102830, new Vector2(0, Margin / 2));
-            TaggedString sectionLabel = "MDR_SelectSkills".Translate();
-            Widgets.Label(skillSection.NewRow(Text.CalcHeight(sectionLabel, skillSection.Rect.width)), sectionLabel);
+            Rect contentRect = new Rect(rect);
+            bool needToScroll = skillCachedScrollHeight > rect.height;
+            if (needToScroll)
+            {
+                contentRect.width -= 20f;
+                contentRect.height = skillCachedScrollHeight;
+                Widgets.BeginScrollView(rect, ref skillScrollPosition, contentRect);
+            }
+            Listing_Standard listingStandard = new Listing_Standard
+            {
+                maxOneColumn = true
+            };
+            listingStandard.Begin(contentRect);
+
+            listingStandard.Label("MDR_SelectSkills".Translate());
             foreach (SkillDef skillDef in skillDefs)
             {
                 SkillRecord skill = pawn.skills.GetSkill(skillDef);
@@ -194,14 +227,10 @@ namespace MechHumanlikes
                     continue;
                 }
                 DroneSkillContext context = skillContexts[skill];
-                string skillDefLabel = skillDef.LabelCap + ": " + skill.Level.ToString();
-                Vector2 skillDefLabelSize = Text.CalcSize(skillDefLabel);
-                RectDivider skillDefRow = skillSection.NewRow(skillDefLabelSize.y + (Margin / 2) + ButtonHeight);
-                Rect skillDefRowLabel = skillDefRow.NewRow(skillDefLabelSize.y).Rect;
-                TooltipHandler.TipRegion(skillDefRowLabel, skillDef.description);
-                Widgets.Label(skillDefRowLabel, skillDefLabel);
+                listingStandard.Label(skillDef.LabelCap + ": " + skill.Level.ToString(), tooltip: skillDef.description);
+                Rect skillDefRect = listingStandard.GetRect(ButtonHeight);
 
-                RectDivider skillDefRowButtons = skillDefRow.NewRow(ButtonHeight);
+                RectDivider skillDefRowButtons = new RectDivider(skillDefRect, 8102830, new Vector2(0, 0));
                 float skillDefColumnWidth = (skillDefRowButtons.Rect.width - Margin) / 2;
                 RectDivider removeSkillLevelButton = skillDefRowButtons.NewCol(skillDefColumnWidth, HorizontalJustification.Left);
                 TooltipHandler.TipRegion(removeSkillLevelButton, SkillComplexityTooltip(skill, context, false));
@@ -242,14 +271,20 @@ namespace MechHumanlikes
                         CheckLegalDirectives();
                     }
                 }
+                listingStandard.Gap(Margin);
             }
+            if (needToScroll)
+            {
+                Widgets.EndScrollView();
+            }
+            skillCachedScrollHeight = listingStandard.CurHeight;
+            listingStandard.End();
         }
 
         private void DrawDirectives(Rect rect)
         {
             float xIndex = rect.x;
             float yIndex = rect.y;
-            Widgets.BeginScrollView(new Rect(xIndex, yIndex, rect.width, rect.height), ref scrollPosition, rect);
             Rect headerSection = new Rect(xIndex, yIndex, rect.width, Text.LineHeight);
             Widgets.Label(headerSection, "MDR_SelectedDirectives".Translate());
             yIndex += Text.LineHeight + Margin;
@@ -262,7 +297,7 @@ namespace MechHumanlikes
             float xMaxIndex = rect.x + rect.width;
             float directiveBlockWithMarginWidth = directiveBlockWidth + Margin;
             float directiveIconSize = Mathf.Min(directiveBlockWidth - Margin / 3, directiveBlockHeight - (Margin / 2));
-            Rect contentBGSection = new Rect(xIndex, yIndex, rect.width, rect.height);
+            Rect contentBGSection = new Rect(xIndex, yIndex, rect.width, rect.height - yIndex);
             Widgets.DrawRectFast(contentBGSection, Widgets.MenuSectionBGFillColor);
             xIndex += Margin;
             yIndex += Margin;
@@ -332,7 +367,6 @@ namespace MechHumanlikes
                     xIndex = blockSection.xMax + Margin;
                 }
             }
-            Widgets.EndScrollView();
         }
 
         private void DrawSummary(Rect summaryWrapper)
