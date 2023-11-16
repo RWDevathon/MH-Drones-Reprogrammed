@@ -19,6 +19,10 @@ namespace MechHumanlikes
                 {
                     if (___cachedDisabledWorkTypes == null)
                     {
+                        if (PawnGenerator.IsBeingGenerated(__instance))
+                        {
+                            return true;
+                        }
                         List<WorkTypeDef> allWorkTypes = DefDatabase<WorkTypeDef>.AllDefsListForReading;
                         List<WorkTypeDef> enabledWorkTypes = __instance.GetComp<CompReprogrammableDrone>().enabledWorkTypes;
                         if (enabledWorkTypes == null || enabledWorkTypes.Count == 0)
@@ -53,6 +57,10 @@ namespace MechHumanlikes
             {
                 if (MDR_Utils.IsProgrammableDrone(__instance))
                 {
+                    if (PawnGenerator.IsBeingGenerated(__instance))
+                    {
+                        return true;
+                    }
                     WorkTags enabledTags = WorkTags.None;
                     List<WorkTypeDef> enabledWorkTypes = __instance.GetComp<CompReprogrammableDrone>().enabledWorkTypes;
                     for (int i = enabledWorkTypes.Count - 1; i >= 0; i--)

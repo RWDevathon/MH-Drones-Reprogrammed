@@ -6,6 +6,9 @@ namespace MechHumanlikes
     // Mod extension for programmable drone pawn kinds to control appropriate features.
     public class MDR_ProgrammableDroneKindExtension : DefModExtension
     {
+        // Work Types that the drone must generate with, even if this exceeds complexity limits and the discretionary complexity.
+        public List<WorkTypeDef> requiredWorkTypes = new List<WorkTypeDef>();
+
         // Directives that the drone must generate with, even if this exceeds complexity limits and the discretionary complexity.
         public List<DirectiveDef> requiredDirectives = new List<DirectiveDef>();
 

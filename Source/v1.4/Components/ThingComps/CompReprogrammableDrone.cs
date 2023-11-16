@@ -130,7 +130,7 @@ namespace MechHumanlikes
                         {
                             UpdateComplexity("DEBUG", 1);
                         }
-                        Log.Warning(Pawn.LabelCap + " has complexity " + Complexity + " with " + complexitySources["DEBUG"] + " debug complexity");
+                        Log.Message(Pawn.LabelCap + " has complexity " + Complexity + " with " + complexitySources["DEBUG"] + " debug complexity");
                     }
                 };
                 yield return add1Complexity;
@@ -149,14 +149,28 @@ namespace MechHumanlikes
                         }
                         if (complexitySources.ContainsKey("DEBUG"))
                         {
-                            Log.Warning(Pawn.LabelCap + " has complexity " + Complexity + " with " + complexitySources["DEBUG"] + " debug complexity");
+                            Log.Message(Pawn.LabelCap + " has complexity " + Complexity + " with " + complexitySources["DEBUG"] + " debug complexity");
                         }
                         else
                         {
-                            Log.Warning(Pawn.LabelCap + " has complexity " + Complexity + " with 0 debug complexity");
+                            Log.Message(Pawn.LabelCap + " has complexity " + Complexity + " with 0 debug complexity");
                         }
                     }
                 };
+                yield return subtract1Complexity;
+                Command_Action printComplexities = new Command_Action
+                {
+                    defaultLabel = "DEV: Log Complexity Sources",
+                    action = delegate
+                    {
+                        Log.Message("[MHC DEBUG] Complexity Sources for " + Pawn);
+                        foreach (string sourceKey in complexitySources.Keys)
+                        {
+                            Log.Message("[MHC DEBUG] " + sourceKey + ": " + complexitySources[sourceKey]);
+                        }
+                    }
+                };
+                yield return printComplexities;
             }
             yield break;
         }

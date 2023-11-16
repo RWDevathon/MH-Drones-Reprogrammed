@@ -22,7 +22,6 @@ namespace MechHumanlikes
                     if (MDR_Utils.IsProgrammableDrone(member))
                     {
                         MDR_Utils.RandomizeProgrammableDrone(member, parms);
-                        Log.Warning("Randomization Successful for " + member.LabelShortCap);
                     }
                 }
                 __result = modifiedResults;

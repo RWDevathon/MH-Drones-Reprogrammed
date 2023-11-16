@@ -160,7 +160,7 @@ namespace MechHumanlikes
                     {
                         pawnComp.enabledWorkTypes.Add(workTypeDef);
 
-                        requiredWorkTypeComplexity += MDR_Utils.ComplexityCostFor(workTypeDef, pawn, true);
+                        requiredWorkTypeComplexity += ComplexityCostFor(workTypeDef, pawn, true);
                     }
                 }
 
@@ -173,13 +173,14 @@ namespace MechHumanlikes
                         {
                             pawnComp.enabledWorkTypes.Add(workTypeDef);
 
-                            requiredWorkTypeComplexity += MDR_Utils.ComplexityCostFor(workTypeDef, pawn, true);
+                            requiredWorkTypeComplexity += ComplexityCostFor(workTypeDef, pawn, true);
                         }
                     }
                 }
 
                 if (requiredWorkTypeComplexity != 0)
                 {
+                    pawn.Notify_DisabledWorkTypesChanged();
                     pawnComp.UpdateComplexity("Work Types", requiredWorkTypeComplexity + pawnComp.GetComplexityFromSource("Work Types"));
                 }
             }
@@ -282,7 +283,7 @@ namespace MechHumanlikes
             List<DirectiveDef> activeDirectiveDefs = new List<DirectiveDef>();
             activeDirectiveDefs.AddRange(pawnComp.ActiveDirectives);
             int discretionaryDirectives = Mathf.Min(
-                pawnKindExtension.discretionaryDirectives.RandomInRange,
+                pawnKindExtension?.discretionaryDirectives.RandomInRange ?? 0,
                 pawnExtension.maxDirectives - (activeDirectiveDefs.Count - pawnExtension.inherentDirectives?.Count ?? 0));
 
             if (discretionaryDirectives > 0)
@@ -377,7 +378,7 @@ namespace MechHumanlikes
             }
 
             // Randomize Work Types
-            int discretionaryWorkTypes = pawnKindExtension.discretionaryWorkTypes.RandomInRange;
+            int discretionaryWorkTypes = pawnKindExtension?.discretionaryWorkTypes.RandomInRange ?? 0;
             if (discretionaryWorkTypes > 0)
             {
                 List<WorkTypeDef> legalWorkTypes = new List<WorkTypeDef>();
@@ -393,7 +394,7 @@ namespace MechHumanlikes
                     }
                 }
 
-                int requiredWorkTypeComplexity = 0;
+                int discretionaryWorkTypeComplexity = 0;
                 while (legalWorkTypes.Count > 0 && discretionaryComplexity > 0 && discretionaryWorkTypes > 0)
                 {
                     legalWorkTypes.TryRandomElement(out WorkTypeDef result);
@@ -406,14 +407,14 @@ namespace MechHumanlikes
                     {
                         pawnComp.enabledWorkTypes.Add(result);
                         legalWorkTypes.Remove(result);
-                        requiredWorkTypeComplexity += workTypeCost;
+                        discretionaryWorkTypeComplexity += workTypeCost;
                         discretionaryComplexity -= workTypeCost;
                         discretionaryWorkTypes--;
                     }
                 }
 
                 pawn.Notify_DisabledWorkTypesChanged();
-                pawnComp.UpdateComplexity("Work Types", requiredWorkTypeComplexity + pawnComp.GetComplexityFromSource("Work Types"));
+                pawnComp.UpdateComplexity("Work Types", discretionaryWorkTypeComplexity + pawnComp.GetComplexityFromSource("Work Types"));
             }
 
             // If all discretionary complexity was used by work types, stop here.
