@@ -195,6 +195,7 @@ namespace MechHumanlikes
                 if (directives == null)
                 {
                     directives = new List<Directive>();
+                    SetDirectives(Pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>().inherentDirectives);
                 }
                 RecalculateComplexity();
                 // Cache the baseline complexity stat from the pawn's statBases. Do this exactly once as it does not change without reloading the game.

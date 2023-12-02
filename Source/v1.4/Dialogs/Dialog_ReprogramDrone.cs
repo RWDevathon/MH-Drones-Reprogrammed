@@ -4,7 +4,6 @@ using System.Text;
 using RimWorld;
 using UnityEngine;
 using Verse;
-using Verse.Noise;
 
 namespace MechHumanlikes
 {
@@ -84,9 +83,6 @@ namespace MechHumanlikes
 
         Vector2 skillScrollPosition = Vector2.zero;
         float skillCachedScrollHeight = ContentHeight;
-
-        Vector2 directiveScrollPosition = Vector2.zero;
-        float directiveCachedScrollHeight = ContentHeight;
 
         public override void DoWindowContents(Rect inRect)
         {
