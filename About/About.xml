@@ -22,7 +22,7 @@
     <packageId>Killathon.MechanicalHumanlikes.MechDronesReprogrammed</packageId>
     <loadAfter>
         <li>brrainz.harmony</li><!-- Dependency -->
-        <li>erdelf.HumanoidAlienRaces</li><!-- Dependency -->
+        <li>Killathon.MechanicalHumanlikesCore</li><!-- Dependency -->
     </loadAfter>
     <description><![CDATA[MHDR is a submod of MHC to give drones greater flexibility, specialization, and generally more mechanics.
 

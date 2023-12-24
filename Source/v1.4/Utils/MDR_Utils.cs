@@ -139,21 +139,27 @@ namespace MechHumanlikes
             CompReprogrammableDrone pawnComp = pawn.GetComp<CompReprogrammableDrone>();
             PawnKindDef pawnKindDef = pawn.kindDef;
 
-            if (pawnKindDef.requiredWorkTags != WorkTags.None)
+            int requiredWorkTypeComplexity = 0;
+            List<WorkTypeDef> legalWorkTypes = new List<WorkTypeDef>();
+            List<WorkTypeDef> combatWorkTypes = new List<WorkTypeDef>();
+            foreach (WorkTypeDef workTypeDef in DefDatabase<WorkTypeDef>.AllDefs)
             {
-                List<WorkTypeDef> legalWorkTypes = new List<WorkTypeDef>();
-                foreach (WorkTypeDef workTypeDef in DefDatabase<WorkTypeDef>.AllDefs)
+                if ((workTypeDef.workTags & WorkTags.Violent) != WorkTags.None)
                 {
-                    if ((workTypeDef.workTags != WorkTags.None || !workTypeDef.relevantSkills.NullOrEmpty())
-                        && !pawnExtension.forbiddenWorkTypes.NotNullAndContains(workTypeDef)
-                        && (workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ValidFor(pawn).Accepted ?? true)
-                        && !pawnComp.enabledWorkTypes.Contains(workTypeDef))
-                    {
-                        legalWorkTypes.Add(workTypeDef);
-                    }
+                    combatWorkTypes.Add(workTypeDef);
                 }
 
-                int requiredWorkTypeComplexity = 0;
+                if ((workTypeDef.workTags != WorkTags.None || !workTypeDef.relevantSkills.NullOrEmpty())
+                    && !pawnExtension.forbiddenWorkTypes.NotNullAndContains(workTypeDef)
+                    && (workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ValidFor(pawn).Accepted ?? true)
+                    && !pawnComp.enabledWorkTypes.Contains(workTypeDef))
+                {
+                    legalWorkTypes.Add(workTypeDef);
+                }
+            }
+
+            if (pawnKindDef.requiredWorkTags != WorkTags.None)
+            {
                 foreach (WorkTypeDef workTypeDef in legalWorkTypes)
                 {
                     if ((workTypeDef.workTags & pawnKindDef.requiredWorkTags) != WorkTags.None)
@@ -163,26 +169,24 @@ namespace MechHumanlikes
                         requiredWorkTypeComplexity += ComplexityCostFor(workTypeDef, pawn, true);
                     }
                 }
+            }
 
-                // Ensure the pawn has both combat work types enabled if it must be a fighter.
-                if (context != null && context.generateFightersOnly)
+            // Ensure the pawn has all combat work types enabled if it must be a fighter. They get these work types for free.
+            if (context != null && context.raidStrategy != null)
+            {
+                foreach (WorkTypeDef combatWorkTypeDef in combatWorkTypes)
                 {
-                    foreach (WorkTypeDef workTypeDef in legalWorkTypes)
+                    if ((combatWorkTypeDef.workTags & WorkTags.Violent) != WorkTags.None)
                     {
-                        if ((workTypeDef.workTags & WorkTags.Violent) != WorkTags.None && !pawnComp.enabledWorkTypes.Contains(workTypeDef))
-                        {
-                            pawnComp.enabledWorkTypes.Add(workTypeDef);
-
-                            requiredWorkTypeComplexity += ComplexityCostFor(workTypeDef, pawn, true);
-                        }
+                        pawnComp.enabledWorkTypes.Add(combatWorkTypeDef);
                     }
                 }
+            }
 
-                if (requiredWorkTypeComplexity != 0)
-                {
-                    pawn.Notify_DisabledWorkTypesChanged();
-                    pawnComp.UpdateComplexity("Work Types", requiredWorkTypeComplexity + pawnComp.GetComplexityFromSource("Work Types"));
-                }
+            if (requiredWorkTypeComplexity != 0)
+            {
+                pawn.Notify_DisabledWorkTypesChanged();
+                pawnComp.UpdateComplexity("Work Types", requiredWorkTypeComplexity + pawnComp.GetComplexityFromSource("Work Types"));
             }
         }
 

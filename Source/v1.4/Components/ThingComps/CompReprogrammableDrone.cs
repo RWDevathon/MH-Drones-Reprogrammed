@@ -117,47 +117,6 @@ namespace MechHumanlikes
         {
             if (DebugSettings.ShowDevGizmos)
             {
-                Command_Action add1Complexity = new Command_Action
-                {
-                    defaultLabel = "DEV: Add 1 Complexity",
-                    action = delegate
-                    {
-                        if (complexitySources.ContainsKey("DEBUG"))
-                        {
-                            UpdateComplexity("DEBUG", complexitySources["DEBUG"] + 1);
-                        }
-                        else
-                        {
-                            UpdateComplexity("DEBUG", 1);
-                        }
-                        Log.Message(Pawn.LabelCap + " has complexity " + Complexity + " with " + complexitySources["DEBUG"] + " debug complexity");
-                    }
-                };
-                yield return add1Complexity;
-                Command_Action subtract1Complexity = new Command_Action
-                {
-                    defaultLabel = "DEV: Subtract 1 Complexity",
-                    action = delegate
-                    {
-                        if (complexitySources.ContainsKey("DEBUG"))
-                        {
-                            UpdateComplexity("DEBUG", complexitySources["DEBUG"] - 1);
-                        }
-                        else
-                        {
-                            UpdateComplexity("DEBUG", -1);
-                        }
-                        if (complexitySources.ContainsKey("DEBUG"))
-                        {
-                            Log.Message(Pawn.LabelCap + " has complexity " + Complexity + " with " + complexitySources["DEBUG"] + " debug complexity");
-                        }
-                        else
-                        {
-                            Log.Message(Pawn.LabelCap + " has complexity " + Complexity + " with 0 debug complexity");
-                        }
-                    }
-                };
-                yield return subtract1Complexity;
                 Command_Action printComplexities = new Command_Action
                 {
                     defaultLabel = "DEV: Log Complexity Sources",
@@ -171,6 +130,27 @@ namespace MechHumanlikes
                     }
                 };
                 yield return printComplexities;
+                Command_Action forceReprogramming = new Command_Action
+                {
+                    defaultLabel = "DEV: Force Reprogramming",
+                    action = delegate
+                    {
+                        Find.WindowStack.Add(new Dialog_ReprogramDrone(Pawn));
+                        // If the unit had the no programming hediff, remove that hediff.
+                        Hediff hediff = Pawn.health.hediffSet.GetFirstHediffOfDef(MDR_HediffDefOf.MDR_NoProgramming);
+                        if (hediff != null)
+                        {
+                            Pawn.health.RemoveHediff(hediff);
+                        }
+                        // Reprogrammable drones do not need to restart after programming is complete.
+                        hediff = Pawn.health.hediffSet.GetFirstHediffOfDef(MHC_HediffDefOf.MHC_Restarting);
+                        if (hediff != null)
+                        {
+                            Pawn.health.RemoveHediff(hediff);
+                        }
+                    }
+                };
+                yield return forceReprogramming;
             }
             yield break;
         }

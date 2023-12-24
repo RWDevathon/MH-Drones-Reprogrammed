@@ -39,10 +39,6 @@ namespace MechHumanlikes
             {
                 pawn.health.RemoveHediff(hediff);
             }
-            else
-            {
-                hediff.Severity = hediff.def.initialSeverity;
-            }
         }
     }
 }
