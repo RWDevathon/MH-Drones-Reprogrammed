@@ -29,9 +29,11 @@ namespace MechHumanlikes
 
         private float proposedSkillComplexity;
 
-        private const float WidthWithTabs = 1500f;
+        private const float ContentBaseWidth = 200f;
 
-        private const float ContentHeight = 700f;
+        private const float WidthWithTabs = 1400f;
+
+        private const float ContentHeight = 500f;
 
         private const float ButtonHeight = 30f;
 
@@ -47,7 +49,7 @@ namespace MechHumanlikes
 
         protected override float Margin => 12f;
 
-        private float Height => 900f;
+        private float Height => 700f;
 
         public override Vector2 InitialSize
         {
@@ -96,19 +98,19 @@ namespace MechHumanlikes
             Widgets.InfoCardButton(inRect.width - (3 * Margin), 0f, pawn);
             curY += Margin;
 
-            Rect workTypeRect = new Rect(curX, curY, 240, ContentHeight);
+            Rect workTypeRect = new Rect(curX, curY, ContentBaseWidth, ContentHeight);
             proposedEnabledWorkTypes = programComp.enabledWorkTypes;
             DrawWorkTypes(workTypeRect);
-            curX += 240 + Margin;
+            curX += ContentBaseWidth + Margin;
 
-            Rect skillsRect = new Rect(curX, curY, 240, ContentHeight);
+            Rect skillsRect = new Rect(curX, curY, ContentBaseWidth, ContentHeight);
             DrawSkills(skillsRect);
-            curX += 240 + Margin;
+            curX += ContentBaseWidth + Margin;
 
-            Rect directiveRect = new Rect(curX, curY, 450, ContentHeight);
+            Rect directiveRect = new Rect(curX, curY, ContentBaseWidth * 2, ContentHeight);
             DrawDirectives(directiveRect);
-            curX += 450 + Margin;
-            Rect cardSection = new Rect(curX, curY, 600f, ContentHeight);
+            curX += ContentBaseWidth* 2 + Margin;
+            Rect cardSection = new Rect(curX, curY, ContentBaseWidth * 3, ContentHeight);
             cardSection.xMin += 2f * Margin;
             cardSection.yMax -= Margin + CloseButSize.y;
             cardSection.yMin += 32f;

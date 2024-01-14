@@ -86,7 +86,7 @@ namespace MechHumanlikes
             MDR_ProgrammableDroneExtension reprogramExtension = pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>();
 
             // WorkTypes
-            reprogramComp.enabledWorkTypes.RemoveAll(workType => !reprogramExtension.inherentWorkTypes.NotNullAndContains(workType) && workType.workTags != WorkTags.None && !workType.relevantSkills.NullOrEmpty());
+            reprogramComp.enabledWorkTypes.RemoveAll(workType => !reprogramExtension.inherentWorkTypes.NotNullAndContains(workType));
             pawn.Notify_DisabledWorkTypesChanged();
             reprogramComp.UpdateComplexity("Work Types", 0);
 

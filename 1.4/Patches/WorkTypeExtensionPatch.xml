@@ -25,8 +25,8 @@
         <xpath>Defs/WorkTypeDef[defName="Smithing" or defName="Tailoring"]</xpath>
         <value>
             <li Class="MechHumanlikes.MDR_WorkTypeExtension">
-                <baseComplexity>3</baseComplexity>
-                <minimumRequiredComplexity>20</minimumRequiredComplexity>
+                <baseComplexity>4</baseComplexity>
+                <minimumRequiredComplexity>15</minimumRequiredComplexity>
             </li>
         </value>
     </Operation>
@@ -36,8 +36,8 @@
         <xpath>Defs/WorkTypeDef[defName="Doctor" or defName="MHC_Mechanic"]</xpath>
         <value>
             <li Class="MechHumanlikes.MDR_WorkTypeExtension">
-                <baseComplexity>4</baseComplexity>
-                <minimumRequiredComplexity>30</minimumRequiredComplexity>
+                <baseComplexity>6</baseComplexity>
+                <minimumRequiredComplexity>20</minimumRequiredComplexity>
             </li>
         </value>
     </Operation>
@@ -47,8 +47,8 @@
         <xpath>Defs/WorkTypeDef[defName="Warden" or defName="Childcare"]</xpath>
         <value>
             <li Class="MechHumanlikes.MDR_WorkTypeExtension">
-                <baseComplexity>2</baseComplexity>
-                <minimumRequiredComplexity>40</minimumRequiredComplexity>
+                <baseComplexity>4</baseComplexity>
+                <minimumRequiredComplexity>25</minimumRequiredComplexity>
             </li>
         </value>
     </Operation>
@@ -59,10 +59,9 @@
         <value>
             <li Class="MechHumanlikes.MDR_WorkTypeExtension">
                 <baseComplexity>6</baseComplexity>
-                <minimumRequiredComplexity>60</minimumRequiredComplexity>
+                <minimumRequiredComplexity>35</minimumRequiredComplexity>
             </li>
         </value>
     </Operation>
-
 
 </Patch>
