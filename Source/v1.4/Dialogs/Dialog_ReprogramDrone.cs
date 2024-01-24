@@ -69,7 +69,7 @@ namespace MechHumanlikes
             proposedDirectives = new List<DirectiveDef>();
             proposedDirectives.AddRange(programComp.ActiveDirectives);
             programExtension = pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>();
-            CacheLegalWorkTypes();
+            CacheLegalAndAssignGlobalWorkTypes();
             proposedWorkTypeComplexity = programComp.GetComplexityFromSource("Work Types");
             skillContexts = new Dictionary<SkillRecord, DroneSkillContext>();
             foreach (SkillRecord skillRecord in pawn.skills.skills)
@@ -552,14 +552,17 @@ namespace MechHumanlikes
             }
         }
 
-        private void CacheLegalWorkTypes()
+        private void CacheLegalAndAssignGlobalWorkTypes()
         {
             legalWorkTypes = new List<WorkTypeDef>();
             foreach (WorkTypeDef workTypeDef in DefDatabase<WorkTypeDef>.AllDefs)
             {
-                if ((workTypeDef.workTags != WorkTags.None || !workTypeDef.relevantSkills.NullOrEmpty())
-                    && !programExtension.forbiddenWorkTypes.NotNullAndContains(workTypeDef)
-                    && (workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ValidFor(pawn).Accepted ?? true))
+                if (workTypeDef.workTags == WorkTags.None && workTypeDef.relevantSkills.NullOrEmpty())
+                {
+                    programComp.enabledWorkTypes.Add(workTypeDef);
+                    pawn.Notify_DisabledWorkTypesChanged();
+                }
+                else if (!programExtension.forbiddenWorkTypes.NotNullAndContains(workTypeDef) && (workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ValidFor(pawn).Accepted ?? true))
                 {
                     legalWorkTypes.Add(workTypeDef);
                 }
