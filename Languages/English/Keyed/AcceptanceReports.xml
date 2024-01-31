@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
+    <MDR_CantInteractWithWorkType>{0} can't be changed because: </MDR_CantInteractWithWorkType>
+
 	<MDR_ExclusionTagConflict>{0} and {1} are mutually exclusive.</MDR_ExclusionTagConflict>
     <MDR_ExclusiveToRace>{1}'s race does not allow this.</MDR_ExclusiveToRace>
     <MDR_ComplexityRequirementInsufficient>it requires at least {1} maximum complexity but {2} has only {3}.</MDR_ComplexityRequirementInsufficient>
+    <MDR_IsInherentWorkType>it is an inherent work type of {0}. Inherent work types have no complexity cost.</MDR_IsInherentWorkType>
 
     <MDR_ForbiddenSkillPresent>the {0} skill is enabled.</MDR_ForbiddenSkillPresent>
     <MDR_ForbiddenWorkTagsPresent>the {0} tags must be disabled.</MDR_ForbiddenWorkTagsPresent>
     <MDR_ForbiddenWorkTypePresent>the {0} work type is enabled.</MDR_ForbiddenWorkTypePresent>
+    <MDR_IsForbiddenWorkType>it is a forbidden work type for a {0}. {1} will never be able to do this.</MDR_IsForbiddenWorkType>
 
     <MDR_RequiredWorkTypeAbsent>the {0} work type is disabled.</MDR_RequiredWorkTypeAbsent>
     <MDR_RequiredWorkTypeSetAbsent>at least one of these work types must be enabled: {0}.</MDR_RequiredWorkTypeSetAbsent>\

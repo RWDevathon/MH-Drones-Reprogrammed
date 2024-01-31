@@ -23,7 +23,6 @@
     <MDR_ReprogramDrone>Reprogram {0}.</MDR_ReprogramDrone>
 
     <!-- Tooltips for the reprogramming dialogs -->
-    <MDR_CantRemoveInherentWorkTypes>{0} can't be removed as it is an inherent work type of {1}. Inherent work types have no complexity cost.</MDR_CantRemoveInherentWorkTypes>
     <MDR_CantExceedSkillMax>{0} is unable to possess a skill higher than {1}, limited by inherent qualities of the drone type.</MDR_CantExceedSkillMax>
     <MDR_CantExceedSkillMin>{0} is unable to possess less than the minimum skill level. Skills can only be disabled by disabling all corresponding work types (some of which may be inherent and cost no complexity).</MDR_CantExceedSkillMin>
     <MDR_HasInherentSkills>{0} has {2} inherent skill points for {1} and can not be programmed with lower skill. Inherent skills have no complexity cost.</MDR_HasInherentSkills>

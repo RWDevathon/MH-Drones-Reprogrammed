@@ -17,7 +17,7 @@ namespace MechHumanlikes
 
         private List<DirectiveDef> proposedDirectives;
 
-        private List<WorkTypeDef> legalWorkTypes;
+        private List<WorkTypeDef> localWorkTypes;
 
         private List<WorkTypeDef> proposedEnabledWorkTypes = new List<WorkTypeDef>();
 
@@ -69,7 +69,7 @@ namespace MechHumanlikes
             proposedDirectives = new List<DirectiveDef>();
             proposedDirectives.AddRange(programComp.ActiveDirectives);
             programExtension = pawn.def.GetModExtension<MDR_ProgrammableDroneExtension>();
-            CacheLegalAndAssignGlobalWorkTypes();
+            CacheLocalAndAssignGlobalWorkTypes();
             proposedWorkTypeComplexity = programComp.GetComplexityFromSource("Work Types");
             skillContexts = new Dictionary<SkillRecord, DroneSkillContext>();
             foreach (SkillRecord skillRecord in pawn.skills.skills)
@@ -141,19 +141,36 @@ namespace MechHumanlikes
             listingStandard.Begin(contentRect);
 
             listingStandard.Label("MDR_SelectedWorkTypes".Translate());
-            foreach (WorkTypeDef workTypeDef in legalWorkTypes)
+            foreach (WorkTypeDef workTypeDef in localWorkTypes)
             {
-                bool active = proposedEnabledWorkTypes.Contains(workTypeDef);
-                bool originalState = active;
-
-                listingStandard.CheckboxLabeled(workTypeDef.labelShort.CapitalizeFirst(), ref active, WorkTypeComplexityTooltip(workTypeDef, !active), onChange: delegate
+                // If the work type is illegal, display it with a tooltip as to why it is illegal, but do not allow players to interact with it.
+                AcceptanceReport workTypeLegal = WorkTypeAcceptanceReport(workTypeDef);
+                if (!workTypeLegal)
                 {
                     if (programExtension.inherentWorkTypes.NotNullAndContains(workTypeDef))
                     {
-                        active = originalState;
-                        return;
+                        // If it is illegal because it is inherent to the pawn, display the checkbox as enabled and don't let players change it.
+                        bool fakeActive = true;
+                        GUI.color = Color.green;
+                        listingStandard.CheckboxLabeled(workTypeDef.labelShort.CapitalizeFirst(), ref fakeActive, tooltip: workTypeLegal.Reason, onChange: delegate
+                        {
+                            fakeActive = true;
+                        });
+                        GUI.color = Color.white;
                     }
+                    else
+                    {
+                        GUI.color = Color.gray;
+                        listingStandard.Label(workTypeDef.labelShort.CapitalizeFirst().Colorize(ColorLibrary.Grey), tooltip: workTypeLegal.Reason);
+                        GUI.color = Color.white;
+                    }
+                    continue;
+                }
 
+                bool active = proposedEnabledWorkTypes.Contains(workTypeDef);
+
+                listingStandard.CheckboxLabeled(workTypeDef.labelShort.CapitalizeFirst(), ref active, WorkTypeComplexityTooltip(workTypeDef, !active), onChange: delegate
+                {
                     if (!active)
                     {
                         programComp.enabledWorkTypes.Remove(workTypeDef);
@@ -485,7 +502,7 @@ namespace MechHumanlikes
                     }
                 }
             }
-            
+
             if (skillTypeComplexity != 0)
             {
                 stringBuilder.AppendLine("MDR_WorkTypeComplexitySkillsTooltip".Translate(workTypeDef.labelShort.CapitalizeFirst(), skillTypeComplexity));
@@ -496,6 +513,35 @@ namespace MechHumanlikes
             }
 
             return stringBuilder.ToString();
+        }
+
+        private AcceptanceReport WorkTypeAcceptanceReport(WorkTypeDef workTypeDef)
+        {
+            StringBuilder reason = new StringBuilder("MDR_CantInteractWithWorkType".Translate(workTypeDef.labelShort.CapitalizeFirst()));
+
+            // Inherent work types can not be removed, inform the player of this.
+            if (programExtension.inherentWorkTypes.NotNullAndContains(workTypeDef))
+            {
+                reason.Append("MDR_IsInherentWorkType".Translate(pawn.LabelShortCap));
+                return reason.ToString();
+            }
+
+            // Forbidden work types can not be interacted with but should be visible so that players know this race can never add it to this race.
+            if (programExtension.forbiddenWorkTypes.NotNullAndContains(workTypeDef))
+            {
+                reason.Append("MDR_IsForbiddenWorkType".Translate(pawn.def.LabelCap, pawn.LabelShortCap));
+                return reason.ToString();
+            }
+
+            // If the worker extension itself reports this is an invalid work type for the pawn, use that.
+            AcceptanceReport workerAcceptanceReport = workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ValidFor(pawn) ?? AcceptanceReport.WasAccepted;
+            if (!workerAcceptanceReport)
+            {
+                reason.Append(workerAcceptanceReport.Reason);
+                return reason.ToString();
+            }
+
+            return AcceptanceReport.WasAccepted;
         }
 
         private string SkillComplexityTooltip(SkillRecord skill, DroneSkillContext context, bool adding)
@@ -552,21 +598,21 @@ namespace MechHumanlikes
             }
         }
 
-        private void CacheLegalAndAssignGlobalWorkTypes()
+        private void CacheLocalAndAssignGlobalWorkTypes()
         {
-            legalWorkTypes = new List<WorkTypeDef>();
-            foreach (WorkTypeDef workTypeDef in DefDatabase<WorkTypeDef>.AllDefs)
+            localWorkTypes = new List<WorkTypeDef>();
+            foreach (WorkTypeDef workTypeDef in DefDatabase<WorkTypeDef>.AllDefs.OrderByDescending(workTypeDef => workTypeDef.naturalPriority))
             {
                 if (workTypeDef.workTags == WorkTags.None && workTypeDef.relevantSkills.NullOrEmpty())
                 {
                     programComp.enabledWorkTypes.Add(workTypeDef);
-                    pawn.Notify_DisabledWorkTypesChanged();
                 }
-                else if (!programExtension.forbiddenWorkTypes.NotNullAndContains(workTypeDef) && (workTypeDef.GetModExtension<MDR_WorkTypeExtension>()?.ValidFor(pawn).Accepted ?? true))
+                else
                 {
-                    legalWorkTypes.Add(workTypeDef);
+                    localWorkTypes.Add(workTypeDef);
                 }
             }
+            pawn.Notify_DisabledWorkTypesChanged();
         }
 
         protected void Accept()
