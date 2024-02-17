@@ -3,6 +3,7 @@
 
   <MDR_InvalidFor>{0} недопустимо на {1}, так как {2}</MDR_InvalidFor>
   <MDR_MaxDirectivesExceeded>Выбрано {0} несвязных директив, но {1} может иметь только {2}</MDR_MaxDirectivesExceeded>
+  <MDR_InvalidDirectivesRemoved>Одна или более директив, стали недоступными и были удалены.</MDR_InvalidDirectivesRemoved>
   <MDR_CantRemoveInherentDirectives>{0} не может быть удалена, так как она является важной директивой {1}</MDR_CantRemoveInherentDirectives>
 
 </LanguageData>
