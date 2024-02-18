@@ -1,12 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <MDR_ExclusionTagConflict>{0} и {1} являются взаимоисключающими и имеют общий тег {2}.</MDR_ExclusionTagConflict>
-  <MDR_ExclusiveToRace>это не применимо к расе {1}.</MDR_ExclusiveToRace>
+  <MDR_CantInteractWithWorkType>{0} нельзя изменить, потому что:</MDR_CantInteractWithWorkType>
+
+  <MDR_ExclusionTagConflict>{0} и {1} — взаимоисключающие.</MDR_ExclusionTagConflict>
+  <MDR_ExclusiveToRace>Раса {1} этого не позволяет.</MDR_ExclusiveToRace>
   <MDR_ComplexityRequirementInsufficient>требуется как минимум {1} максимальной сложности, но {2} имеет {3}.</MDR_ComplexityRequirementInsufficient>
-  <MDR_RequiredWorkTypeAbsent>для этого требуется {1} активный тип работы.</MDR_RequiredWorkTypeAbsent>
-  <MDR_RequiredWorkTypeSetAbsent>хотя бы один из {0} типов работ должен быть активным.</MDR_RequiredWorkTypeSetAbsent>\<MDR_ForbiddenSkillPresent>это несовместимо с навыком {0}</MDR_ForbiddenSkillPresent>
-  <MDR_RequiredSkillAbsent>для включения требуется {0} навыков.</MDR_RequiredSkillAbsent>
-  <MDR_RequiredSkillSetAbsent>хотя бы один из навыков {0} должен быть включён.</MDR_RequiredSkillSetAbsent>
+  <MDR_IsInherentWorkType>оно является врождённым типом работы {0}. Врождённые типы работ не имеют сложности.</MDR_IsInherentWorkType>
+
+  <MDR_ForbiddenSkillPresent>навык {0} включен.</MDR_ForbiddenSkillPresent>
+  <MDR_ForbiddenWorkTagsPresent>теги {0} должны быть недоступны.</MDR_ForbiddenWorkTagsPresent>
+  <MDR_ForbiddenWorkTypePresent>тип работы {0} включен.</MDR_ForbiddenWorkTypePresent>
+  <MDR_IsForbiddenWorkType>это запрещённый тип работы для {0}. {1} никогда не сможет этого сделать.</MDR_IsForbiddenWorkType>
+
+  <MDR_RequiredWorkTypeAbsent>тип работы {0} недоступен.</MDR_RequiredWorkTypeAbsent>
+  <MDR_RequiredWorkTypeSetAbsent>хотя бы один из этих типов работ нужно включить: {0}.</MDR_RequiredWorkTypeSetAbsent>\<MDR_RequiredWorkTagAbsent>теги {0} должны быть включены.</MDR_RequiredWorkTagAbsent>
+  <MDR_RequiredSkillAbsent>навык {0} недоступен.</MDR_RequiredSkillAbsent>
+  <MDR_RequiredSkillSetAbsent>хотя бы один из этих навыков нужно включить: {0}.</MDR_RequiredSkillSetAbsent>
 
 </LanguageData>
